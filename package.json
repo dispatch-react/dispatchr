@@ -1,0 +1,31 @@
+{
+  "name": "react-skeleton-clean",
+  "version": "1.0.0",
+  "description": "A basic react sekeleton",
+  "main": "index.js",
+  "scripts": {
+    "start" : "watchify src/main.jsx -v -t [babelify --presets [react] ] -o public/js/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dcodus/react-skeleton-clean.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Codrin Diaconu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dcodus/react-skeleton-clean/issues"
+  },
+  "homepage": "https://github.com/dcodus/react-skeleton-clean#readme",
+  "dependencies": {
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^7.2.0",
+    "browserify": "^12.0.1",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
+    "watchify": "^3.6.1"
+  }
+}
