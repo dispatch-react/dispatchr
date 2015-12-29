@@ -31973,6 +31973,13 @@ var Home = React.createClass({
     logOut: function () {
         Parse.User.logOut();
     },
+    getLocation: function () {
+        if (navigator.geolocation) {
+            return navigator.geolocation.getCurrentPosition;
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    },
     render: function () {
         return React.createElement(
             'div',
@@ -31985,6 +31992,7 @@ var Home = React.createClass({
                     null,
                     'Succesful Login :)'
                 ),
+                React.createElement(Map, { userLocation: this.getLocation }),
                 React.createElement(
                     'button',
                     { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
@@ -32130,7 +32138,7 @@ var Login = React.createClass({
                         ),
                         React.createElement(
                             'button',
-                            { className: 'btn btn-info btn-md btn-block', id: 'register-btn', onClick: this.handleTypeChange },
+                            { className: 'btn btn-info btn-md btn-block', id: 'register-btn', type: 'button', onClick: this.handleTypeChange },
                             'Create',
                             React.createElement('span', { className: 'fa fa-user-plus' })
                         )
@@ -32193,7 +32201,7 @@ var Login = React.createClass({
                         ),
                         React.createElement(
                             'button',
-                            { className: 'btn btn-warning btn-md btn-block', id: 'back-to-login', onClick: this.handleTypeChange },
+                            { className: 'btn btn-warning btn-md btn-block', id: 'back-to-login', type: 'button', onClick: this.handleTypeChange },
                             'Go back',
                             React.createElement('span', { className: 'fa fa-sign-in' })
                         )
@@ -32212,14 +32220,71 @@ var React = require('react');
 var Map = React.createClass({
     displayName: 'Map',
 
+    getInitialState: function () {
+        return {
+            location: this.props.userLocation
+        };
+    },
     render: function () {
-        React.createElement(
-            'h1',
+        return React.createElement(
+            'div',
             null,
-            'I\'m a component!'
+            React.createElement(
+                'h1',
+                null,
+                'I\'m a map component!'
+            ),
+            React.createElement(
+                'p',
+                null,
+                this.state.location,
+                ' something else'
+            )
         );
     }
 });
+
+// function showPosition(position) {
+//     lat = position.coords.latitude;
+//     lon = position.coords.longitude;
+//     latlon = new google.maps.LatLng(lat, lon)
+//     mapholder = document.getElementById('mapholder')
+//     mapholder.style.height = '250px';
+//     mapholder.style.width = '500px';
+
+//     var myOptions = {
+//         center: latlon,
+//         zoom: 14,
+//         mapTypeId: google.maps.MapTypeId.ROADMAP,
+//         mapTypeControl: false,
+//         navigationControlOptions: {
+//             style: google.maps.NavigationControlStyle.SMALL
+//         }
+//     }
+//     var map = new google.maps.Map(document.getElementById("mapholder"), myOptions);
+//     var marker = new google.maps.Marker({
+//         position: latlon,
+//         map: map,
+//         title: "You are here!"
+//     });
+// }
+
+// function showError(error) {
+//     switch(error.code) {
+//         case error.PERMISSION_DENIED:
+//             alert("User denied the request for Geolocation.")
+//             break;
+//         case error.POSITION_UNAVAILABLE:
+//             alert("Location information is unavailable.")
+//             break;
+//         case error.TIMEOUT:
+//             alert("The request to get user location timed out.")
+//             break;
+//         case error.UNKNOWN_ERROR:
+//             alert("An unknown error occurred.")
+//             break;
+//     }
+// }
 
 module.exports = Map;
 
