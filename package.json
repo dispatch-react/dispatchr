@@ -1,8 +1,8 @@
 {
   "name": "react-framework-dispatch",
   "version": "1.0.0",
-  "description": "A basic react sekeleton",
-  "main": "index.js",
+  "description": "The Dispatch framework",
+  "main": "public/js/main.js",
   "scripts": {
     "start": "watchify src/App.jsx -v -t [babelify --presets [react] ] -o public/js/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
