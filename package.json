@@ -4,7 +4,7 @@
   "description": "A basic react sekeleton",
   "main": "index.js",
   "scripts": {
-    "start" : "watchify src/main.jsx -v -t [babelify --presets [react] ] -o public/js/main.js",
+    "start": "watchify src/main.jsx -v -t [babelify --presets [react] ] -o public/js/main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,11 +21,15 @@
   },
   "homepage": "https://github.com/dcodus/react-skeleton-clean#readme",
   "dependencies": {
+    "babel": "^6.3.26",
     "babel-preset-react": "^6.3.13",
     "babelify": "^7.2.0",
     "browserify": "^12.0.1",
+    "parse": "^1.6.13",
+    "parse-react": "^0.5.0",
     "react": "^0.14.3",
     "react-dom": "^0.14.3",
+    "react-router-component": "^0.28.0",
     "watchify": "^3.6.1"
   }
 }
