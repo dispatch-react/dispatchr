@@ -19019,17 +19019,87 @@ module.exports = require('./lib/React');
 },{"./lib/React":26}],159:[function(require,module,exports){
 var React = require('react');
 
+var Home = require('../components/Home.jsx');
+
 var App = React.createClass({
-  displayName: 'App'
+    displayName: 'App',
+
+    render: function () {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(Home, null)
+        );
+    }
 });
 
 module.exports = App;
 
-},{"react":158}],160:[function(require,module,exports){
+},{"../components/Home.jsx":161,"react":158}],160:[function(require,module,exports){
+var React = require('react');
+
+var CreateMission = React.createClass({
+  displayName: 'CreateMission'
+});
+
+module.exports = CreateMission;
+
+},{"react":158}],161:[function(require,module,exports){
+var React = require('react');
+
+var CreateMission = require('../components/CreateMission.jsx');
+var ShowMissions = require('../components/ShowMissions.jsx');
+var Profile = require('../components/Profile.jsx');
+var Inbox = require('../components/Inbox.jsx');
+var Settings = require('../components/Settings.jsx');
+
+var Home = React.createClass({
+  displayName: 'Home'
+});
+
+module.exports = Home;
+
+},{"../components/CreateMission.jsx":160,"../components/Inbox.jsx":162,"../components/Profile.jsx":163,"../components/Settings.jsx":164,"../components/ShowMissions.jsx":165,"react":158}],162:[function(require,module,exports){
+var React = require('react');
+
+var Inbox = React.createClass({
+  displayName: 'Inbox'
+});
+
+module.exports = Inbox;
+
+},{"react":158}],163:[function(require,module,exports){
+var React = require('react');
+
+var Profile = React.createClass({
+  displayName: 'Profile'
+});
+
+module.exports = Profile;
+
+},{"react":158}],164:[function(require,module,exports){
+var React = require('react');
+
+var Settings = React.createClass({
+  displayName: 'Settings'
+});
+
+module.exports = Settings;
+
+},{"react":158}],165:[function(require,module,exports){
+var React = require('react');
+
+var ShowMissions = React.createClass({
+  displayName: 'ShowMissions'
+});
+
+module.exports = ShowMissions;
+
+},{"react":158}],166:[function(require,module,exports){
 var React = require('react');
 var ReactDOM = require('react-dom');
 var App = require('./components/App.jsx');
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./components/App.jsx":159,"react":158,"react-dom":2}]},{},[160]);
+},{"./components/App.jsx":159,"react":158,"react-dom":2}]},{},[166]);
