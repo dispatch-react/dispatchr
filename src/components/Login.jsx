@@ -95,12 +95,13 @@ var Login = React.createClass({
         <button className="btn btn-success btn-md btn-block" id="signIn-btn" type="submit">Sign In
           <span className="fa fa-sign-in"></span>
         </button>
-        
-        <button className="btn btn-info btn-md btn-block" id="register-btn" type="button" onClick={this.handleTypeChange}>Create
+        <button className="btn btn-info btn-md btn-block" id="register-btn" type="reset" onClick={this.handleTypeChange}>Create
           <span className="fa fa-user-plus"></span>
         </button>
 
       </form>
+      
+      
       
       </div>
       </div>)
@@ -142,11 +143,13 @@ var Login = React.createClass({
         </button>
         
         {/* Button to go back */}
-        <button className="btn btn-warning btn-md btn-block" id="back-to-login" type="button" onClick={this.handleTypeChange}>Go back
+        <button className="btn btn-warning btn-md btn-block" id="back-to-login" type="reset" onClick={this.handleTypeChange}>Go back
           <span className="fa fa-sign-in"></span>
         </button>
 
       </form>
+      
+      
       
       </div>
       </div>);
