@@ -8,7 +8,9 @@ var Settings = require('./Settings.jsx');
 var Map = require('./Map.jsx');
 
 var Home = React.createClass({
-
+    render: function() {
+        <h2>Succesful Login :)</h2>;
+    }
 });
 
 
