@@ -31918,6 +31918,7 @@ var Login = require('./components/Login.jsx');
 var App = React.createClass({
     displayName: 'App',
 
+    mixins: [ParseReact.Mixin],
     observe: function () {
         return {
             user: ParseReact.currentUser
@@ -31931,7 +31932,7 @@ var App = React.createClass({
                 React.createElement(Home, { user: this.data.user })
             );
         } else {
-            React.createElement(Login, null);
+            return React.createElement(Login, null);
         }
     }
 });
@@ -31942,13 +31943,22 @@ ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 var React = require('react');
 
 var CreateMission = React.createClass({
-  displayName: 'CreateMission'
+    displayName: 'CreateMission',
+
+    render: function () {
+        React.createElement(
+            'h1',
+            null,
+            'I\'m a component!'
+        );
+    }
 });
 
 module.exports = CreateMission;
 
 },{"react":253}],256:[function(require,module,exports){
 var React = require('react');
+var Parse = require('parse');
 
 var CreateMission = require('./CreateMission.jsx');
 var ShowMissions = require('./ShowMissions.jsx');
@@ -31960,22 +31970,46 @@ var Map = require('./Map.jsx');
 var Home = React.createClass({
     displayName: 'Home',
 
+    logOut: function () {
+        Parse.User.logOut();
+    },
     render: function () {
-        React.createElement(
-            'h2',
-            null,
-            'Succesful Login :)'
+        return React.createElement(
+            'div',
+            { className: 'row' },
+            React.createElement(
+                'div',
+                { className: 'col-md-4 col-md-offset-4' },
+                React.createElement(
+                    'h2',
+                    null,
+                    'Succesful Login :)'
+                ),
+                React.createElement(
+                    'button',
+                    { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
+                    'Log Out'
+                )
+            )
         );
     }
 });
 
 module.exports = Home;
 
-},{"./CreateMission.jsx":255,"./Inbox.jsx":257,"./Map.jsx":259,"./Profile.jsx":260,"./Settings.jsx":261,"./ShowMissions.jsx":262,"react":253}],257:[function(require,module,exports){
+},{"./CreateMission.jsx":255,"./Inbox.jsx":257,"./Map.jsx":259,"./Profile.jsx":260,"./Settings.jsx":261,"./ShowMissions.jsx":262,"parse":22,"react":253}],257:[function(require,module,exports){
 var React = require('react');
 
 var Inbox = React.createClass({
-  displayName: 'Inbox'
+    displayName: 'Inbox',
+
+    render: function () {
+        React.createElement(
+            'h1',
+            null,
+            'I\'m a component!'
+        );
+    }
 });
 
 module.exports = Inbox;
@@ -32054,48 +32088,52 @@ var Login = React.createClass({
         if (this.state.login) {
             return React.createElement(
                 'div',
-                { className: 'well clearfix' },
+                { className: 'row' },
                 React.createElement(
-                    'h2',
-                    null,
-                    'Welcome to the Login Screen'
-                ),
-                React.createElement(
-                    'form',
-                    { className: 'form-horizontal', onSubmit: this.logIn },
+                    'div',
+                    { className: 'well clearfix col-md-4 col-md-offset-4' },
                     React.createElement(
-                        'div',
-                        { className: 'input-group' },
+                        'h2',
+                        null,
+                        'Welcome to the Login Screen'
+                    ),
+                    React.createElement(
+                        'form',
+                        { className: 'form-horizontal', onSubmit: this.logIn },
                         React.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            React.createElement('i', { className: 'fa fa-at' })
+                            'div',
+                            { className: 'input-group' },
+                            React.createElement(
+                                'span',
+                                { className: 'input-group-addon' },
+                                React.createElement('i', { className: 'fa fa-at' })
+                            ),
+                            React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Email', id: 'formEmail', onChange: this.handleEmailChange })
                         ),
-                        React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Email', id: 'formEmail', onChange: this.handleEmailChange })
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'input-group' },
                         React.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            React.createElement('i', { className: 'fa fa-key' })
+                            'div',
+                            { className: 'input-group' },
+                            React.createElement(
+                                'span',
+                                { className: 'input-group-addon' },
+                                React.createElement('i', { className: 'fa fa-key' })
+                            ),
+                            React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Password', id: 'formPw', onChange: this.handlePasswordChange })
                         ),
-                        React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Password', id: 'formPw', onChange: this.handlePasswordChange })
-                    ),
-                    React.createElement('br', null),
-                    ' ',
-                    React.createElement(
-                        'button',
-                        { className: 'btn btn-success btn-md btn-block', id: 'signIn-btn', type: 'submit' },
-                        'Sign In',
-                        React.createElement('span', { className: 'fa fa-sign-in' })
-                    ),
-                    React.createElement(
-                        'button',
-                        { className: 'btn btn-info btn-md btn-block', id: 'register-btn', onClick: this.handleTypeChange },
-                        'Create',
-                        React.createElement('span', { className: 'fa fa-user-plus' })
+                        React.createElement('br', null),
+                        ' ',
+                        React.createElement(
+                            'button',
+                            { className: 'btn btn-success btn-md btn-block', id: 'signIn-btn', type: 'submit' },
+                            'Sign In',
+                            React.createElement('span', { className: 'fa fa-sign-in' })
+                        ),
+                        React.createElement(
+                            'button',
+                            { className: 'btn btn-info btn-md btn-block', id: 'register-btn', onClick: this.handleTypeChange },
+                            'Create',
+                            React.createElement('span', { className: 'fa fa-user-plus' })
+                        )
                     )
                 )
             );
@@ -32103,58 +32141,62 @@ var Login = React.createClass({
 
             return React.createElement(
                 'div',
-                { className: 'well clearfix' },
+                { className: 'row' },
                 React.createElement(
-                    'h2',
-                    null,
-                    'So glad you\'re joining us!'
-                ),
-                React.createElement(
-                    'form',
-                    { onSubmit: this.signUp, className: 'form-horizontal' },
+                    'div',
+                    { className: 'well clearfix col-md-4 col-md-offset-4' },
                     React.createElement(
-                        'div',
-                        { className: 'input-group' },
+                        'h2',
+                        null,
+                        'So glad you\'re joining us!'
+                    ),
+                    React.createElement(
+                        'form',
+                        { onSubmit: this.signUp, className: 'form-horizontal' },
                         React.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            React.createElement('i', { className: 'fa fa-at' })
+                            'div',
+                            { className: 'input-group' },
+                            React.createElement(
+                                'span',
+                                { className: 'input-group-addon' },
+                                React.createElement('i', { className: 'fa fa-at' })
+                            ),
+                            React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Email', id: 'formEmail', onChange: this.handleEmailChange })
                         ),
-                        React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Email', id: 'formEmail', onChange: this.handleEmailChange })
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'input-group' },
                         React.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            React.createElement('i', { className: 'fa fa-key' })
+                            'div',
+                            { className: 'input-group' },
+                            React.createElement(
+                                'span',
+                                { className: 'input-group-addon' },
+                                React.createElement('i', { className: 'fa fa-key' })
+                            ),
+                            React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Password', id: 'formPw', onChange: this.handlePasswordChange })
                         ),
-                        React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Password', id: 'formPw', onChange: this.handlePasswordChange })
-                    ),
-                    React.createElement(
-                        'div',
-                        { className: 'input-group', id: 'pwConfirm' },
                         React.createElement(
-                            'span',
-                            { className: 'input-group-addon' },
-                            React.createElement('i', { className: 'fa fa-key' })
+                            'div',
+                            { className: 'input-group', id: 'pwConfirm' },
+                            React.createElement(
+                                'span',
+                                { className: 'input-group-addon' },
+                                React.createElement('i', { className: 'fa fa-key' })
+                            ),
+                            React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Confirm Password', onChange: this.handleConfPasswordChange })
                         ),
-                        React.createElement('input', { type: 'text', className: 'form-control', placeholder: ' Confirm Password', onChange: this.handleConfPasswordChange })
-                    ),
-                    React.createElement('br', null),
-                    ' ',
-                    React.createElement(
-                        'button',
-                        { className: 'btn btn-info btn-md btn-block', id: 'register-btn', type: 'submit' },
-                        'Sign Up',
-                        React.createElement('span', { className: 'fa fa-user-plus' })
-                    ),
-                    React.createElement(
-                        'button',
-                        { className: 'btn btn-warning btn-md btn-block', id: 'back-to-login', onClick: this.handleTypeChange },
-                        'Go back',
-                        React.createElement('span', { className: 'fa fa-sign-in' })
+                        React.createElement('br', null),
+                        ' ',
+                        React.createElement(
+                            'button',
+                            { className: 'btn btn-info btn-md btn-block', id: 'register-btn', type: 'submit' },
+                            'Sign Up',
+                            React.createElement('span', { className: 'fa fa-user-plus' })
+                        ),
+                        React.createElement(
+                            'button',
+                            { className: 'btn btn-warning btn-md btn-block', id: 'back-to-login', onClick: this.handleTypeChange },
+                            'Go back',
+                            React.createElement('span', { className: 'fa fa-sign-in' })
+                        )
                     )
                 )
             );
@@ -32168,7 +32210,15 @@ module.exports = Login;
 var React = require('react');
 
 var Map = React.createClass({
-  displayName: 'Map'
+    displayName: 'Map',
+
+    render: function () {
+        React.createElement(
+            'h1',
+            null,
+            'I\'m a component!'
+        );
+    }
 });
 
 module.exports = Map;
@@ -32177,7 +32227,15 @@ module.exports = Map;
 var React = require('react');
 
 var Profile = React.createClass({
-  displayName: 'Profile'
+    displayName: 'Profile',
+
+    render: function () {
+        React.createElement(
+            'h1',
+            null,
+            'I\'m a component!'
+        );
+    }
 });
 
 module.exports = Profile;
@@ -32186,7 +32244,15 @@ module.exports = Profile;
 var React = require('react');
 
 var Settings = React.createClass({
-  displayName: 'Settings'
+    displayName: 'Settings',
+
+    render: function () {
+        React.createElement(
+            'h1',
+            null,
+            'I\'m a component!'
+        );
+    }
 });
 
 module.exports = Settings;
@@ -32195,7 +32261,15 @@ module.exports = Settings;
 var React = require('react');
 
 var ShowMissions = React.createClass({
-  displayName: 'ShowMissions'
+    displayName: 'ShowMissions',
+
+    render: function () {
+        React.createElement(
+            'h1',
+            null,
+            'I\'m a component!'
+        );
+    }
 });
 
 module.exports = ShowMissions;

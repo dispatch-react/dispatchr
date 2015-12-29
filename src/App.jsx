@@ -9,6 +9,7 @@ var Login = require('./components/Login.jsx');
 
 
 var App = React.createClass({
+    mixins: [ParseReact.Mixin],
     observe: function() {
         return {
             user: ParseReact.currentUser
@@ -24,7 +25,7 @@ var App = React.createClass({
             )
         }
         else {
-            <Login />
+            return <Login />;
         }
     }
 });

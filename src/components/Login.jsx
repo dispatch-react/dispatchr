@@ -70,7 +70,8 @@ var Login = React.createClass({
     render: function() {
         if (this.state.login) {
             return (
-        <div className="well clearfix">
+                <div className="row">
+        <div className="well clearfix col-md-4 col-md-offset-4">
             <h2>Welcome to the Login Screen</h2>
         
             {/* This is the login area! */}
@@ -101,13 +102,15 @@ var Login = React.createClass({
 
       </form>
       
+      </div>
       </div>)
         }
         else {
             /*RENDERING THE REGISTER PAGE*/
 
             return (
-                <div className="well clearfix">
+                <div className="row">
+                <div className="well clearfix col-md-4 col-md-offset-4">
 
       <h2>So glad you're joining us!</h2>
         
@@ -145,6 +148,7 @@ var Login = React.createClass({
 
       </form>
       
+      </div>
       </div>);
         }
     }

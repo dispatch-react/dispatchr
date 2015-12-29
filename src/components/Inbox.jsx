@@ -1,7 +1,9 @@
 var React = require('react');
 
 var Inbox = React.createClass({
-
+    render: function() {
+        <h1>I'm a component!</h1>;
+    }
 });
 
 
