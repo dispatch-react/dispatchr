@@ -16,6 +16,8 @@ var Map = React.createClass({
     }
 });
 
+//Some notes to test out github desktop
+
 // function showPosition(position) {
 //     lat = position.coords.latitude;
 //     lon = position.coords.longitude;
