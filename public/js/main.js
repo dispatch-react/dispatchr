@@ -19018,8 +19018,9 @@ module.exports = require('./lib/React');
 
 },{"./lib/React":26}],159:[function(require,module,exports){
 var React = require('react');
+var ReactDOM = require('react-dom');
 
-var Home = require('../components/Home.jsx');
+var Home = require('./components/Home.jsx');
 
 var App = React.createClass({
     displayName: 'App',
@@ -19033,9 +19034,9 @@ var App = React.createClass({
     }
 });
 
-module.exports = App;
+ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"../components/Home.jsx":161,"react":158}],160:[function(require,module,exports){
+},{"./components/Home.jsx":161,"react":158,"react-dom":2}],160:[function(require,module,exports){
 var React = require('react');
 
 var CreateMission = React.createClass({
@@ -19047,11 +19048,11 @@ module.exports = CreateMission;
 },{"react":158}],161:[function(require,module,exports){
 var React = require('react');
 
-var CreateMission = require('../components/CreateMission.jsx');
-var ShowMissions = require('../components/ShowMissions.jsx');
-var Profile = require('../components/Profile.jsx');
-var Inbox = require('../components/Inbox.jsx');
-var Settings = require('../components/Settings.jsx');
+var CreateMission = require('./CreateMission.jsx');
+var ShowMissions = require('./ShowMissions.jsx');
+var Profile = require('./Profile.jsx');
+var Inbox = require('./Inbox.jsx');
+var Settings = require('./Settings.jsx');
 
 var Home = React.createClass({
   displayName: 'Home'
@@ -19059,7 +19060,7 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"../components/CreateMission.jsx":160,"../components/Inbox.jsx":162,"../components/Profile.jsx":163,"../components/Settings.jsx":164,"../components/ShowMissions.jsx":165,"react":158}],162:[function(require,module,exports){
+},{"./CreateMission.jsx":160,"./Inbox.jsx":162,"./Profile.jsx":163,"./Settings.jsx":164,"./ShowMissions.jsx":165,"react":158}],162:[function(require,module,exports){
 var React = require('react');
 
 var Inbox = React.createClass({
@@ -19095,11 +19096,4 @@ var ShowMissions = React.createClass({
 
 module.exports = ShowMissions;
 
-},{"react":158}],166:[function(require,module,exports){
-var React = require('react');
-var ReactDOM = require('react-dom');
-var App = require('./components/App.jsx');
-
-ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
-
-},{"./components/App.jsx":159,"react":158,"react-dom":2}]},{},[166]);
+},{"react":158}]},{},[159]);
