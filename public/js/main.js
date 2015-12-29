@@ -19053,6 +19053,7 @@ var ShowMissions = require('./ShowMissions.jsx');
 var Profile = require('./Profile.jsx');
 var Inbox = require('./Inbox.jsx');
 var Settings = require('./Settings.jsx');
+var Map = require('./Map.jsx');
 
 var Home = React.createClass({
   displayName: 'Home'
@@ -19060,7 +19061,7 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"./CreateMission.jsx":160,"./Inbox.jsx":162,"./Profile.jsx":163,"./Settings.jsx":164,"./ShowMissions.jsx":165,"react":158}],162:[function(require,module,exports){
+},{"./CreateMission.jsx":160,"./Inbox.jsx":162,"./Map.jsx":163,"./Profile.jsx":164,"./Settings.jsx":165,"./ShowMissions.jsx":166,"react":158}],162:[function(require,module,exports){
 var React = require('react');
 
 var Inbox = React.createClass({
@@ -19072,13 +19073,22 @@ module.exports = Inbox;
 },{"react":158}],163:[function(require,module,exports){
 var React = require('react');
 
+var Map = React.createClass({
+  displayName: 'Map'
+});
+
+module.exports = Map;
+
+},{"react":158}],164:[function(require,module,exports){
+var React = require('react');
+
 var Profile = React.createClass({
   displayName: 'Profile'
 });
 
 module.exports = Profile;
 
-},{"react":158}],164:[function(require,module,exports){
+},{"react":158}],165:[function(require,module,exports){
 var React = require('react');
 
 var Settings = React.createClass({
@@ -19087,7 +19097,7 @@ var Settings = React.createClass({
 
 module.exports = Settings;
 
-},{"react":158}],165:[function(require,module,exports){
+},{"react":158}],166:[function(require,module,exports){
 var React = require('react');
 
 var ShowMissions = React.createClass({
