@@ -1,5 +1,7 @@
 var React = require('react');
 var Parse = require('parse');
+var Button = require('react-bootstrap').Button;
+var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
 
 var Login = React.createClass({
     getInitialState: function() {
@@ -25,6 +27,7 @@ var Login = React.createClass({
         this.setState({
             confPw: e.target.value
         });
+
     },
     handleTypeChange: function(e) {
         this.setState({
@@ -68,6 +71,13 @@ var Login = React.createClass({
     /*Rendering the Login Page OR Register, based on this.state.login*/
 
     render: function() {
+        const wellStyles = {
+            maxWidth: 400,
+            margin: '0 auto 10px'
+        };
+        const spanStyles = {
+            margin: '0 0 0 10px'
+        };
         if (this.state.login) {
             return (
                 <div className="row">
@@ -91,18 +101,21 @@ var Login = React.createClass({
     </div>
     
         <br/> {/*BUTTONS TO LOGIN OR GO TO REGISTRATION*/}
-      
-        <button className="btn btn-success btn-md btn-block" id="signIn-btn" type="submit">Sign In
-          <span className="fa fa-sign-in"></span>
-        </button>
-        <button className="btn btn-info btn-md btn-block" id="register-btn" type="reset" onClick={this.handleTypeChange}>Create
-          <span className="fa fa-user-plus"></span>
-        </button>
+
+  <div className="well" style={wellStyles}>
+    
+    <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)}>Sign In
+    <span className="fa fa-sign-in" style={spanStyles}></span>
+    </Button>
+    
+    <Button bsStyle="primary" bsSize="large" type="reset" block id="register-btn" onClick={this.handleTypeChange}>
+    Create
+    <span className="fa fa-user-plus" style={spanStyles}></span>
+    </Button>
+  </div>
 
       </form>
-      
-      
-      
+
       </div>
       </div>)
         }
@@ -137,26 +150,26 @@ var Login = React.createClass({
     </div>
     
         <br/> {/*BUTTONS TO REGISTER*/}
-        
-        <button className="btn btn-info btn-md btn-block" id="register-btn" type="submit">Sign Up
-          <span className="fa fa-user-plus"></span>
-        </button>
+    <div className="well" style={wellStyles}>
+        <Button bsStyle="info" bsSize="large" id="register-btn" block type="submit"
+            disabled={!(this.state.email.length && this.state.password.length && (this.state.confPw === this.state.password))}
+            >Sign Up
+          <span className="fa fa-user-plus" style={spanStyles}></span>
+        </Button>
         
         {/* Button to go back */}
-        <button className="btn btn-warning btn-md btn-block" id="back-to-login" type="reset" onClick={this.handleTypeChange}>Go back
-          <span className="fa fa-sign-in"></span>
-        </button>
+        <Button bsStyle="warning" bsSize="large" id="back-to-login" type="reset" block onClick={this.handleTypeChange}>Go back
+          <span className="fa fa-sign-in" style={spanStyles}></span>
+        </Button>
+    </div>
 
       </form>
-      
-      
-      
+
       </div>
       </div>);
         }
     }
 });
-
 
 
 module.exports = Login;
