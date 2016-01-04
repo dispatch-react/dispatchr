@@ -49876,6 +49876,11 @@ Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdB
 
 var Home = require('./components/Home.jsx');
 var Login = require('./components/Login.jsx');
+var Inbox = require('./components/Inbox.jsx');
+var Settings = require('./components/Settings.jsx');
+var ShowMissions = require('./components/ShowMissions.jsx');
+var Profile = require('./components/Profile.jsx');
+var Nav = require('./components/Nav.jsx');
 
 var App = React.createClass({
     displayName: 'App',
@@ -49886,12 +49891,24 @@ var App = React.createClass({
             user: ParseReact.currentUser
         };
     },
+    getInitialState: function () {
+        return {
+            location: 'home'
+        };
+    },
+    navChanged: function (newValue) {
+        this.setState({
+            location: newValue
+        });
+    },
     render: function () {
         if (this.data.user) {
+
             return React.createElement(
                 'div',
                 null,
-                React.createElement(Home, { user: this.data.user })
+                this.state.location === 1 ? React.createElement(Profile, null) : this.state.location === 2 ? React.createElement(Inbox, null) : this.state.location === 3 ? React.createElement(ShowMissions, null) : this.state.location === 4 ? React.createElement(Settings, null) : React.createElement(Home, null),
+                React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
             );
         } else {
             return React.createElement(Login, null);
@@ -49901,24 +49918,165 @@ var App = React.createClass({
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./components/Home.jsx":501,"./components/Login.jsx":503,"parse":23,"parse-react":3,"react":498,"react-dom":342}],500:[function(require,module,exports){
+},{"./components/Home.jsx":502,"./components/Inbox.jsx":503,"./components/Login.jsx":504,"./components/Nav.jsx":506,"./components/Profile.jsx":507,"./components/Settings.jsx":508,"./components/ShowMissions.jsx":509,"parse":23,"parse-react":3,"react":498,"react-dom":342}],500:[function(require,module,exports){
 var React = require('react');
+var CreateMissionForm = require('./CreateMissionForm.jsx');
 
 var CreateMission = React.createClass({
     displayName: 'CreateMission',
 
     render: function () {
-        React.createElement(
-            'h1',
+        return React.createElement(
+            'div',
             null,
-            'I\'m a component!'
+            React.createElement(
+                'h1',
+                null,
+                'This is pertaining to missions...'
+            ),
+            React.createElement(CreateMissionForm, null)
         );
     }
 });
 
 module.exports = CreateMission;
 
-},{"react":498}],501:[function(require,module,exports){
+},{"./CreateMissionForm.jsx":501,"react":498}],501:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse');
+
+var Button = require('react-bootstrap').Button;
+var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
+var Modal = require('react-bootstrap').Modal;
+var Input = require('react-bootstrap').Input;
+var ButtonInput = require('react-bootstrap').ButtonInput;
+var FormControls = require('react-bootstrap').FormControls;
+
+var CreateMissionForm = React.createClass({
+    displayName: 'CreateMissionForm',
+
+    getInitialState() {
+        return {
+            showModal: false,
+            title: '',
+            description: '',
+            carReq: false,
+            type: ''
+
+        };
+    },
+    handleTitleChange: function (e) {
+        this.setState({
+            title: e.target.value
+        });
+    },
+    handleDescriptionChange: function (e) {
+        this.setState({
+            description: e.target.value
+        });
+    },
+    handleCarReqChange: function (e) {
+        this.setState({
+            carReq: !this.state.carReq
+        });
+    },
+
+    selectChangeHandler: function (e) {
+        this.setState({
+            type: e.target.value
+        });
+    },
+
+    close() {
+        this.setState({
+            showModal: false
+        });
+    },
+
+    open() {
+        this.setState({
+            showModal: true
+        });
+    },
+
+    render() {
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Button,
+                { onClick: this.open },
+                React.createElement('img', { src: '../src/img/logo.png' })
+            ),
+            React.createElement(
+                Modal,
+                { show: this.state.showModal, onHide: this.close },
+                React.createElement(
+                    Modal.Header,
+                    { closeButton: true },
+                    React.createElement(
+                        Modal.Title,
+                        null,
+                        'Mission Brief'
+                    )
+                ),
+                React.createElement(
+                    Modal.Body,
+                    null,
+                    React.createElement(
+                        'form',
+                        null,
+                        React.createElement(Input, { type: 'text', label: 'Mission title', onChange: this.handleTitleChange }),
+                        React.createElement(Input, { type: 'textarea', label: 'Mission description', placeholder: 'be descriptive!', onChange: this.handleDescriptionChange }),
+                        React.createElement(Input, { type: 'checkbox', label: 'Car required', onClick: this.handleCarReqChange, checked: this.state.carReq }),
+                        React.createElement(
+                            Input,
+                            { type: 'select', label: 'Type', placeholder: 'select', onChange: this.handleTypeChange },
+                            React.createElement(
+                                'option',
+                                { value: 'delivery' },
+                                'Delivery'
+                            ),
+                            React.createElement(
+                                'option',
+                                { value: 'online' },
+                                'Online'
+                            ),
+                            React.createElement(
+                                'option',
+                                { value: 'domestic' },
+                                'Domestic'
+                            ),
+                            React.createElement(
+                                'option',
+                                { value: 'creative' },
+                                'Creative'
+                            )
+                        ),
+                        React.createElement(Input, { type: 'file', label: 'File', help: '[Optional]' }),
+                        React.createElement(ButtonInput, { type: 'submit', value: 'Create' }),
+                        React.createElement(ButtonInput, { type: 'reset', value: 'Reset' }),
+                        React.createElement(ButtonInput, { value: 'Save' })
+                    )
+                ),
+                React.createElement(
+                    Modal.Footer,
+                    null,
+                    React.createElement(
+                        Button,
+                        { onClick: this.close },
+                        'Close'
+                    )
+                )
+            )
+        );
+    }
+});
+
+module.exports = CreateMissionForm;
+
+},{"parse":23,"react":498,"react-bootstrap":169}],502:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
 
@@ -49928,6 +50086,7 @@ var Profile = require('./Profile.jsx');
 var Inbox = require('./Inbox.jsx');
 var Settings = require('./Settings.jsx');
 var Map = require('./Map.jsx');
+var Nav = require('./Nav.jsx');
 
 var Home = React.createClass({
     displayName: 'Home',
@@ -49944,14 +50103,9 @@ var Home = React.createClass({
                 'div',
                 { className: 'col-md-4 col-md-offset-4' },
                 React.createElement(
-                    'h2',
+                    'p',
                     null,
-                    'Succesful Login :)'
-                ),
-                React.createElement(
-                    'button',
-                    { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
-                    'Log Out'
+                    'You\'re home'
                 )
             )
         );
@@ -49960,24 +50114,24 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"./CreateMission.jsx":500,"./Inbox.jsx":502,"./Map.jsx":504,"./Profile.jsx":505,"./Settings.jsx":506,"./ShowMissions.jsx":507,"parse":23,"react":498}],502:[function(require,module,exports){
+},{"./CreateMission.jsx":500,"./Inbox.jsx":503,"./Map.jsx":505,"./Nav.jsx":506,"./Profile.jsx":507,"./Settings.jsx":508,"./ShowMissions.jsx":509,"parse":23,"react":498}],503:[function(require,module,exports){
 var React = require('react');
 
 var Inbox = React.createClass({
     displayName: 'Inbox',
 
     render: function () {
-        React.createElement(
+        return React.createElement(
             'h1',
             null,
-            'I\'m a component!'
+            'Inbox'
         );
     }
 });
 
 module.exports = Inbox;
 
-},{"react":498}],503:[function(require,module,exports){
+},{"react":498}],504:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
 var Button = require('react-bootstrap').Button;
@@ -50189,7 +50343,7 @@ var Login = React.createClass({
 
 module.exports = Login;
 
-},{"parse":23,"react":498,"react-bootstrap":169}],504:[function(require,module,exports){
+},{"parse":23,"react":498,"react-bootstrap":169}],505:[function(require,module,exports){
 var React = require('react');
 var Gmaps = require('gmaps');
 
@@ -50236,51 +50390,120 @@ var Map = React.createClass({
 
 module.exports = Map;
 
-},{"gmaps":2,"react":498}],505:[function(require,module,exports){
+},{"gmaps":2,"react":498}],506:[function(require,module,exports){
+var React = require('react');
+var Nav = require('react-bootstrap').Nav;
+var NavItem = require('react-bootstrap').NavItem;
+var CreateMissionForm = require('./CreateMissionForm.jsx');
+
+var Menu = React.createClass({
+    displayName: 'Menu',
+
+    render: function () {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'div',
+                { className: 'row' },
+                React.createElement(
+                    'div',
+                    { className: 'well clearfix col-md-4 col-md-offset-4' },
+                    React.createElement(
+                        Nav,
+                        { bsStyle: 'pills', justified: true, onSelect: this.props.onChange },
+                        React.createElement(
+                            NavItem,
+                            { eventKey: 1 },
+                            'Profile'
+                        ),
+                        React.createElement(
+                            NavItem,
+                            { eventKey: 2 },
+                            'Inbox'
+                        ),
+                        React.createElement(
+                            NavItem,
+                            { eventKey: 10 },
+                            React.createElement(CreateMissionForm, null)
+                        ),
+                        React.createElement(
+                            NavItem,
+                            { eventKey: 3 },
+                            'Missions'
+                        ),
+                        React.createElement(
+                            NavItem,
+                            { eventKey: 4 },
+                            'Settings'
+                        )
+                    )
+                )
+            ),
+            React.createElement(
+                'div',
+                { className: 'row' },
+                React.createElement(
+                    'div',
+                    { className: 'col-md-4 col-md-offset-4' },
+                    React.createElement(
+                        'button',
+                        { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
+                        'Log Out'
+                    )
+                )
+            )
+        );
+    }
+});
+
+module.exports = Menu;
+
+},{"./CreateMissionForm.jsx":501,"react":498,"react-bootstrap":169}],507:[function(require,module,exports){
 var React = require('react');
 
 var Profile = React.createClass({
     displayName: 'Profile',
 
     render: function () {
-        React.createElement(
+        return React.createElement(
             'h1',
             null,
-            'I\'m a component!'
+            'Profile Page'
         );
     }
 });
 
 module.exports = Profile;
 
-},{"react":498}],506:[function(require,module,exports){
+},{"react":498}],508:[function(require,module,exports){
 var React = require('react');
 
 var Settings = React.createClass({
     displayName: 'Settings',
 
     render: function () {
-        React.createElement(
+        return React.createElement(
             'h1',
             null,
-            'I\'m a component!'
+            'Settings'
         );
     }
 });
 
 module.exports = Settings;
 
-},{"react":498}],507:[function(require,module,exports){
+},{"react":498}],509:[function(require,module,exports){
 var React = require('react');
 
 var ShowMissions = React.createClass({
     displayName: 'ShowMissions',
 
     render: function () {
-        React.createElement(
+        return React.createElement(
             'h1',
             null,
-            'I\'m a component!'
+            'Show missions'
         );
     }
 });
