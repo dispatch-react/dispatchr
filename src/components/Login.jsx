@@ -39,6 +39,7 @@ var Login = React.createClass({
 
     logIn: function(e) {
         e.preventDefault();
+        console.log('called signUp')
         Parse.User.logIn(this.state.email, this.state.password).then(function(user) {
             alert('welcome back!');
         }, function(user, error) {
@@ -104,7 +105,7 @@ var Login = React.createClass({
 
   <div className="well" style={wellStyles}>
     
-    <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)}>Sign In
+    <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)} type="submit">Sign In
     <span className="fa fa-sign-in" style={spanStyles}></span>
     </Button>
     
