@@ -61,14 +61,7 @@ var CreateMissionForm = React.createClass({
 
             return (
                 <div>
-
-        <Button
-          bsStyle="primary"
-          bsSize="large"
-          onClick={this.open}
-        >
-          Create Mission
-        </Button>
+        <Button onClick={this.open}><img src="../src/img/logo.png" /></Button>
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
