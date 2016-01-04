@@ -104,9 +104,11 @@ var Login = React.createClass({
 
   <div className="well" style={wellStyles}>
     
-    <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)}>Sign In
-    <span className="fa fa-sign-in" style={spanStyles}></span>
+   <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)} type="submit">Sign In
     </Button>
+    <span className="fa fa-sign-in" style={spanStyles}></span>
+    
+   
     
     <Button bsStyle="primary" bsSize="large" type="reset" block id="register-btn" onClick={this.handleTypeChange}>
     Create
