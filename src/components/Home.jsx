@@ -19,6 +19,8 @@ var Home = React.createClass({
                 <div className="col-md-4 col-md-offset-4">
                     <h2>Succesful Login :)</h2>
                     
+                    <CreateMission />
+                    
                     <button className="btn btn-danger btn-md btn-block" onClick={this.logOut}>Log Out</button>
                 </div>
             </div>

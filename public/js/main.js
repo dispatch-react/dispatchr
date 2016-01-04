@@ -49901,24 +49901,169 @@ var App = React.createClass({
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./components/Home.jsx":501,"./components/Login.jsx":503,"parse":23,"parse-react":3,"react":498,"react-dom":342}],500:[function(require,module,exports){
+},{"./components/Home.jsx":502,"./components/Login.jsx":504,"parse":23,"parse-react":3,"react":498,"react-dom":342}],500:[function(require,module,exports){
 var React = require('react');
+var CreateMissionForm = require('./CreateMissionForm.jsx');
 
 var CreateMission = React.createClass({
     displayName: 'CreateMission',
 
     render: function () {
-        React.createElement(
-            'h1',
+        return React.createElement(
+            'div',
             null,
-            'I\'m a component!'
+            React.createElement(
+                'h1',
+                null,
+                'This is pertaining to missions...'
+            ),
+            React.createElement(CreateMissionForm, null)
         );
     }
 });
 
 module.exports = CreateMission;
 
-},{"react":498}],501:[function(require,module,exports){
+},{"./CreateMissionForm.jsx":501,"react":498}],501:[function(require,module,exports){
+var React = require('react');
+var Parse = require('parse');
+
+var Button = require('react-bootstrap').Button;
+var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
+var Modal = require('react-bootstrap').Modal;
+var Input = require('react-bootstrap').Input;
+var ButtonInput = require('react-bootstrap').ButtonInput;
+var FormControls = require('react-bootstrap').FormControls;
+
+var CreateMissionForm = React.createClass({
+    displayName: 'CreateMissionForm',
+
+    getInitialState() {
+        return {
+            showModal: false,
+            title: '',
+            description: '',
+            carReq: false,
+            type: ''
+
+        };
+    },
+    handleTitleChange: function (e) {
+        this.setState({
+            title: e.target.value
+        });
+    },
+    handleDescriptionChange: function (e) {
+        this.setState({
+            description: e.target.value
+        });
+    },
+    handleCarReqChange: function (e) {
+        this.setState({
+            carReq: !this.state.carReq
+        });
+    },
+
+    selectChangeHandler: function (e) {
+        this.setState({
+            type: e.target.value
+        });
+    },
+
+    close() {
+        this.setState({
+            showModal: false
+        });
+    },
+
+    open() {
+        this.setState({
+            showModal: true
+        });
+    },
+
+    render() {
+
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                Button,
+                {
+                    bsStyle: 'primary',
+                    bsSize: 'large',
+                    onClick: this.open
+                },
+                'Create Mission'
+            ),
+            React.createElement(
+                Modal,
+                { show: this.state.showModal, onHide: this.close },
+                React.createElement(
+                    Modal.Header,
+                    { closeButton: true },
+                    React.createElement(
+                        Modal.Title,
+                        null,
+                        'Mission Brief'
+                    )
+                ),
+                React.createElement(
+                    Modal.Body,
+                    null,
+                    React.createElement(
+                        'form',
+                        null,
+                        React.createElement(Input, { type: 'text', label: 'Mission title', onChange: this.handleTitleChange }),
+                        React.createElement(Input, { type: 'textarea', label: 'Mission description', placeholder: 'be descriptive!', onChange: this.handleDescriptionChange }),
+                        React.createElement(Input, { type: 'checkbox', label: 'Car required', onClick: this.handleCarReqChange, checked: this.state.carReq }),
+                        React.createElement(
+                            Input,
+                            { type: 'select', label: 'Type', placeholder: 'select', onChange: this.handleTypeChange },
+                            React.createElement(
+                                'option',
+                                { value: 'delivery' },
+                                'Delivery'
+                            ),
+                            React.createElement(
+                                'option',
+                                { value: 'online' },
+                                'Online'
+                            ),
+                            React.createElement(
+                                'option',
+                                { value: 'domestic' },
+                                'Domestic'
+                            ),
+                            React.createElement(
+                                'option',
+                                { value: 'creative' },
+                                'Creative'
+                            )
+                        ),
+                        React.createElement(Input, { type: 'file', label: 'File', help: '[Optional]' }),
+                        React.createElement(ButtonInput, { type: 'submit', value: 'Create' }),
+                        React.createElement(ButtonInput, { type: 'reset', value: 'Reset' }),
+                        React.createElement(ButtonInput, { value: 'Save' })
+                    )
+                ),
+                React.createElement(
+                    Modal.Footer,
+                    null,
+                    React.createElement(
+                        Button,
+                        { onClick: this.close },
+                        'Close'
+                    )
+                )
+            )
+        );
+    }
+});
+
+module.exports = CreateMissionForm;
+
+},{"parse":23,"react":498,"react-bootstrap":169}],502:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
 
@@ -49948,6 +50093,7 @@ var Home = React.createClass({
                     null,
                     'Succesful Login :)'
                 ),
+                React.createElement(CreateMission, null),
                 React.createElement(
                     'button',
                     { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
@@ -49960,7 +50106,7 @@ var Home = React.createClass({
 
 module.exports = Home;
 
-},{"./CreateMission.jsx":500,"./Inbox.jsx":502,"./Map.jsx":504,"./Profile.jsx":505,"./Settings.jsx":506,"./ShowMissions.jsx":507,"parse":23,"react":498}],502:[function(require,module,exports){
+},{"./CreateMission.jsx":500,"./Inbox.jsx":503,"./Map.jsx":505,"./Profile.jsx":506,"./Settings.jsx":507,"./ShowMissions.jsx":508,"parse":23,"react":498}],503:[function(require,module,exports){
 var React = require('react');
 
 var Inbox = React.createClass({
@@ -49977,7 +50123,7 @@ var Inbox = React.createClass({
 
 module.exports = Inbox;
 
-},{"react":498}],503:[function(require,module,exports){
+},{"react":498}],504:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
 var Button = require('react-bootstrap').Button;
@@ -50189,7 +50335,7 @@ var Login = React.createClass({
 
 module.exports = Login;
 
-},{"parse":23,"react":498,"react-bootstrap":169}],504:[function(require,module,exports){
+},{"parse":23,"react":498,"react-bootstrap":169}],505:[function(require,module,exports){
 var React = require('react');
 var Gmaps = require('gmaps');
 
@@ -50236,7 +50382,7 @@ var Map = React.createClass({
 
 module.exports = Map;
 
-},{"gmaps":2,"react":498}],505:[function(require,module,exports){
+},{"gmaps":2,"react":498}],506:[function(require,module,exports){
 var React = require('react');
 
 var Profile = React.createClass({
@@ -50253,7 +50399,7 @@ var Profile = React.createClass({
 
 module.exports = Profile;
 
-},{"react":498}],506:[function(require,module,exports){
+},{"react":498}],507:[function(require,module,exports){
 var React = require('react');
 
 var Settings = React.createClass({
@@ -50270,7 +50416,7 @@ var Settings = React.createClass({
 
 module.exports = Settings;
 
-},{"react":498}],507:[function(require,module,exports){
+},{"react":498}],508:[function(require,module,exports){
 var React = require('react');
 
 var ShowMissions = React.createClass({
