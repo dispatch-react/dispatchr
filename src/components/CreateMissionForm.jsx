@@ -2,7 +2,8 @@ var React = require('react');
 
 var CreateMissionForm = React.createClass({
     render: function() {
-        <h1>I'm a component!</h1>;
+        <h1>Create Missions Form</h1>;
+
     }
 });
 
