@@ -32,26 +32,20 @@ var App = React.createClass({
     },
     render: function() {
         if (this.data.user) {
-            if (this.state.location === 1){
-                return (<div><Profile user={this.data.user}/><Nav onChange={this.navChanged} location={this.state.location}/></div>)
-            }
-            else if (this.state.location === 2) {
-                return (<div><Inbox user={this.data.user}/><Nav onChange={this.navChanged} location={this.state.location}/></div>)
-            }
-            else if (this.state.location === 3) {
-                return (<div><ShowMissions user={this.data.user}/><Nav onChange={this.navChanged} location={this.state.location}/></div>)
-            }
-            else if (this.state.location === 4) {
-                return (<div><Settings user={this.data.user}/><Nav onChange={this.navChanged} location={this.state.location}/></div>)
-            }
-            else {
-        return (
-            <div>
-                <Home user={this.data.user}/>
-                <Nav onChange={this.navChanged} location={this.state.location} />
-            </div>
-            )
-            }
+            
+            return (
+                <div>
+                    {
+                        this.state.location === 1 ? <Profile/> :
+                        this.state.location === 2 ? <Inbox/> :
+                        this.state.location === 3 ? <ShowMissions/> :
+                        this.state.location === 4 ? <Settings/> :
+                        <Home/>
+                    }
+                    <Nav onChange={this.navChanged} location={this.state.location}/>
+                </div>
+            );
+            
         }
         else {
             return <Login />;

@@ -49903,42 +49903,13 @@ var App = React.createClass({
     },
     render: function () {
         if (this.data.user) {
-            if (this.state.location === 1) {
-                return React.createElement(
-                    'div',
-                    null,
-                    React.createElement(Profile, { user: this.data.user }),
-                    React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
-                );
-            } else if (this.state.location === 2) {
-                return React.createElement(
-                    'div',
-                    null,
-                    React.createElement(Inbox, { user: this.data.user }),
-                    React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
-                );
-            } else if (this.state.location === 3) {
-                return React.createElement(
-                    'div',
-                    null,
-                    React.createElement(ShowMissions, { user: this.data.user }),
-                    React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
-                );
-            } else if (this.state.location === 4) {
-                return React.createElement(
-                    'div',
-                    null,
-                    React.createElement(Settings, { user: this.data.user }),
-                    React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
-                );
-            } else {
-                return React.createElement(
-                    'div',
-                    null,
-                    React.createElement(Home, { user: this.data.user }),
-                    React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
-                );
-            }
+
+            return React.createElement(
+                'div',
+                null,
+                this.state.location === 1 ? React.createElement(Profile, null) : this.state.location === 2 ? React.createElement(Inbox, null) : this.state.location === 3 ? React.createElement(ShowMissions, null) : this.state.location === 4 ? React.createElement(Settings, null) : React.createElement(Home, null),
+                React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
+            );
         } else {
             return React.createElement(Login, null);
         }
