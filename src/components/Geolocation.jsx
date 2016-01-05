@@ -6,9 +6,9 @@ var Circle = reactGoogleMaps.Circle;
 var InfoWindow = reactGoogleMaps.InfoWindow;
 var canUseDOM = require("can-use-dom");
 var raf = require("raf");
-var isomorphicFetch = require("isomorphic-fetch");
-var fetch = isomorphicFetch.fetch;
 var MarkerClusterer = require("react-google-maps/lib/addons/MarkerClusterer");
+var Marker = reactGoogleMaps.Marker;
+
 
 
 
@@ -39,7 +39,6 @@ var Geolocation = React.createClass({
                 content: "Your are here!"
             });
 
-
             //Request Markers here
 
 
@@ -67,8 +66,10 @@ var Geolocation = React.createClass({
     },
     render: function () {
 
-        const {center, content, radius} = this.state;
+        const {center, content, radius, markers} = this.state;
         let contents = [];
+
+        console.log(this.state.markers);
 
         if(center){
             contents = contents.concat([
@@ -92,6 +93,12 @@ var Geolocation = React.createClass({
                             defaultZoom={12}
                             center={center}
                         >{contents}
+                         { this.props.missions.map(marker =>(
+                            <Marker
+                                position={{lat: marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}}
+                                key={marker.id.objectId}
+                            />
+                         ))}
                         </GoogleMap>
                     }
                 />

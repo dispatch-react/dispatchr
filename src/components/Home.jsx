@@ -21,7 +21,7 @@ var Home = React.createClass({
     };
   },
     logOut: function() {
-        console.log('calling logout')
+        console.log('calling logout');
         Parse.User.logOut();
     },
     render: function() {
