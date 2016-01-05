@@ -17,7 +17,7 @@ var CreateMissionForm = React.createClass({
             return {
                 showModal: false,
                 title: '',
-                value: 0,
+                value: '',
                 startDate: '',
                 endDate: '',
                 startLocation: '',
@@ -74,15 +74,22 @@ var CreateMissionForm = React.createClass({
         })
     },
         handleFormSubmit: function(e) {
+            var nthis = this
+            e.preventDefault();
+            var fileUpload = this.refs.fileUpload.getInputDOMNode().files;
+            
+            function postMission() {
+            
               var creator = ParseReact.Mutation.Create('Missions', {
-                title: this.state.title,
-                value: this.state.value,
-                startDate: this.state.startDate,
-                endDate: this.state.endDate,
-                startLocation: this.state.startLocation,
-                endLocation: this.state.endLocation,
-                description: this.state.description,
-                carReq: this.state.carReq
+                title: nthis.state.title,
+                value: nthis.state.value,
+                startDate: nthis.state.startDate,
+                endDate: nthis.state.endDate,
+                startLocation: nthis.state.startLocation,
+                endLocation: nthis.state.endLocation,
+                description: nthis.state.description,
+                carReq: nthis.state.carReq,
+                missionAttachment: att
             });
 
             // ...and execute it
@@ -92,6 +99,20 @@ var CreateMissionForm = React.createClass({
             function(error){
                 alert('there was an error, check your self')
             });
+        }
+
+            if (fileUpload.length === 0) {
+                var att = null;
+                postMission();
+            }
+            else {
+                var file = fileUpload[0];
+                att = new Parse.File("attach", file);
+                att.save().then(function(){
+                    postMission();
+                    nthis.close();
+                });
+            }
         },
         
         close() {
@@ -135,7 +156,7 @@ var CreateMissionForm = React.createClass({
       <option value="creative">Creative</option>
     </Input>
     
-    <Input type="file" label="File" help="[Optional]" />
+    <Input type="file" id="MissionAttachment" ref="fileUpload" label="File" help="[Optional]" />
     
     <ButtonInput type="submit" value="Create" />
     <ButtonInput type="reset" value="Reset" />
