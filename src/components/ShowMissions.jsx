@@ -2,7 +2,9 @@ var React = require('react');
 
 var ShowMissions = React.createClass({
     render: function() {
-        <h1>I'm a component!</h1>;
+        return (
+        <h1>Show missions</h1>
+        )
     }
 });
 
