@@ -13,7 +13,7 @@ var Menu = React.createClass({
                 <Nav bsStyle="pills" justified onSelect={this.props.onChange}> 
                   <NavItem eventKey={1}>Profile</NavItem>
                   <NavItem eventKey={2}>Inbox</NavItem>
-                  <NavItem eventKey={10}><CreateMissionForm /></NavItem>
+                  <NavItem eventKey={10}><CreateMissionForm user={this.props.user}/></NavItem>
                   <NavItem eventKey={3}>Missions</NavItem>
                   <NavItem eventKey={4}>Settings</NavItem>
                 </Nav>

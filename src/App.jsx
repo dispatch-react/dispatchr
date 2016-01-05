@@ -36,13 +36,13 @@ var App = React.createClass({
             return (
                 <div>
                     {
-                        this.state.location === 1 ? <Profile/> :
-                        this.state.location === 2 ? <Inbox/> :
-                        this.state.location === 3 ? <ShowMissions/> :
-                        this.state.location === 4 ? <Settings/> :
-                        <Home/>
+                        this.state.location === 1 ? <Profile user={this.data.user}/> :
+                        this.state.location === 2 ? <Inbox user={this.data.user}/> :
+                        this.state.location === 3 ? <ShowMissions user={this.data.user}/> :
+                        this.state.location === 4 ? <Settings user={this.data.user}/> :
+                        <Home user={this.data.user}/>
                     }
-                    <Nav onChange={this.navChanged} location={this.state.location}/>
+                    <Nav onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                 </div>
             );
             

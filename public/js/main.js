@@ -49907,8 +49907,8 @@ var App = React.createClass({
             return React.createElement(
                 'div',
                 null,
-                this.state.location === 1 ? React.createElement(Profile, null) : this.state.location === 2 ? React.createElement(Inbox, null) : this.state.location === 3 ? React.createElement(ShowMissions, null) : this.state.location === 4 ? React.createElement(Settings, null) : React.createElement(Home, null),
-                React.createElement(Nav, { onChange: this.navChanged, location: this.state.location })
+                this.state.location === 1 ? React.createElement(Profile, { user: this.data.user }) : this.state.location === 2 ? React.createElement(Inbox, { user: this.data.user }) : this.state.location === 3 ? React.createElement(ShowMissions, { user: this.data.user }) : this.state.location === 4 ? React.createElement(Settings, { user: this.data.user }) : React.createElement(Home, { user: this.data.user }),
+                React.createElement(Nav, { onChange: this.navChanged, location: this.state.location, user: this.data.user })
             );
         } else {
             return React.createElement(Login, null);
@@ -49944,6 +49944,8 @@ module.exports = CreateMission;
 },{"./CreateMissionForm.jsx":501,"react":498}],501:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
+var ParseReact = require('parse-react');
+Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
 var Button = require('react-bootstrap').Button;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
@@ -49955,19 +49957,56 @@ var FormControls = require('react-bootstrap').FormControls;
 var CreateMissionForm = React.createClass({
     displayName: 'CreateMissionForm',
 
+    mixins: [ParseReact.Mixin],
+    observe: function () {
+        return {
+            Missions: new Parse.Query('Missions').ascending('createdAt')
+        };
+    },
+
     getInitialState() {
         return {
             showModal: false,
             title: '',
+            value: 0,
+            startDate: '',
+            endDate: '',
+            startLocation: '',
+            endLocation: '',
             description: '',
             carReq: false,
-            type: ''
-
+            type: '',
+            createdBy: this.props.user.id
         };
     },
     handleTitleChange: function (e) {
         this.setState({
             title: e.target.value
+        });
+    },
+    handleValueChange: function (e) {
+        this.setState({
+            value: e.target.value
+        });
+    },
+    handleStartDateChange: function (e) {
+        this.setState({
+            startDate: e.target.value
+        });
+    },
+    handleEndDateChange: function (e) {
+        this.setState({
+            endDate: e.target.value
+        });
+    },
+    handleStartLocationChange: function (e) {
+        this.setState({
+            startLocation: e.target.value
+        });
+    },
+    handleEndLocationChange: function (e) {
+        this.setState({
+            endLocation: e.target.value
         });
     },
     handleDescriptionChange: function (e) {
@@ -49980,11 +50019,26 @@ var CreateMissionForm = React.createClass({
             carReq: !this.state.carReq
         });
     },
-
     selectChangeHandler: function (e) {
         this.setState({
             type: e.target.value
         });
+    },
+    handleFormSubmit: function (e) {
+        var creator = ParseReact.Mutation.Create('Missions', {
+            title: this.state.title,
+            value: this.state.value,
+            startDate: this.state.startDate,
+            endDate: this.state.endDate,
+            startLocation: this.state.startLocation,
+            endLocation: this.state.endLocation,
+            description: this.state.description,
+            carReq: this.state.carReq
+
+        });
+
+        // ...and execute it
+        creator.dispatch();
     },
 
     close() {
@@ -50026,8 +50080,13 @@ var CreateMissionForm = React.createClass({
                     null,
                     React.createElement(
                         'form',
-                        null,
+                        { onSubmit: this.handleFormSubmit },
                         React.createElement(Input, { type: 'text', label: 'Mission title', onChange: this.handleTitleChange }),
+                        React.createElement(Input, { type: 'text', label: 'Bounty', onChange: this.handleValueChange, addonBefore: '$', addonAfter: '.00' }),
+                        React.createElement(Input, { type: 'text', label: '', onChange: this.handleStartDateChange, addonBefore: 'Start Date' }),
+                        React.createElement(Input, { type: 'text', label: '', onChange: this.handleEndDateChange, addonBefore: 'End Date', help: '[Optional]' }),
+                        React.createElement(Input, { type: 'text', label: '', onChange: this.handleStartLocationChange, addonBefore: 'Start Location' }),
+                        React.createElement(Input, { type: 'text', label: '', onChange: this.handleEndLocationChange, addonBefore: 'End Location', help: '[Optional]' }),
                         React.createElement(Input, { type: 'textarea', label: 'Mission description', placeholder: 'be descriptive!', onChange: this.handleDescriptionChange }),
                         React.createElement(Input, { type: 'checkbox', label: 'Car required', onClick: this.handleCarReqChange, checked: this.state.carReq }),
                         React.createElement(
@@ -50056,8 +50115,7 @@ var CreateMissionForm = React.createClass({
                         ),
                         React.createElement(Input, { type: 'file', label: 'File', help: '[Optional]' }),
                         React.createElement(ButtonInput, { type: 'submit', value: 'Create' }),
-                        React.createElement(ButtonInput, { type: 'reset', value: 'Reset' }),
-                        React.createElement(ButtonInput, { value: 'Save' })
+                        React.createElement(ButtonInput, { type: 'reset', value: 'Reset' })
                     )
                 ),
                 React.createElement(
@@ -50076,7 +50134,7 @@ var CreateMissionForm = React.createClass({
 
 module.exports = CreateMissionForm;
 
-},{"parse":23,"react":498,"react-bootstrap":169}],502:[function(require,module,exports){
+},{"parse":23,"parse-react":3,"react":498,"react-bootstrap":169}],502:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
 
@@ -50425,7 +50483,7 @@ var Menu = React.createClass({
                         React.createElement(
                             NavItem,
                             { eventKey: 10 },
-                            React.createElement(CreateMissionForm, null)
+                            React.createElement(CreateMissionForm, { user: this.props.user })
                         ),
                         React.createElement(
                             NavItem,
