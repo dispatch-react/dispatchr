@@ -1,38 +1,53 @@
 var React = require('react');
-var Gmaps = require('gmaps');
+var GMaps = require('../gmaps.js');
+var Autocomplete = require('./Autocomplete.jsx');
+
+
 
 var Map = React.createClass({
-    getInitialState: function(){
+
+    getInitialState(){
         return {
-            //set initial coordinates to Montreal 
-            lat: 45.50,
-            lng: 73.57  
-        };
+            location: ''
+        }
     },
-    componentDidMount: function() {
-       
-            var map = new Gmaps({
-                div: "map-container",
-                lat: this.state.lat,
-                lng: this.state.lng
-            });
+    componentDidMount(){
+        GMaps.geolocate({
+            success: position => {
+                var map = new GMaps({
+                    el: this.refs.map,
+                    lat: 45.50,
+                    lng: -73.57,
+                    zoom: 10
+                });
 
-            map.addMarker({
-                   lat: this.state.lat,
-                   lng: this.state.lng 
-            });
+                map.setCenter(position.coords.latitude, position.coords.longitude);
+                map.addMarker({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+
+            },
+            error: error => {
+                alert('Geolocation failed: '+error.message);
+            },
+            not_supported:()=> {
+                alert("Your browser does not support geolocation");
+            }
+        });
 
     },
-    render: function() {
+    render(){
+
         return (
-        <div>
-
-        <h1> Longitude: {this.state.lng} + Latitude + {this.state.lat} </h1>
-       <div id="map-container"></div>
-
-        </div>
+            <div className="map-holder">
+                <div className="main-map" ref="map"><img src="../src/img/loading.gif" alt=""/></div>
+                <Autocomplete />
+            </div>
         );
     }
+
 });
+
 
 module.exports = Map;
