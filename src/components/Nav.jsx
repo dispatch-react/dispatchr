@@ -2,6 +2,7 @@ var React = require('react');
 var Nav = require('react-bootstrap').Nav;
 var NavItem = require('react-bootstrap').NavItem;
 var CreateMissionForm = require('./CreateMissionForm.jsx');
+var HomeScreenButton = require('./HomeScreenButton.jsx');
 
 var Menu = React.createClass({
 
@@ -13,7 +14,14 @@ var Menu = React.createClass({
                 <Nav bsStyle="pills" justified onSelect={this.props.onChange}> 
                   <NavItem eventKey={1}>Profile</NavItem>
                   <NavItem eventKey={2}>Inbox</NavItem>
-                  <NavItem eventKey={10}><CreateMissionForm user={this.props.user}/></NavItem>
+                  <NavItem eventKey={'home'}>
+                  
+                  {
+                      this.props.location === 'home' ? <CreateMissionForm user={this.props.user}/> :
+                      <HomeScreenButton />
+                  }
+
+                  </NavItem>
                   <NavItem eventKey={3}>Missions</NavItem>
                   <NavItem eventKey={4}>Settings</NavItem>
                 </Nav>
