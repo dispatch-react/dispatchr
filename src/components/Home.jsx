@@ -10,7 +10,11 @@ var Profile = require('./Profile.jsx');
 var Inbox = require('./Inbox.jsx');
 var Settings = require('./Settings.jsx');
 var Map = require('./Map.jsx');
+<<<<<<< HEAD
 var Nav = require('./Nav.jsx');
+=======
+var Geolocation = require("./Geolocation.jsx");
+>>>>>>> c60d3db2d62ff28834781fc5f4251e20ccc0d4e9
 
 var Home = React.createClass({
     mixins: [ParseReact.Mixin],
