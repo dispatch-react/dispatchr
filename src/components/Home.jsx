@@ -7,6 +7,7 @@ var Profile = require('./Profile.jsx');
 var Inbox = require('./Inbox.jsx');
 var Settings = require('./Settings.jsx');
 var Map = require('./Map.jsx');
+var Geolocation = require("./Geolocation.jsx");
 
 var Home = React.createClass({
     logOut: function() {
@@ -18,7 +19,7 @@ var Home = React.createClass({
             <div className="row">
                 <div className="col-md-4 col-md-offset-4">
                     <h2>Succesful Login :)</h2>
-                    <Map />
+                    <Geolocation />
                     <button className="btn btn-danger btn-md btn-block" onClick={this.logOut}>Log Out</button>
                 </div>
             </div>
