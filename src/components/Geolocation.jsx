@@ -6,6 +6,10 @@ var Circle = reactGoogleMaps.Circle;
 var InfoWindow = reactGoogleMaps.InfoWindow;
 var canUseDOM = require("can-use-dom");
 var raf = require("raf");
+var isomorphicFetch = require("isomorphic-fetch");
+var fetch = isomorphicFetch.fetch;
+var MarkerClusterer = require("react-google-maps/lib/addons/MarkerClusterer");
+
 
 
 const geolocation = (
@@ -34,6 +38,11 @@ var Geolocation = React.createClass({
                 },
                 content: "Your are here!"
             });
+
+
+            //Request Markers here
+
+
             //This function will animate the circle.
             const tick = () => {
                 this.setState({
