@@ -34,7 +34,8 @@ var App = React.createClass({
         if (this.data.user) {
             
             return (
-                <div>
+                <div className="row">
+                    <div className="well clearfix col-md-4 col-md-offset-4">
                     {
                         this.state.location === 1 ? <Profile user={this.data.user}/> :
                         this.state.location === 2 ? <Inbox user={this.data.user}/> :
@@ -43,6 +44,7 @@ var App = React.createClass({
                         <Home user={this.data.user}/>
                     }
                     <Nav onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
+                    </div>
                 </div>
             );
             

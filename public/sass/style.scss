@@ -3,5 +3,15 @@ i {
 }
 
 img {
-    max-width: 50px;
+    max-width: 100%;
+}
+
+#nav-icon {
+        min-width: 50px;
+    }
+    
+#profile-pic {
+    max-width: 30%;
+    float: right;
+    border-radius: 5%;
 }

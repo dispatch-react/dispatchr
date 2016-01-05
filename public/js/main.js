@@ -49906,9 +49906,13 @@ var App = React.createClass({
 
             return React.createElement(
                 'div',
-                null,
-                this.state.location === 1 ? React.createElement(Profile, { user: this.data.user }) : this.state.location === 2 ? React.createElement(Inbox, { user: this.data.user }) : this.state.location === 3 ? React.createElement(ShowMissions, { user: this.data.user }) : this.state.location === 4 ? React.createElement(Settings, { user: this.data.user }) : React.createElement(Home, { user: this.data.user }),
-                React.createElement(Nav, { onChange: this.navChanged, location: this.state.location, user: this.data.user })
+                { className: 'row' },
+                React.createElement(
+                    'div',
+                    { className: 'well clearfix col-md-4 col-md-offset-4' },
+                    this.state.location === 1 ? React.createElement(Profile, { user: this.data.user }) : this.state.location === 2 ? React.createElement(Inbox, { user: this.data.user }) : this.state.location === 3 ? React.createElement(ShowMissions, { user: this.data.user }) : this.state.location === 4 ? React.createElement(Settings, { user: this.data.user }) : React.createElement(Home, { user: this.data.user }),
+                    React.createElement(Nav, { onChange: this.navChanged, location: this.state.location, user: this.data.user })
+                )
             );
         } else {
             return React.createElement(Login, null);
@@ -49956,13 +49960,6 @@ var FormControls = require('react-bootstrap').FormControls;
 
 var CreateMissionForm = React.createClass({
     displayName: 'CreateMissionForm',
-
-    mixins: [ParseReact.Mixin],
-    observe: function () {
-        return {
-            Missions: new Parse.Query('Missions').ascending('createdAt')
-        };
-    },
 
     getInitialState() {
         return {
@@ -50034,11 +50031,14 @@ var CreateMissionForm = React.createClass({
             endLocation: this.state.endLocation,
             description: this.state.description,
             carReq: this.state.carReq
-
         });
 
         // ...and execute it
-        creator.dispatch();
+        creator.dispatch().then(function (res) {
+            alert('new mission created!');
+        }, function (error) {
+            alert('there was an error, check your self');
+        });
     },
 
     close() {
@@ -50061,7 +50061,7 @@ var CreateMissionForm = React.createClass({
             React.createElement(
                 Button,
                 { onClick: this.open },
-                React.createElement('img', { src: '../src/img/logo.png' })
+                React.createElement('img', { src: '../src/img/logo.png', id: 'nav-icon' })
             ),
             React.createElement(
                 Modal,
@@ -50137,6 +50137,9 @@ module.exports = CreateMissionForm;
 },{"parse":23,"parse-react":3,"react":498,"react-bootstrap":169}],502:[function(require,module,exports){
 var React = require('react');
 var Parse = require('parse');
+var Parse = require('parse');
+var ParseReact = require('parse-react');
+Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
 var CreateMission = require('./CreateMission.jsx');
 var ShowMissions = require('./ShowMissions.jsx');
@@ -50149,30 +50152,24 @@ var Nav = require('./Nav.jsx');
 var Home = React.createClass({
     displayName: 'Home',
 
+    mixins: [ParseReact.Mixin],
+    observe: function () {
+        return {
+            Missions: new Parse.Query('Missions').ascending('createdAt')
+        };
+    },
     logOut: function () {
         console.log('calling logout');
         Parse.User.logOut();
     },
     render: function () {
-        return React.createElement(
-            'div',
-            { className: 'row' },
-            React.createElement(
-                'div',
-                { className: 'col-md-4 col-md-offset-4' },
-                React.createElement(
-                    'p',
-                    null,
-                    'You\'re home'
-                )
-            )
-        );
+        return React.createElement('img', { src: '../src/img/mtl-map.jpg' });
     }
 });
 
 module.exports = Home;
 
-},{"./CreateMission.jsx":500,"./Inbox.jsx":503,"./Map.jsx":505,"./Nav.jsx":506,"./Profile.jsx":507,"./Settings.jsx":508,"./ShowMissions.jsx":509,"parse":23,"react":498}],503:[function(require,module,exports){
+},{"./CreateMission.jsx":500,"./Inbox.jsx":503,"./Map.jsx":505,"./Nav.jsx":506,"./Profile.jsx":507,"./Settings.jsx":508,"./ShowMissions.jsx":509,"parse":23,"parse-react":3,"react":498}],503:[function(require,module,exports){
 var React = require('react');
 
 var Inbox = React.createClass({
@@ -50465,51 +50462,39 @@ var Menu = React.createClass({
                 'div',
                 { className: 'row' },
                 React.createElement(
-                    'div',
-                    { className: 'well clearfix col-md-4 col-md-offset-4' },
+                    Nav,
+                    { bsStyle: 'pills', justified: true, onSelect: this.props.onChange },
                     React.createElement(
-                        Nav,
-                        { bsStyle: 'pills', justified: true, onSelect: this.props.onChange },
-                        React.createElement(
-                            NavItem,
-                            { eventKey: 1 },
-                            'Profile'
-                        ),
-                        React.createElement(
-                            NavItem,
-                            { eventKey: 2 },
-                            'Inbox'
-                        ),
-                        React.createElement(
-                            NavItem,
-                            { eventKey: 10 },
-                            React.createElement(CreateMissionForm, { user: this.props.user })
-                        ),
-                        React.createElement(
-                            NavItem,
-                            { eventKey: 3 },
-                            'Missions'
-                        ),
-                        React.createElement(
-                            NavItem,
-                            { eventKey: 4 },
-                            'Settings'
-                        )
+                        NavItem,
+                        { eventKey: 1 },
+                        'Profile'
+                    ),
+                    React.createElement(
+                        NavItem,
+                        { eventKey: 2 },
+                        'Inbox'
+                    ),
+                    React.createElement(
+                        NavItem,
+                        { eventKey: 10 },
+                        React.createElement(CreateMissionForm, { user: this.props.user })
+                    ),
+                    React.createElement(
+                        NavItem,
+                        { eventKey: 3 },
+                        'Missions'
+                    ),
+                    React.createElement(
+                        NavItem,
+                        { eventKey: 4 },
+                        'Settings'
                     )
                 )
             ),
             React.createElement(
-                'div',
-                { className: 'row' },
-                React.createElement(
-                    'div',
-                    { className: 'col-md-4 col-md-offset-4' },
-                    React.createElement(
-                        'button',
-                        { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
-                        'Log Out'
-                    )
-                )
+                'button',
+                { className: 'btn btn-danger btn-md btn-block', onClick: this.logOut },
+                'Log Out'
             )
         );
     }
@@ -50521,13 +50506,53 @@ module.exports = Menu;
 var React = require('react');
 
 var Profile = React.createClass({
-    displayName: 'Profile',
+    displayName: "Profile",
 
+    getInitialState: function () {
+        return {
+            userData: this.props.user
+        };
+    },
     render: function () {
         return React.createElement(
-            'h1',
-            null,
-            'Profile Page'
+            "div",
+            { className: "row" },
+            React.createElement(
+                "h1",
+                null,
+                "Profile"
+            ),
+            React.createElement("img", { id: "profile-pic", src: "http://files.parsetfss.com/334e1198-ecc2-49e6-9341-5d88a891b5c0/tfss-3819fc4d-94d8-4de8-b2f9-b4b7af11e8ed-dot.jpg" }),
+            React.createElement(
+                "p",
+                null,
+                this.props.user.email
+            ),
+            React.createElement(
+                "p",
+                null,
+                this.props.user.u_name
+            ),
+            React.createElement(
+                "p",
+                null,
+                this.props.user.userLocation
+            ),
+            React.createElement(
+                "p",
+                null,
+                this.props.user.email
+            ),
+            React.createElement(
+                "p",
+                null,
+                this.props.user.email
+            ),
+            React.createElement(
+                "p",
+                null,
+                this.props.user.email
+            )
         );
     }
 });

@@ -9,7 +9,7 @@ var Menu = React.createClass({
         return (
     <div>
         <div className="row">
-            <div className="well clearfix col-md-4 col-md-offset-4">
+            
                 <Nav bsStyle="pills" justified onSelect={this.props.onChange}> 
                   <NavItem eventKey={1}>Profile</NavItem>
                   <NavItem eventKey={2}>Inbox</NavItem>
@@ -17,13 +17,9 @@ var Menu = React.createClass({
                   <NavItem eventKey={3}>Missions</NavItem>
                   <NavItem eventKey={4}>Settings</NavItem>
                 </Nav>
-            </div>
+            
         </div>
-        <div className="row">
-                <div className="col-md-4 col-md-offset-4">
-                    <button className="btn btn-danger btn-md btn-block" onClick={this.logOut}>Log Out</button>
-                </div>
-        </div>
+            <button className="btn btn-danger btn-md btn-block" onClick={this.logOut}>Log Out</button>
     </div>
         )
     }

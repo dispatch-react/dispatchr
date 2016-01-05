@@ -12,13 +12,6 @@ var FormControls = require('react-bootstrap').FormControls;
 
 
 var CreateMissionForm = React.createClass({
-    
-    mixins: [ParseReact.Mixin],
-    observe: function() {
-    return {
-      Missions: new Parse.Query('Missions').ascending('createdAt')
-    };
-  },
 
     getInitialState() {
             return {
@@ -90,11 +83,15 @@ var CreateMissionForm = React.createClass({
                 endLocation: this.state.endLocation,
                 description: this.state.description,
                 carReq: this.state.carReq
-                
             });
 
             // ...and execute it
-            creator.dispatch();
+            creator.dispatch().then(function(res){
+                alert('new mission created!')
+            },
+            function(error){
+                alert('there was an error, check your self')
+            });
         },
         
         close() {
@@ -113,7 +110,7 @@ var CreateMissionForm = React.createClass({
 
             return (
                 <div>
-        <Button onClick={this.open}><img src="../src/img/logo.png" /></Button>
+        <Button onClick={this.open}><img src="../src/img/logo.png" id="nav-icon"/></Button>
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
