@@ -1,6 +1,5 @@
 var React = require('react');
 var Parse = require('parse');
-var MapES6 = require('./MapES6.jsx')
 
 var CreateMission = require('./CreateMission.jsx');
 var ShowMissions = require('./ShowMissions.jsx');
@@ -19,7 +18,7 @@ var Home = React.createClass({
             <div className="row">
                 <div className="col-md-4 col-md-offset-4">
                     <h2>Succesful Login :)</h2>
-                    <MapES6 lat={40} lng={50} />
+                    <Map />
                     <button className="btn btn-danger btn-md btn-block" onClick={this.logOut}>Log Out</button>
                 </div>
             </div>
