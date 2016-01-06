@@ -16,10 +16,18 @@ img {
 }
 
 #userInfo {
-    text-align: right;
+    float: right;
 }
 
 #updatePhoto {
     text-align: center;
     margin: 5px;
+}
+
+.nav {
+    padding: 0 10px 0 10px;
+    
+    span {
+    display: block;
+    }
 }
