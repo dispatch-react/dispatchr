@@ -49,8 +49,8 @@ var Geolocation = React.createClass({
         }, (reason) => {
             this.setState({
                 center: {
-                    lat: 60,
-                    lng: 105
+                    lat: 45,
+                    lng: -73
                 },
                 content: `Error: The Geolocation service failed (${ reason }).`
             })

@@ -10,6 +10,14 @@ var Input = require('react-bootstrap').Input;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
 
+// var Autocomplete = React.createClass ({
+//     componentDidMount: function() {
+//         var reactId= this.refs.autocomplete;
+//         new google.maps.places.Autocomplete(reactId);
+//     },
+//     render: fun
+
+// });
 
 var CreateMissionForm = React.createClass({
 
@@ -28,6 +36,11 @@ var CreateMissionForm = React.createClass({
                 createdBy: this.props.user.id
             };
         },
+     //    componentDidMount: function() {
+     //        console.log('>>>', document.getElementById('autocomplete'));
+     //        var reactId= this.refs.autocomplete;
+     //        new google.maps.places.Autocomplete(reactId);
+     // },
         handleTitleChange: function(e) {
         this.setState({
             title: e.target.value
@@ -52,6 +65,7 @@ var CreateMissionForm = React.createClass({
         this.setState({
             startLocation: e.target.value
         });
+
     },
         handleEndLocationChange: function(e) {
         this.setState({
@@ -103,13 +117,18 @@ var CreateMissionForm = React.createClass({
         open() {
             this.setState({
                 showModal: true
+
+            }, ()=>{
+                 var reactId= this.refs.autocomplete.getInputDOMNode();
+            new google.maps.places.Autocomplete(reactId);
+
             });
         },
 
         render() {
 
             return (
-                <div>
+                <div id="wat">
         <Button onClick={this.open}><img src="../src/img/logo.png" id="nav-icon"/></Button>
 
         <Modal show={this.state.showModal} onHide={this.close}>
@@ -123,7 +142,7 @@ var CreateMissionForm = React.createClass({
     <Input type="text" label="Bounty" onChange={this.handleValueChange} addonBefore="$" addonAfter=".00" />
     <Input type="text" label="" onChange={this.handleStartDateChange} addonBefore="Start Date" />
     <Input type="text" label="" onChange={this.handleEndDateChange} addonBefore="End Date" help="[Optional]"/>
-    <Input type="text" label="" onChange={this.handleStartLocationChange} addonBefore="Start Location" />
+    <Input ref="autocomplete" type="text" label="" addonBefore="Start Place" autocomplete="on" />
     <Input type="text" label="" onChange={this.handleEndLocationChange} addonBefore="End Location" help="[Optional]"/>
     <Input type="textarea" label="Mission description" placeholder="be descriptive!" onChange={this.handleDescriptionChange}/>
     <Input type="checkbox" label="Car required" onClick={this.handleCarReqChange} checked={this.state.carReq} />
