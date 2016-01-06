@@ -1,5 +1,7 @@
 var React = require('react');
-
+var Parse = require('parse');
+var ParseReact = require('parse-react');
+Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
 var CreateMission = require('./CreateMission.jsx');
 var ShowMissions = require('./ShowMissions.jsx');
