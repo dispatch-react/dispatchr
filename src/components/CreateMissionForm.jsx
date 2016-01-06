@@ -5,10 +5,12 @@ Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdB
 
 var Button = require('react-bootstrap').Button;
 var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
+var ButtonGroup = require('react-bootstrap').ButtonGroup;
 var Modal = require('react-bootstrap').Modal;
 var Input = require('react-bootstrap').Input;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
+var Col = require('react-bootstrap').Col;
 
 
 var CreateMissionForm = React.createClass({
@@ -142,30 +144,30 @@ var CreateMissionForm = React.createClass({
               <form onSubmit={this.handleFormSubmit}>
     <Input type="text" label="Mission title" onChange={this.handleTitleChange} />
     <Input type="text" label="Bounty" onChange={this.handleValueChange} addonBefore="$" addonAfter=".00" />
-    <Input type="text" label="" onChange={this.handleStartDateChange} addonBefore="Start Date" />
-    <Input type="text" label="" onChange={this.handleEndDateChange} addonBefore="End Date" help="[Optional]"/>
     <Input type="text" label="" onChange={this.handleStartLocationChange} addonBefore="Start Location" />
-    <Input type="text" label="" onChange={this.handleEndLocationChange} addonBefore="End Location" help="[Optional]"/>
     <Input type="textarea" label="Mission description" placeholder="be descriptive!" onChange={this.handleDescriptionChange}/>
-    <Input type="checkbox" label="Car required" onClick={this.handleCarReqChange} checked={this.state.carReq} />
     
-    <Input type="select" label="Type" placeholder="select" onChange={this.handleTypeChange}>
+    <Input type="select" label="Type" placeholder="select" labelClassName="col-xs-2" wrapperClassName="col-xs-4" onChange={this.handleTypeChange}>
       <option value="delivery">Delivery</option>
       <option value="online">Online</option>
       <option value="domestic">Domestic</option>
       <option value="creative">Creative</option>
     </Input>
     
-    <Input type="file" id="MissionAttachment" ref="fileUpload" label="File" help="[Optional]" />
+    <Input type="checkbox" label="Car required" wrapperClassName="col-xs-6" onClick={this.handleCarReqChange} checked={this.state.carReq} />
     
-    <ButtonInput type="submit" value="Create" />
-    <ButtonInput type="reset" value="Reset" />
+    <Input type="file" id="MissionAttachment" ref="fileUpload" label="File" help="[Optional]" />
     
   </form>
 
             </Modal.Body>
           <Modal.Footer>
-            <Button onClick={this.close}>Close</Button>
+            <Col xs={2} xsOffset={8}>
+                <ButtonInput type="reset" value="Reset" />
+            </Col>
+            <Col xs={2}>    
+                <ButtonInput type="submit" value="Create" />
+            </Col>
           </Modal.Footer>
         </Modal>
       </div>

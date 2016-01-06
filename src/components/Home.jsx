@@ -1,6 +1,5 @@
 var React = require('react');
 var Parse = require('parse');
-var Parse = require('parse');
 var ParseReact = require('parse-react');
 Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
@@ -20,10 +19,6 @@ var Home = React.createClass({
       Missions: new Parse.Query('Missions').ascending('createdAt')
     };
   },
-    logOut: function() {
-        console.log('calling logout')
-        Parse.User.logOut();
-    },
     render: function() {
         return (
             

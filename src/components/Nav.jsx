@@ -27,7 +27,7 @@ var Menu = React.createClass({
                 </Nav>
             
         </div>
-            <button className="btn btn-danger btn-md btn-block" onClick={this.logOut}>Log Out</button>
+            <button className="btn btn-danger btn-md btn-block" onClick={this.props.logOut}>Log Out</button>
     </div>
         )
     }

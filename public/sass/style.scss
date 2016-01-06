@@ -9,13 +9,17 @@ img {
 #nav-icon {
         min-width: 50px;
     }
-    
-#profile-pic {
-    max-width: 30%;
-    float: right;
-    border-radius: 5%;
-}
 
 #map-icon {
     min-width: 50px;
+    max-width: 100px;
+}
+
+#userInfo {
+    text-align: right;
+}
+
+#updatePhoto {
+    text-align: center;
+    margin: 5px;
 }
