@@ -31,7 +31,6 @@ var ParseReact = require('parse-react');
 Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
 
-
 const geolocation = (
     canUseDOM && navigator.geolocation || {
         getCurrentPosition: (success, failure) => {
@@ -43,7 +42,7 @@ const geolocation = (
 
 var Geolocation = React.createClass({
     mixins: [ParseReact.Mixin],
-    observe: function() {
+    observe: function () {
         return {
             Missions: new Parse.Query('Missions').ascending('createdAt')
         };
@@ -56,7 +55,8 @@ var Geolocation = React.createClass({
             radius: 4000,
             //These are the markers created by user. Mission markers.
             markers: [],
-            bounds: null
+            bounds: null,
+            openedMissions: []
         }
     },
     handleBoundsChanged(){
@@ -67,7 +67,7 @@ var Geolocation = React.createClass({
     },
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
-        const markers =[];
+        const markers = [];
 
         //Add marker for every found place
         places.forEach(function (place) {
@@ -84,20 +84,46 @@ var Geolocation = React.createClass({
         });
         return
     },
+    handleMarkerClick(marker){
+        var missions = this.state.openedMissions;
+        if(missions.indexOf(marker.id.objectId) < 0){
+            this.setState({
+                openedMissions: this.state.openedMissions.concat([marker.id.objectId])
+            });
+        }
+    },
+    handleCloseClick(marker){
+        console.log(marker);
+        var missions = this.state.openedMissions;
+        if(missions.indexOf(marker.id.objectId) > -1){
+            missions.splice(missions.indexOf(marker.id.objectId),1);
+            this.setState({
+                openedMissions: missions
+            });
+        }
+    },
+    renderInfoWindow(ref, marker){
+        return (
+            <InfoWindow key={ref}
+                        onCloseclick={this.handleCloseClick.bind(this, marker)}
+            >
+                <div>
+                    <strong>{marker.description}</strong>
+                </div>
+
+            </InfoWindow>
+        )
+    },
     componentDidMount(){
         geolocation.getCurrentPosition((position) => {
             this.setState({
                 userPosition: {
-                   lat: position.coords.latitude,
-                   lng: position.coords.longitude
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
                 },
-                content: "Your are here!"
+                content: "Your are here!",
+                missions: this.data.Missions
             });
-
-            //Request Markers here
-
-
-
 
             //This function will animate the circle.
             const tick = () => {
@@ -106,7 +132,7 @@ var Geolocation = React.createClass({
                     radius: Math.max(this.state.radius - 40, 0)
                 });
 
-                if(this.state.radius > 200){
+                if (this.state.radius > 200) {
                     raf(tick);
                 }
             };
@@ -114,8 +140,8 @@ var Geolocation = React.createClass({
         }, (reason) => {
             this.setState({
                 center: {
-                    lat: 45,
-                    lng: -73
+                    lat: 45.5017,
+                    lng: -73.5673
                 },
                 content: `Error: The Geolocation service failed (${ reason }).`
             })
@@ -126,9 +152,9 @@ var Geolocation = React.createClass({
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
 
-        if(userPosition){
+        if (userPosition) {
             contents = contents.concat([
-                (<InfoWindow key="info" position={userPosition} content={content} />),
+                (<InfoWindow key="info" position={userPosition} content={content}/>),
                 (<Circle key="circle" center={userPosition} radius={radius} options={{
                     fillColor: "#4259ee",
                     fillOpacity: 0.20,
@@ -145,6 +171,8 @@ var Geolocation = React.createClass({
                     containerElement={<div {...this.props} style={{height: "70vh"}} />}
                     googleMapElement={
                         <GoogleMap
+                            ref="map"
+                            onBoundsChanged={this.handleBoundsChanged}
                             defaultZoom={12}
                             center={
                                 center ? center: userPosition
@@ -155,17 +183,23 @@ var Geolocation = React.createClass({
                             enableRetinaIcons={true}
                             gridSize={20}>
 
-                                {this.data.Missions.map(marker =>(
-                                <Marker
-                                    position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}}
-                                    key={marker.id.objectId}
-                                 />
-                                ))}
+                                {this.data.Missions.map((marker, index) => {
+    const ref = `${marker.id.objectId}_info`;
+
+    return (
+        <Marker key={ref} ref={ref}
+                position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}}
+                title={marker.title}
+                onClick={this.handleMarkerClick.bind(this, marker)}>
+            {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
+        </Marker>
+    );
+})}
                             </MarkerClusterer>
                             <SearchBox
                                 bounds={this.state.bounds}
                                 controlPosition={google.maps.ControlPosition.TOP_LEFT}
-                                onPlacesChanged={::this.handlePlacesChanged}
+                                onPlacesChanged={this.handlePlacesChanged}
                                 ref="searchBox"
                                 placeholder="Search for shit motherfucker!"
                                 style={inputStyle}
@@ -186,3 +220,10 @@ var Geolocation = React.createClass({
 
 
 module.exports = Geolocation;
+
+
+
+
+
+
+

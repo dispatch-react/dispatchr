@@ -9,7 +9,6 @@ var Settings = require('./Settings.jsx');
 var Map = require('./Map.jsx');
 var Nav = require('./Nav.jsx');
 var Geolocation = require("./Geolocation.jsx");
-var SearchBox = require("./SearchBox.jsx");
 
 var Home = React.createClass({
     logOut: function() {
