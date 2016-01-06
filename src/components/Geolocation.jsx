@@ -129,10 +129,10 @@ var Geolocation = React.createClass({
             const tick = () => {
                 this.setState({
                     //Return the largest number between 0 and this.state.radius - 20
-                    radius: Math.max(this.state.radius - 40, 0)
+                    radius: Math.max(this.state.radius - 60, 0)
                 });
 
-                if (this.state.radius > 200) {
+                if (this.state.radius > 150) {
                     raf(tick);
                 }
             };
@@ -201,7 +201,7 @@ var Geolocation = React.createClass({
                                 controlPosition={google.maps.ControlPosition.TOP_LEFT}
                                 onPlacesChanged={this.handlePlacesChanged}
                                 ref="searchBox"
-                                placeholder="Search for shit motherfucker!"
+                                placeholder="Search address"
                                 style={inputStyle}
                             />
                             {this.state.markers.map((marker, index) =>(
