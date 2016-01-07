@@ -12,7 +12,6 @@ var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
 var Col = require('react-bootstrap').Col;
 
-
 var CreateMissionForm = React.createClass({
 
     getInitialState() {
@@ -133,7 +132,7 @@ var CreateMissionForm = React.createClass({
 
             return (
                 <div>
-        <Button onClick={this.open}><img src="../src/img/logo.png" id="nav-icon"/></Button>
+        <img onClick={this.open} src="../src/img/bullhorn.png" id="nav-icon"/>
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
