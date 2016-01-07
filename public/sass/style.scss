@@ -1,5 +1,11 @@
-i {
-    min-width: 14px;
+$nav-clr: #160A20;
+
+body {
+    font-size: 12pt;
+}
+
+a {
+    color: $nav-clr;
 }
 
 img {
@@ -7,15 +13,15 @@ img {
 }
 
 #nav-icon {
-        min-width: 50px;
+        min-width: 70px;
+        max-width: 100px;
     }
 
-#map-icon {
-    min-width: 50px;
-    max-width: 100px;
+#userInfo {
+    float: right;
 }
 
-#userInfo {
+#missionInfo {
     float: right;
 }
 
@@ -25,7 +31,8 @@ img {
 }
 
 .nav {
-    padding: 0 10px 0 10px;
+    font-size: 12pt;
+    padding-top: 10px;
     
     span {
     display: block;
@@ -33,7 +40,6 @@ img {
 }
 
 .customOverlay {
-
     border: 3px solid red;
 
     .customOverlayText {
@@ -44,4 +50,24 @@ img {
     }
 }
 
+
+@media (max-width: 906px){
+    .nav {
+        font-size: 8pt;
+        >li>a {
+            padding: 0;
+        }
+    }
+}
+
+@media (min-width: 0px){
+    .nav-justified>li {
+        display: table-cell;
+        width: 1%;
+    }
+}
+
+.pac-container {
+	z-index: 999999;
+}
 

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "watchify src/App.jsx -v -t [babelify --presets [ react es2015 stage-0 ] ] --debug -o public/js/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sass": "sass --watch public/sass:public/css"
+    "sass": "sass --watch public/sass/style.scss:public/css/style.css"
   },
   "repository": {
     "type": "git",

@@ -11,6 +11,7 @@ var Input = require('react-bootstrap').Input;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
 var Col = require('react-bootstrap').Col;
+var Autocomplete = require('./Autocomplete.jsx');
 
 
 var CreateMissionForm = React.createClass({
@@ -30,6 +31,11 @@ var CreateMissionForm = React.createClass({
                 createdBy: this.props.user.id
             };
         },
+     //    componentDidMount: function() {
+     //        console.log('>>>', document.getElementById('autocomplete'));
+     //        var reactId= this.refs.autocomplete;
+     //        new google.maps.places.Autocomplete(reactId);
+     // },
         handleTitleChange: function(e) {
         this.setState({
             title: e.target.value
@@ -40,26 +46,7 @@ var CreateMissionForm = React.createClass({
             value: e.target.value
         });
     },
-        handleStartDateChange: function(e) {
-            this.setState({
-                startDate: e.target.value
-            });
-        },
-        handleEndDateChange: function(e) {
-        this.setState({
-            endDate: e.target.value
-        });
-    },
-        handleStartLocationChange: function(e) {
-        this.setState({
-            startLocation: e.target.value
-        });
-    },
-        handleEndLocationChange: function(e) {
-        this.setState({
-            endLocation: e.target.value
-        });
-    },
+
         handleDescriptionChange: function(e) {
             this.setState({
                 description: e.target.value
@@ -85,13 +72,11 @@ var CreateMissionForm = React.createClass({
               var creator = ParseReact.Mutation.Create('Missions', {
                 title: nthis.state.title,
                 value: nthis.state.value,
-                startDate: nthis.state.startDate,
-                endDate: nthis.state.endDate,
-                startLocation: nthis.state.startLocation,
-                endLocation: nthis.state.endLocation,
+                type: nthis.state.type,
                 description: nthis.state.description,
                 carReq: nthis.state.carReq,
-                missionAttachment: att
+                missionAttachment: att,
+                createdBy: nthis.props.user.objectId
             });
 
             // ...and execute it
@@ -126,14 +111,20 @@ var CreateMissionForm = React.createClass({
         open() {
             this.setState({
                 showModal: true
-            });
-        },
 
+            // }, ()=>{
+            //      var reactId= this.refs.autocomplete.getInputDOMNode();
+            // new google.maps.places.Autocomplete(reactId);
+
+            // });
+        });
+        },
+// <Input ref="autocomplete" type="text" label="" addonBefore="Start Place" autocomplete="on" />
         render() {
 
             return (
                 <div>
-        <Button onClick={this.open}><img src="../src/img/logo.png" id="nav-icon"/></Button>
+        <img onClick={this.open} src="../src/img/logo-med.png" id="nav-icon"/>
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
@@ -174,5 +165,7 @@ var CreateMissionForm = React.createClass({
             );
         }
 });
+
+
 
 module.exports = CreateMissionForm;

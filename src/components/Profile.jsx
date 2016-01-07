@@ -69,24 +69,33 @@ var Profile = React.createClass({
         }
         return (
             <div>
-        <Panel header={title} bsStyle="danger">
+        <Panel header={title} bsStyle="info">
             <Row>
-            <Col xs={12} md={8}>
-                <ListGroup>
-                    <ListGroupItem><Label>username:</Label> <span id="userInfo">{this.props.user.u_name}</span></ListGroupItem>
-                    <ListGroupItem><Label bsStyle="info">email:</Label> <span id="userInfo">{this.props.user.email}</span></ListGroupItem>
-                    <ListGroupItem><Label bsStyle="warning">rating:</Label> <span id="userInfo">{this.props.user.ratingScore}</span></ListGroupItem>
-                    <ListGroupItem><Label bsStyle="primary">Hometown:</Label> <span id="userInfo">{this.props.user.Hometown}</span></ListGroupItem>
-                </ListGroup>
-            </Col>
+                <Col xs={12} md={8}>
+                    <ListGroup>
+                        <ListGroupItem><Label>username:</Label> <span id="userInfo">{this.props.user.u_name}</span></ListGroupItem>
+                        <ListGroupItem><Label bsStyle="info">email:</Label> <span id="userInfo">{this.props.user.email}</span></ListGroupItem>
+                        <ListGroupItem><Label bsStyle="warning">rating:</Label> <span id="userInfo">{this.props.user.ratingScore}</span></ListGroupItem>
+                        <ListGroupItem><Label bsStyle="primary">Hometown:</Label> <span id="userInfo">{this.props.user.Hometown}</span></ListGroupItem>
+                    </ListGroup>
+                </Col>
     
-            <Col xs={12} md={4}>
-                <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
-                <div>
-                         {imgUpdater}
-                </div>
-            </Col>  
+                <Col xs={12} md={4}>
+                    <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
+                    <div>
+                             {imgUpdater}
+                    </div>
+                    
+                    <Row>
+                       <Col xs={10}>
+                           <Button bsStyle="warning" onClick={this.props.logOut}>Log Out</Button>
+                       </Col>
+                    </Row>
+                    
+                </Col>  
             </Row>
+            
+            
         </Panel>
     </div>
         )

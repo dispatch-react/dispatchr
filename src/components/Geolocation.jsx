@@ -119,7 +119,7 @@ var Geolocation = React.createClass({
             const tick = () => {
                 this.setState({
                     //Return the largest number between 0 and this.state.radius - 20
-                    radius: Math.max(this.state.radius - 120, 0)
+                    radius: Math.max(this.state.radius - 300, 0)
                 });
 
                 if (this.state.radius > 150) {
