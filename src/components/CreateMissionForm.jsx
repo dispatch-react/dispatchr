@@ -11,6 +11,8 @@ var Input = require('react-bootstrap').Input;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
 var Col = require('react-bootstrap').Col;
+var Autocomplete = require('./Autocomplete.jsx');
+
 
 var CreateMissionForm = React.createClass({
 
@@ -29,6 +31,11 @@ var CreateMissionForm = React.createClass({
                 createdBy: this.props.user.id
             };
         },
+     //    componentDidMount: function() {
+     //        console.log('>>>', document.getElementById('autocomplete'));
+     //        var reactId= this.refs.autocomplete;
+     //        new google.maps.places.Autocomplete(reactId);
+     // },
         handleTitleChange: function(e) {
         this.setState({
             title: e.target.value
@@ -39,6 +46,7 @@ var CreateMissionForm = React.createClass({
             value: e.target.value
         });
     },
+
         handleDescriptionChange: function(e) {
             this.setState({
                 description: e.target.value
@@ -103,9 +111,15 @@ var CreateMissionForm = React.createClass({
         open() {
             this.setState({
                 showModal: true
-            });
-        },
 
+            // }, ()=>{
+            //      var reactId= this.refs.autocomplete.getInputDOMNode();
+            // new google.maps.places.Autocomplete(reactId);
+
+            // });
+        });
+        },
+// <Input ref="autocomplete" type="text" label="" addonBefore="Start Place" autocomplete="on" />
         render() {
 
             return (
@@ -151,5 +165,7 @@ var CreateMissionForm = React.createClass({
             );
         }
 });
+
+
 
 module.exports = CreateMissionForm;

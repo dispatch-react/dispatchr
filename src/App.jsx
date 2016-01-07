@@ -17,6 +17,7 @@ var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 var Well = require('react-bootstrap').Well;
 var Navbar = require('react-bootstrap').Navbar;
+var Autocomplete = require('./components/Autocomplete.jsx');
 
 var App = React.createClass({
     
