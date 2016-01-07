@@ -69,7 +69,7 @@ var Profile = React.createClass({
         }
         return (
             <div>
-        <Panel header={title} bsStyle="danger">
+        <Panel header={title} bsStyle="info">
             <Row>
                 <Col xs={12} md={8}>
                     <ListGroup>

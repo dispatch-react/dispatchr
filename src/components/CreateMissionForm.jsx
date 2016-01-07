@@ -39,26 +39,6 @@ var CreateMissionForm = React.createClass({
             value: e.target.value
         });
     },
-        handleStartDateChange: function(e) {
-            this.setState({
-                startDate: e.target.value
-            });
-        },
-        handleEndDateChange: function(e) {
-        this.setState({
-            endDate: e.target.value
-        });
-    },
-        handleStartLocationChange: function(e) {
-        this.setState({
-            startLocation: e.target.value
-        });
-    },
-        handleEndLocationChange: function(e) {
-        this.setState({
-            endLocation: e.target.value
-        });
-    },
         handleDescriptionChange: function(e) {
             this.setState({
                 description: e.target.value
@@ -84,13 +64,11 @@ var CreateMissionForm = React.createClass({
               var creator = ParseReact.Mutation.Create('Missions', {
                 title: nthis.state.title,
                 value: nthis.state.value,
-                startDate: nthis.state.startDate,
-                endDate: nthis.state.endDate,
-                startLocation: nthis.state.startLocation,
-                endLocation: nthis.state.endLocation,
+                type: nthis.state.type,
                 description: nthis.state.description,
                 carReq: nthis.state.carReq,
-                missionAttachment: att
+                missionAttachment: att,
+                createdBy: nthis.props.user.objectId
             });
 
             // ...and execute it
@@ -132,7 +110,7 @@ var CreateMissionForm = React.createClass({
 
             return (
                 <div>
-        <img onClick={this.open} src="../src/img/bullhorn.png" id="nav-icon"/>
+        <img onClick={this.open} src="../src/img/logo-med.png" id="nav-icon"/>
 
         <Modal show={this.state.showModal} onHide={this.close}>
           <Modal.Header closeButton>
