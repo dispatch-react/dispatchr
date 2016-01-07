@@ -54,7 +54,6 @@ var Geolocation = React.createClass({
             content: null,
             radius: 4000,
             //These are the markers created by user. Mission markers.
-            markers: [],
             bounds: null,
             //These are display tags above the markers
             openedMissions: []
@@ -68,22 +67,9 @@ var Geolocation = React.createClass({
     },
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
-        const markers = [];
-
-        //Add marker for every found place
-        places.forEach(function (place) {
-            markers.push({
-                position: place.geometry.location
-            });
-        });
-
-        //Set markers; set map center to first search result
-        const mapCenter = markers.length > 0 ? markers[0].position : this.state.userPosition;
         this.setState({
-            center: mapCenter,
-            markers: markers
+            center: places[0].geometry.location
         });
-        return
     },
     handleMarkerClick(marker){
         var missions = this.state.openedMissions;
@@ -231,24 +217,6 @@ var Geolocation = React.createClass({
                                 placeholder="Search address"
                                 style={inputStyle}
                             />
-                            {this.state.markers.map((marker, index) =>(
-                               <Marker
-                                    position={marker.position}
-                                    key={index}
-                                >
-                                {/*Test Custom Info Window here*/}
-                                <OverlayView
-                                position={marker.position}
-                                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                                getPixelPositionOffset={this.getPixelPositionOffset}
-                                >
-                                 <div className="customOverlay" style={STYLES.overlayView}>
-                                    <h1 className="customOverlayText">50$</h1>
-                                 </div>
-                                </OverlayView>
-                                </Marker>
-
-                            ))}
                         </GoogleMap>
                     }
                 />
