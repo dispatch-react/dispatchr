@@ -17,3 +17,6 @@ img {
   height: 500px;
 }
 /*# sourceMappingURL=style.css.map */
+.pac-container {
+	z-index: 999999;
+}

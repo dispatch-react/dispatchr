@@ -46,7 +46,7 @@ var App = React.createClass({
                     }
                     <Nav onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                     </div>
-                    <Autocomplete />
+                   
                 </div>
             );
             

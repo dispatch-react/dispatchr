@@ -36,11 +36,9 @@ var Autocomplete = React.createClass({
     //         showModal: true
     //     }
     // },
-    componentDidMount: function() {
+    setupInput() {
 
-        if ({showModal: true}) {
-   
-    google.maps.event.addDomListener(window, 'load',   () => {
+ 
         var input = this.refs.searchField;
         var autocomplete = new google.maps.places.Autocomplete(input);
      
@@ -52,14 +50,16 @@ var Autocomplete = React.createClass({
           
 
         });
-    });
-    } 
+
 
      },
+     componentDidMount() {
+        this.setupInput();
+     },
      handleChange(e){
-        this.setState({
-            location: e.target.value
-        })
+        // this.setState({
+        //     location: e.target.value
+        // })
     },
      render: function() {
        return (
