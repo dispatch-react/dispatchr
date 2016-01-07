@@ -242,8 +242,8 @@ var Geolocation = React.createClass({
                                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                                 getPixelPositionOffset={this.getPixelPositionOffset}
                                 >
-                                 <div style={STYLES.overlayView}>
-                                    <h1 className="customOverlay">50$</h1>
+                                 <div className="customOverlay" style={STYLES.overlayView}>
+                                    <h1 className="customOverlayText">50$</h1>
                                  </div>
                                 </OverlayView>
                                 </Marker>
