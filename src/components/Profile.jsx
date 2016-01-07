@@ -87,8 +87,8 @@ var Profile = React.createClass({
                     </div>
                     
                     <Row>
-                       <Col xs={10} xsOffset={1}>
-                           <Button bsStyle="warning" block onClick={this.props.logOut}>Log Out</Button>
+                       <Col xs={10}>
+                           <Button bsStyle="warning" onClick={this.props.logOut}>Log Out</Button>
                        </Col>
                     </Row>
                     
