@@ -9,7 +9,7 @@ var raf = require("raf");
 var MarkerClusterer = require("react-google-maps/lib/addons/MarkerClusterer");
 var Marker = reactGoogleMaps.Marker;
 var SearchBox = reactGoogleMaps.SearchBox;
-
+var OverlayView = reactGoogleMaps.OverlayView;
 
 var inputStyle = {
     "border": "1px solid transparent",
@@ -56,6 +56,7 @@ var Geolocation = React.createClass({
             //These are the markers created by user. Mission markers.
             markers: [],
             bounds: null,
+            //These are display tags above the markers
             openedMissions: []
         }
     },
@@ -91,9 +92,9 @@ var Geolocation = React.createClass({
                 openedMissions: this.state.openedMissions.concat([marker.id.objectId])
             });
         }
+
     },
     handleCloseClick(marker){
-        console.log(marker);
         var missions = this.state.openedMissions;
         if(missions.indexOf(marker.id.objectId) > -1){
             missions.splice(missions.indexOf(marker.id.objectId),1);
@@ -113,6 +114,9 @@ var Geolocation = React.createClass({
 
             </InfoWindow>
         )
+    },
+    getPixelPositionOffset(width, height){
+        return {x: -(width/2), y: -(height/2)-70};
     },
     componentDidMount(){
         geolocation.getCurrentPosition((position) => {
@@ -148,13 +152,21 @@ var Geolocation = React.createClass({
         })
     },
     render: function () {
-
         const {center, content, radius, markers, userPosition} = this.state;
+        const STYLES = {
+          overlayView: {
+              background: "white",
+              border: "1px solid #ccc"
+          }
+        };
         let contents = [];
 
         if (userPosition) {
             contents = contents.concat([
-                (<InfoWindow key="info" position={userPosition} content={content}/>),
+
+                (<Marker key={userPosition} position={userPosition} icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
+                    {<InfoWindow key="info" position={userPosition} content={content}/>}
+                </Marker>),
                 (<Circle key="circle" center={userPosition} radius={radius} options={{
                     fillColor: "#4259ee",
                     fillOpacity: 0.20,
@@ -171,6 +183,7 @@ var Geolocation = React.createClass({
                     containerElement={<div {...this.props} style={{height: "70vh"}} />}
                     googleMapElement={
                         <GoogleMap
+                            containerProps={{...this.props}}
                             ref="map"
                             onBoundsChanged={this.handleBoundsChanged}
                             defaultZoom={12}
@@ -185,12 +198,26 @@ var Geolocation = React.createClass({
 
                                 {this.data.Missions.map((marker, index) => {
     const ref = `${marker.id.objectId}_info`;
+    let icon = '';
 
+    switch (marker.type) {
+        case "hit":
+         icon = "https://www.dropbox.com/s/likbnwqx8y5kywv/shooting.png?dl=1";
+         break;
+         case "transport":
+         icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
+         break;
+         default:
+         icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
+         break;
+    }
     return (
-        <Marker key={ref} ref={ref}
+        <Marker key={ref} ref={ref} defaultAnimation={2}
+                icon={icon}
                 position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}}
                 title={marker.title}
                 onClick={this.handleMarkerClick.bind(this, marker)}>
+                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} />}
             {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
         </Marker>
     );
@@ -205,10 +232,22 @@ var Geolocation = React.createClass({
                                 style={inputStyle}
                             />
                             {this.state.markers.map((marker, index) =>(
-                                <Marker
+                               <Marker
                                     position={marker.position}
                                     key={index}
-                                />
+                                >
+                                {/*Test Custom Info Window here*/}
+                                <OverlayView
+                                position={marker.position}
+                                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                                getPixelPositionOffset={this.getPixelPositionOffset}
+                                >
+                                 <div style={STYLES.overlayView}>
+                                    <h1 className="customOverlay">50$</h1>
+                                 </div>
+                                </OverlayView>
+                                </Marker>
+
                             ))}
                         </GoogleMap>
                     }
