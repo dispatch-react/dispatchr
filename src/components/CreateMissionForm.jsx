@@ -9,15 +9,8 @@ var Modal = require('react-bootstrap').Modal;
 var Input = require('react-bootstrap').Input;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
+var Autocomplete = require('./Autocomplete.jsx');
 
-// var Autocomplete = React.createClass ({
-//     componentDidMount: function() {
-//         var reactId= this.refs.autocomplete;
-//         new google.maps.places.Autocomplete(reactId);
-//     },
-//     render: fun
-
-// });
 
 var CreateMissionForm = React.createClass({
 
@@ -118,13 +111,14 @@ var CreateMissionForm = React.createClass({
             this.setState({
                 showModal: true
 
-            }, ()=>{
-                 var reactId= this.refs.autocomplete.getInputDOMNode();
-            new google.maps.places.Autocomplete(reactId);
+            // }, ()=>{
+            //      var reactId= this.refs.autocomplete.getInputDOMNode();
+            // new google.maps.places.Autocomplete(reactId);
 
-            });
+            // });
+        });
         },
-
+// <Input ref="autocomplete" type="text" label="" addonBefore="Start Place" autocomplete="on" />
         render() {
 
             return (
@@ -142,7 +136,7 @@ var CreateMissionForm = React.createClass({
     <Input type="text" label="Bounty" onChange={this.handleValueChange} addonBefore="$" addonAfter=".00" />
     <Input type="text" label="" onChange={this.handleStartDateChange} addonBefore="Start Date" />
     <Input type="text" label="" onChange={this.handleEndDateChange} addonBefore="End Date" help="[Optional]"/>
-    <Input ref="autocomplete" type="text" label="" addonBefore="Start Place" autocomplete="on" />
+    <Autocomplete showModal= {this.state.showModal}/>
     <Input type="text" label="" onChange={this.handleEndLocationChange} addonBefore="End Location" help="[Optional]"/>
     <Input type="textarea" label="Mission description" placeholder="be descriptive!" onChange={this.handleDescriptionChange}/>
     <Input type="checkbox" label="Car required" onClick={this.handleCarReqChange} checked={this.state.carReq} />
@@ -170,5 +164,7 @@ var CreateMissionForm = React.createClass({
             );
         }
 });
+
+
 
 module.exports = CreateMissionForm;
