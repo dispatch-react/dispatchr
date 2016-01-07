@@ -136,8 +136,7 @@ var CreateMissionForm = React.createClass({
     <Input type="text" label="Bounty" onChange={this.handleValueChange} addonBefore="$" addonAfter=".00" />
     <Input type="text" label="" onChange={this.handleStartDateChange} addonBefore="Start Date" />
     <Input type="text" label="" onChange={this.handleEndDateChange} addonBefore="End Date" help="[Optional]"/>
-    <Autocomplete showModal= {this.state.showModal}/>
-    <Input type="text" label="" onChange={this.handleEndLocationChange} addonBefore="End Location" help="[Optional]"/>
+    <Autocomplete showModal= {true} />
     <Input type="textarea" label="Mission description" placeholder="be descriptive!" onChange={this.handleDescriptionChange}/>
     <Input type="checkbox" label="Car required" onClick={this.handleCarReqChange} checked={this.state.carReq} />
     

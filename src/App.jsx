@@ -11,6 +11,7 @@ var Settings = require('./components/Settings.jsx');
 var ShowMissions = require('./components/ShowMissions.jsx');
 var Profile = require('./components/Profile.jsx');
 var Nav = require('./components/Nav.jsx');
+var Autocomplete = require('./components/Autocomplete.jsx');
 
 var App = React.createClass({
     
@@ -45,6 +46,7 @@ var App = React.createClass({
                     }
                     <Nav onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                     </div>
+                    <Autocomplete />
                 </div>
             );
             
