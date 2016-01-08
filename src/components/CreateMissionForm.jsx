@@ -21,21 +21,13 @@ var CreateMissionForm = React.createClass({
                 showModal: false,
                 title: '',
                 value: '',
-                startDate: '',
-                endDate: '',
-                startLocation: '',
-                endLocation: '',
                 description: '',
                 carReq: false,
                 type: '',
                 createdBy: this.props.user.id
             };
         },
-     //    componentDidMount: function() {
-     //        console.log('>>>', document.getElementById('autocomplete'));
-     //        var reactId= this.refs.autocomplete;
-     //        new google.maps.places.Autocomplete(reactId);
-     // },
+
         handleTitleChange: function(e) {
         this.setState({
             title: e.target.value

@@ -1,13 +1,4 @@
-var React = require("react");
-var Button = require('react-bootstrap').Button;
-var ButtonToolbar = require('react-bootstrap').ButtonToolbar;
-var Modal = require('react-bootstrap').Modal;
-var Input = require('react-bootstrap').Input;
-var ButtonInput = require('react-bootstrap').ButtonInput;
-var FormControls = require('react-bootstrap').FormControls;
-
-
-
+var React = require('react');
 
 var Autocomplete = React.createClass({
     setupInput() {
@@ -34,7 +25,7 @@ var Autocomplete = React.createClass({
            <div>
                <input ref='searchField' type="text" size="50" onChange={this.handleChange} addonBefore="Start Location" placeholder="Enter a Location"/>
                <input type="text" ref="lat" name="cityLat"/>
-                <input type="text" ref="lng" name="cityLng" />  
+               <input type="text" ref="lng" name="cityLng" />  
            </div>
            );
    }
