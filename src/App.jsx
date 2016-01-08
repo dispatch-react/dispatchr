@@ -47,7 +47,7 @@ var App = React.createClass({
         <Grid>
             <Row className="show-grid">
               <Col xs={10} xsOffset={1} md={6} mdOffset={3}>
-                 <Well>
+                 <Well id="appView">
                     {
                         this.state.location === 1 ? <Profile user={this.data.user} logOut={this.logOut}/> :
                         this.state.location === 2 ? <Inbox user={this.data.user}/> :
@@ -55,7 +55,6 @@ var App = React.createClass({
                         this.state.location === 4 ? <Settings user={this.data.user}/> :
                         <Home user={this.data.user}/>
                     }
-
                         <Menu onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                                 
                  </Well>
