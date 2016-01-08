@@ -181,9 +181,10 @@ var Geolocation = React.createClass({
                             gridSize={20}>
 
                                 {this.data.Missions.map((marker, index) => {
-    const position = {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude};
-    let icon = '';
-
+    const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
+    const ref = `marker_${index}`;
+    if(position){
+        let icon = '';
     switch (marker.type) {
         case "hit":
          icon = "https://www.dropbox.com/s/likbnwqx8y5kywv/shooting.png?dl=1";
@@ -196,7 +197,7 @@ var Geolocation = React.createClass({
          break;
     }
     return (
-        <Marker key={`${index}_missionMarker`} ref={"mission_marker"} defaultAnimation={2}
+        <Marker key={ref} ref={ref} defaultAnimation={2}
                 icon={icon}
                 position={position}
                 title={marker.title}
@@ -212,10 +213,11 @@ var Geolocation = React.createClass({
                 </InfoBox>}
 
 
-                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} style={{color: "green"}} />}
+                {<InfoWindow key="info_marker" position={position} content={marker.value} />}
             {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
         </Marker>
     );
+    }
 })}
                             </MarkerClusterer>
                             <SearchBox
