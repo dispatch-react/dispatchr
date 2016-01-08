@@ -68,6 +68,7 @@ var Geolocation = React.createClass({
     },
     markerVisibility(marker){
 
+        console.log("TEST");
     },
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
@@ -107,6 +108,10 @@ var Geolocation = React.createClass({
     },
     getPixelPositionOffset(width, height){
         return {x: -(width/2), y: -(height/2)-70};
+    },
+    componentDidUpdate(){
+
+
     },
     componentDidMount(){
         geolocation.getCurrentPosition((position) => {
@@ -198,22 +203,24 @@ var Geolocation = React.createClass({
     }
     return (
         <Marker key={ref} ref={ref} defaultAnimation={2}
+                id={`markerId_${index}`}
                 icon={icon}
                 position={position}
                 title={marker.title}
-                onVisibleChanged={this.markerVisibility.bind(this, marker)}
                 onClick={this.handleMarkerClick.bind(this, marker)}>
 
 
                 {<InfoBox
                 defaultPosition={position}
-                options={{closeBoxURL: "", enableEventPropagation: false, disableAutoPan: true}}
+                id={`infoBoxId_${index}`}
+                ref={`infoBox_${index}`}
+                options={{closeBoxURL: "", enableEventPropagation: true, disableAutoPan: true}}
                 >
                 <div className="customOverlay">Hello</div>
                 </InfoBox>}
 
 
-                {<InfoWindow key="info_marker" position={position} content={marker.value} />}
+                {<InfoWindow key={`infoWindow_${index}`} position={position} content={marker.value} ref={`infoWindow_${index}`}/>}
             {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
         </Marker>
     );
