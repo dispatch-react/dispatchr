@@ -66,9 +66,6 @@ var Geolocation = React.createClass({
             center: this.refs.map.getCenter()
         })
     },
-    markerVisibility(marker){
-
-    },
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
         this.setState({
@@ -182,8 +179,10 @@ var Geolocation = React.createClass({
 
                                 {this.data.Missions.map((marker, index) => {
     const position = {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude};
-    let icon = '';
 
+    //Check if a position was supplied
+    if(position){
+        let icon = '';
     switch (marker.type) {
         case "hit":
          icon = "https://www.dropbox.com/s/likbnwqx8y5kywv/shooting.png?dl=1";
@@ -196,26 +195,27 @@ var Geolocation = React.createClass({
          break;
     }
     return (
-        <Marker key={`${index}_missionMarker`} ref={"mission_marker"} defaultAnimation={2}
+        <Marker key={`${index}_markerMission`} ref={"markerMission"} defaultAnimation={2}
                 icon={icon}
                 position={position}
                 title={marker.title}
-                onVisibleChanged={this.markerVisibility.bind(this, marker)}
                 onClick={this.handleMarkerClick.bind(this, marker)}>
 
 
                 {<InfoBox
                 defaultPosition={position}
                 options={{closeBoxURL: "", enableEventPropagation: false, disableAutoPan: true}}
+
                 >
                 <div className="customOverlay">Hello</div>
                 </InfoBox>}
 
 
-                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} style={{color: "green"}} />}
+                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} />}
             {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
         </Marker>
     );
+    }
 })}
                             </MarkerClusterer>
                             <SearchBox
