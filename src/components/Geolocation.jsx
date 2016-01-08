@@ -55,9 +55,7 @@ var Geolocation = React.createClass({
             content: null,
             radius: 4000,
             //These are the markers created by user. Mission markers.
-            bounds: null,
-            //These are display tags above the markers
-            openedMissions: []
+            bounds: null
         }
     },
     handleBoundsChanged(){
@@ -139,7 +137,7 @@ var Geolocation = React.createClass({
         })
     },
     render: function () {
-        const {center, content, radius, markers, userPosition} = this.state;
+        const {center, content, radius, userPosition} = this.state;
         let contents = [];
 
         if (userPosition) {
@@ -178,8 +176,7 @@ var Geolocation = React.createClass({
                             gridSize={20}>
 
                                 {this.data.Missions.map((marker, index) => {
-    const position = {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude};
-
+    var position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
     //Check if a position was supplied
     if(position){
         let icon = '';
@@ -211,8 +208,7 @@ var Geolocation = React.createClass({
                 </InfoBox>}
 
 
-                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} />}
-            {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
+                {<InfoWindow key="info_marker" position={position} content={marker.value} />}
         </Marker>
     );
     }
