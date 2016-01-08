@@ -245,10 +245,3 @@ var Geolocation = React.createClass({
 
 
 module.exports = Geolocation;
-
-
-
-
-
-
-
