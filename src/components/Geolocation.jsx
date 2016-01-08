@@ -10,6 +10,7 @@ var MarkerClusterer = require("react-google-maps/lib/addons/MarkerClusterer");
 var Marker = reactGoogleMaps.Marker;
 var SearchBox = reactGoogleMaps.SearchBox;
 var OverlayView = reactGoogleMaps.OverlayView;
+var InfoBox = require("react-google-maps/lib/addons/InfoBox");
 
 var inputStyle = {
     "border": "1px solid transparent",
@@ -64,6 +65,9 @@ var Geolocation = React.createClass({
             bounds: this.refs.map.getBounds(),
             center: this.refs.map.getCenter()
         })
+    },
+    markerVisibility(marker){
+
     },
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
@@ -139,12 +143,6 @@ var Geolocation = React.createClass({
     },
     render: function () {
         const {center, content, radius, markers, userPosition} = this.state;
-        const STYLES = {
-          overlayView: {
-              background: "white",
-              border: "1px solid #ccc"
-          }
-        };
         let contents = [];
 
         if (userPosition) {
@@ -183,7 +181,7 @@ var Geolocation = React.createClass({
                             gridSize={20}>
 
                                 {this.data.Missions.map((marker, index) => {
-    const ref = `${marker.id.objectId}_info`;
+    const position = {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude};
     let icon = '';
 
     switch (marker.type) {
@@ -198,12 +196,23 @@ var Geolocation = React.createClass({
          break;
     }
     return (
-        <Marker key={ref} ref={ref} defaultAnimation={2}
+        <Marker key={`${index}_missionMarker`} ref={"mission_marker"} defaultAnimation={2}
                 icon={icon}
-                position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}}
+                position={position}
                 title={marker.title}
+                onVisibleChanged={this.markerVisibility.bind(this, marker)}
                 onClick={this.handleMarkerClick.bind(this, marker)}>
-                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} />}
+
+
+                {<InfoBox
+                defaultPosition={position}
+                options={{closeBoxURL: "", enableEventPropagation: false, disableAutoPan: true}}
+                >
+                <div className="customOverlay">Hello</div>
+                </InfoBox>}
+
+
+                {<InfoWindow key="info_marker" position={{lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude}} content={marker.value} style={{color: "green"}} />}
             {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderInfoWindow(ref, marker) : null}
         </Marker>
     );
