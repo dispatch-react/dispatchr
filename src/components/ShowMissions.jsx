@@ -5,7 +5,6 @@ var ParseReact = require('parse-react');
 var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 var Panel = require('react-bootstrap').Panel;
-var Accordion = require('react-bootstrap').Accordion;
 var Label = require('react-bootstrap').Label;
 var ListGroup = require('react-bootstrap').ListGroup;
 var ListGroupItem = require('react-bootstrap').ListGroupItem;
@@ -29,21 +28,18 @@ var ShowMissions = React.createClass({
         <Panel header={title} bsStyle="success">
             <Row>
                 <Col xs={12}>
-                        
                         {this.data.userOwnMissions.map(function(c) {
                           return(
-    <Panel collapsible header={c.title}>
+    <Panel collapsible key={c.objectId} header={c.title}>
         <ListGroup fill>
             <ListGroupItem><Label bsStyle="info">Brief:</Label> <span id="missionInfo">{c.description}</span></ListGroupItem>
             <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
             <ListGroupItem><Label bsStyle="warning">Final Score:</Label> <span id="missionInfo">{c.score}</span></ListGroupItem>
         </ListGroup>
     </Panel>
-                            )
+                            );
                         })}
-                       
-                    </Col>
-                        
+                </Col>
             </Row>
         </Panel>
         
@@ -53,17 +49,17 @@ var ShowMissions = React.createClass({
                         
                         {this.data.userAcceptedMissions.map(function(c) {
                           return(
-    <Panel collapsible header={c.title}>
+    <Panel collapsible key={c.objectId} header={c.title}>
         <ListGroup fill>
             <ListGroupItem><Label bsStyle="info">Brief:</Label> <span id="missionInfo">{c.description}</span></ListGroupItem>
             <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
             <ListGroupItem><Label bsStyle="warning">Final Score:</Label> <span id="missionInfo">{c.score}</span></ListGroupItem>
         </ListGroup>
     </Panel>
-                            )
+                            );
                         })}
                        
-                    </Col>
+                </Col>
             </Row>
         </Panel>
     </div>

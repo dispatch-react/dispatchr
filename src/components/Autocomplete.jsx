@@ -1,15 +1,27 @@
 var React = require('react');
 
 var Autocomplete = React.createClass({
-    setupInput() {
+    getInitialState: function(){
+                return {
+                    lat: '',
+                    lng: '',
+                    location: ''
+                }  
+    },
+    setupInput: function() {
+        var nthis = this;
         var input = this.refs.searchField;
+        google.maps.event.clearInstanceListeners(input);
         var autocomplete = new google.maps.places.Autocomplete(input);
-     
+        
         google.maps.event.addListener(autocomplete, 'place_changed', () => {
             var place = autocomplete.getPlace();
             // document.getElementById('city2').value = place.name;
-            this.refs.lat.value = place.geometry.location.lat();
-            this.refs.lng.value = place.geometry.location.lng();
+            var lat = place.geometry.location.lat()
+            var lng = place.geometry.location.lng()
+             
+            nthis.props.setLocation({latitude: lat, longitude: lng})
+
          });
      },
      componentDidMount() {
@@ -23,9 +35,7 @@ var Autocomplete = React.createClass({
      render: function() {
        return (
            <div>
-               <input ref='searchField' type="text" size="50" onChange={this.handleChange} addonBefore="Start Location" placeholder="Enter a Location"/>
-               <input type="text" ref="lat" name="cityLat"/>
-               <input type="text" ref="lng" name="cityLng" />  
+               <input ref='searchField' type="text" size="50" onChange={this.handleChange} placeholder="Enter a Location"/>
            </div>
            );
    }
