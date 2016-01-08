@@ -63,6 +63,7 @@ var CreateMissionForm = React.createClass({
         },
         handleFormSubmit: function(e) {
             var nthis = this;
+            var att;
             var loc = new Parse.GeoPoint({latitude: this.state.lat, longitude: this.state.lng});
             e.preventDefault();
             var fileUpload = this.refs.fileUpload.getInputDOMNode().files;
@@ -93,7 +94,7 @@ var CreateMissionForm = React.createClass({
             //Check for uploaded file and call postMission either way
 
             if (fileUpload.length === 0) {
-                var att = null;
+                att = null;
                 this.close();
                 postMission();
                 
