@@ -41,7 +41,7 @@ var Login = React.createClass({
         e.preventDefault();
         console.log('called signUp')
         Parse.User.logIn(this.state.email, this.state.password).then(function(user) {
-            alert('welcome back!');
+            //alert('welcome back!'); //ALERT will mess with the loading animation
         }, function(user, error) {
             alert('bad login, check your inputs');
         });

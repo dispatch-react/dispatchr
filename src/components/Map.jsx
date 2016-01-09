@@ -1,37 +1,24 @@
-var React = require('react');
-var Gmaps = require('gmaps');
+var React = require("react");
+var reactGoogleMaps = require("react-google-maps");
+var GoogleMap = reactGoogleMaps.GoogleMap;
+var GoogleMapLoader = reactGoogleMaps.GoogleMapLoader;
 
 var Map = React.createClass({
-    getInitialState: function(){
-        return {
-            //set initial coordinates to Montreal 
-            lat: 45.50,
-            lng: 73.57  
-        };
-    },
-    componentDidMount: function() {
-       
-            var map = new Gmaps({
-                div: "map-container",
-                lat: this.state.lat,
-                lng: this.state.lng
-            });
-
-            map.addMarker({
-                   lat: this.state.lat,
-                   lng: this.state.lng 
-            });
-
-    },
-    render: function() {
+    render: function () {
         return (
-        <div>
-
-        <h1> Longitude: {this.state.lng} + Latitude + {this.state.lat} </h1>
-       <div id="map-container"></div>
-
-        </div>
-        );
+            <div>
+                <GoogleMapLoader
+                    containerElement={<div {...this.props} style={{height: "70vh"}} />}
+                    googleMapElement={
+                        <GoogleMap
+                         ref={(map) => console.log(map)}
+                         defaultZoom={8}
+                         defaultCenter={{lat: 45.50, lng: -73.57}}
+                        />
+                    }
+                />
+            </div>
+        )
     }
 });
 
