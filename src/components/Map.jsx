@@ -1,4 +1,5 @@
 var React = require('react');
+var Gmaps = require('gmaps');
 
 var Map = React.createClass({
     getInitialState: function(){
@@ -6,7 +7,7 @@ var Map = React.createClass({
             //set initial coordinates to Montreal 
             lat: 45.50,
             lng: 73.57  
-        }
+        };
     },
     componentDidMount: function() {
        
@@ -19,7 +20,6 @@ var Map = React.createClass({
             map.addMarker({
                    lat: this.state.lat,
                    lng: this.state.lng 
-
             });
 
     },
@@ -31,7 +31,7 @@ var Map = React.createClass({
        <div id="map-container"></div>
 
         </div>
-        )
+        );
     }
 });
 
