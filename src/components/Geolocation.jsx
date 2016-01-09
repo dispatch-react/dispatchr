@@ -51,8 +51,7 @@ var Geolocation = React.createClass({
     mixins: [ParseReact.Mixin, TimerMixin],
     observe: function () {
         return {
-            Missions: new Parse.Query('Missions').ascending('createdAt'),
-            user: ParseReact.currentUser
+            Missions: new Parse.Query('Missions').ascending('createdAt').notEqualTo('status', 'active')
         };
     },
     getInitialState(){
@@ -165,7 +164,22 @@ var Geolocation = React.createClass({
             clickedMission: marker
         })
     },
-    render: function () {
+    acceptMission: function(e) {
+        var self = this;
+        e.preventDefault();
+            var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
+                acceptedBy: self.props.user,
+                status: 'active'
+            });
+
+            setStatus.dispatch().then(function(res){
+                    self.close();
+                },
+                function(error){
+                    alert('there was an error, check your self')
+                });
+        },
+        render: function () {
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
 
@@ -257,8 +271,10 @@ var Geolocation = React.createClass({
                         {<ClickedMission marker={this.state.clickedMission}/>}
                     </Modal.Body>
                     <Modal.Footer>
-                        <Col xs={2} xsOffset={10}>
-                            <ButtonInput type="Accept" value="Accept"/>
+                        <Col xs={2} xsOffset={8}>
+                            <form onSubmit={this.acceptMission}>
+                                <ButtonInput type="submit" value="Accept"/>
+                            </form>
                         </Col>
                     </Modal.Footer>
                 </Modal>
