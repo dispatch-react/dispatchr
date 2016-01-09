@@ -27,7 +27,6 @@ var Profile = React.createClass({
         });
     },
     handleImgUpload: function(e) {
-        console.log('calling ImgUploader')
         var nthis = this;
 
         e.preventDefault();
@@ -67,6 +66,13 @@ var Profile = React.createClass({
                 onChange={this.handleImgUpload}
             />
         }
+        var profilePic;
+        if (this.props.user.profile_pic._url) {
+            profilePic = <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
+        }
+        else {
+            profilePic = <Image id="profile-pic" src="../img/bullhorn.png" rounded/>
+        }
         return (
             <div>
         <Panel header={title} bsStyle="info">
@@ -80,17 +86,11 @@ var Profile = React.createClass({
                     </ListGroup>
                 </Col>
     
-                <Col xs={12} md={4}>
-                    <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
+                <Col xs={4} xsOffset={4} md={4} mdOffset={0}>
+                             {profilePic}
                     <div>
                              {imgUpdater}
                     </div>
-                    
-                    <Row>
-                       <Col xs={10}>
-                           <Button bsStyle="warning" onClick={this.props.logOut}>Log Out</Button>
-                       </Col>
-                    </Row>
                     
                 </Col>  
             </Row>

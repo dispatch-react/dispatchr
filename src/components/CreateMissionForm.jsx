@@ -21,21 +21,15 @@ var CreateMissionForm = React.createClass({
                 showModal: false,
                 title: '',
                 value: '',
-                startDate: '',
-                endDate: '',
-                startLocation: '',
-                endLocation: '',
+                lat: '',
+                lng: '',
                 description: '',
                 carReq: false,
                 type: '',
-                createdBy: this.props.user.id
+                createdBy: this.props.user
             };
         },
-     //    componentDidMount: function() {
-     //        console.log('>>>', document.getElementById('autocomplete'));
-     //        var reactId= this.refs.autocomplete;
-     //        new google.maps.places.Autocomplete(reactId);
-     // },
+
         handleTitleChange: function(e) {
         this.setState({
             title: e.target.value
@@ -46,7 +40,6 @@ var CreateMissionForm = React.createClass({
             value: e.target.value
         });
     },
-
         handleDescriptionChange: function(e) {
             this.setState({
                 description: e.target.value
@@ -62,10 +55,20 @@ var CreateMissionForm = React.createClass({
             type: e.target.value
         })
     },
+        handleStartLocationChange: function(e) {
+            this.setState({
+                lat: e.latitude,
+                lng: e.longitude
+            })
+        },
         handleFormSubmit: function(e) {
-            var nthis = this
+            var nthis = this;
+            var att;
+            var loc = new Parse.GeoPoint({latitude: this.state.lat, longitude: this.state.lng});
             e.preventDefault();
             var fileUpload = this.refs.fileUpload.getInputDOMNode().files;
+            
+            // Define function to post a mission
             
             function postMission() {
             
@@ -74,9 +77,10 @@ var CreateMissionForm = React.createClass({
                 value: nthis.state.value,
                 type: nthis.state.type,
                 description: nthis.state.description,
+                startLocationGeo: loc,
                 carReq: nthis.state.carReq,
                 missionAttachment: att,
-                createdBy: nthis.props.user.objectId
+                createdBy: nthis.props.user
             });
 
             // ...and execute it
@@ -87,17 +91,21 @@ var CreateMissionForm = React.createClass({
                 alert('there was an error, check your self')
             });
         }
+            //Check for uploaded file and call postMission either way
 
             if (fileUpload.length === 0) {
-                var att = null;
+                att = null;
+                this.close();
                 postMission();
+                
             }
             else {
                 var file = fileUpload[0];
                 att = new Parse.File("attach", file);
                 att.save().then(function(){
+                    this.close();
                     postMission();
-                    nthis.close();
+                    
                 });
             }
         },
@@ -127,15 +135,18 @@ var CreateMissionForm = React.createClass({
         <img onClick={this.open} src="../src/img/logo-med.png" id="nav-icon"/>
 
         <Modal show={this.state.showModal} onHide={this.close}>
+          <form onSubmit={this.handleFormSubmit}>
           <Modal.Header closeButton>
             <Modal.Title>Mission Brief</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             
-              <form onSubmit={this.handleFormSubmit}>
+              
     <Input type="text" label="Mission title" onChange={this.handleTitleChange} />
     <Input type="text" label="Bounty" onChange={this.handleValueChange} addonBefore="$" addonAfter=".00" />
-    <Input type="text" label="" onChange={this.handleStartLocationChange} addonBefore="Start Location" />
+    
+    <Autocomplete setLocation={this.handleStartLocationChange}/>
+
     <Input type="textarea" label="Mission description" placeholder="be descriptive!" onChange={this.handleDescriptionChange}/>
     
     <Input type="select" label="Type" placeholder="select" labelClassName="col-xs-2" wrapperClassName="col-xs-4" onChange={this.handleTypeChange}>
@@ -149,8 +160,6 @@ var CreateMissionForm = React.createClass({
     
     <Input type="file" id="MissionAttachment" ref="fileUpload" label="File" help="[Optional]" />
     
-  </form>
-
             </Modal.Body>
           <Modal.Footer>
             <Col xs={2} xsOffset={8}>
@@ -160,6 +169,8 @@ var CreateMissionForm = React.createClass({
                 <ButtonInput type="submit" value="Create" />
             </Col>
           </Modal.Footer>
+          
+          </form>
         </Modal>
       </div>
             );
