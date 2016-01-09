@@ -19,7 +19,7 @@ var Home = React.createClass({
     render: function() {
         return (
             <div>
-                <Geolocation />
+                <Geolocation user={this.props.user}/>
 
             </div>
         );
