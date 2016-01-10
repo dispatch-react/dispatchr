@@ -27,11 +27,13 @@ var Settings = React.createClass({
     },
     render: function() {
         return (
-                    <Row>
-                       <Col xs={10}>
-                           <Button bsStyle="warning" onClick={this.props.logOut}>Log Out</Button>
-                       </Col>
-                    </Row>
+            <div id="viewContent">
+                <Row>
+                   <Col xs={10}>
+                       <Button bsStyle="warning" onClick={this.props.logOut}>Log Out</Button>
+                   </Col>
+                </Row>
+            </div>
     )}
 });
 

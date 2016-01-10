@@ -35,7 +35,7 @@ var Autocomplete = React.createClass({
      render: function() {
        return (
            <div>
-               <input ref='searchField' type="text" size="50" onChange={this.handleChange} placeholder="Enter a Location"/>
+               <input className="autocomplete" ref='searchField' type="text" size="50" onChange={this.handleChange} placeholder="Enter a Location"/>
            </div>
            );
    }

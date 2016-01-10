@@ -73,7 +73,7 @@ var Inbox = React.createClass({
             
             
             
-    <div id="inbox">
+    <div id="viewContent">
     
         {/* Begin the inbox section*/}
     

@@ -55,7 +55,7 @@ var Profile = React.createClass({
     },
 
     render: function() {
-        var title = (<h1>Profile</h1>);
+        var title = (<h1>Profile</h1>)
         var imgUpdater;
         if (this.state.showButton) {
             imgUpdater = <Button bsStyle="default" id="updatePhoto" onClick={this.toggleImgUpload} type="button">Update Photo</Button>
@@ -74,7 +74,7 @@ var Profile = React.createClass({
             profilePic = <Image id="profile-pic" src="../img/bullhorn.png" rounded/>
         }
         return (
-            <div>
+            <div id="viewContent">
         <Panel header={title} bsStyle="info">
             <Row>
                 <Col xs={12} md={8}>
