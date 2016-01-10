@@ -11,6 +11,12 @@ var Marker = reactGoogleMaps.Marker;
 var SearchBox = reactGoogleMaps.SearchBox;
 var OverlayView = reactGoogleMaps.OverlayView;
 var InfoBox = require("react-google-maps/lib/addons/InfoBox");
+var TimerMixin = require("react-timer-mixin");
+var CreateMissionForm = require("./CreateMissionForm.jsx");
+var Modal = require('react-bootstrap').Modal;
+var ButtonInput = require('react-bootstrap').ButtonInput;
+var Col = require('react-bootstrap').Col;
+var ClickedMission = require("./ClickedMission.jsx");
 
 var inputStyle = {
     "border": "1px solid transparent",
@@ -42,10 +48,10 @@ const geolocation = (
 
 
 var Geolocation = React.createClass({
-    mixins: [ParseReact.Mixin],
+    mixins: [ParseReact.Mixin, TimerMixin],
     observe: function () {
         return {
-            Missions: new Parse.Query('Missions').ascending('createdAt')
+            Missions: new Parse.Query('Missions').ascending('createdAt').notEqualTo('status', 'active')
         };
     },
     getInitialState(){
@@ -55,7 +61,11 @@ var Geolocation = React.createClass({
             content: null,
             radius: 4000,
             //These are the markers created by user. Mission markers.
-            bounds: null
+            bounds: null,
+            //These are display tags above the markers
+            openedMissions: [],
+            showModal: false,
+            clickedMission: {}
         }
     },
     handleBoundsChanged(){
@@ -72,7 +82,7 @@ var Geolocation = React.createClass({
     },
     handleMarkerClick(marker){
         var missions = this.state.openedMissions;
-        if(missions.indexOf(marker.id.objectId) < 0){
+        if (missions.indexOf(marker.id.objectId) < 0) {
             this.setState({
                 openedMissions: this.state.openedMissions.concat([marker.id.objectId])
             });
@@ -81,8 +91,8 @@ var Geolocation = React.createClass({
     },
     handleCloseClick(marker){
         var missions = this.state.openedMissions;
-        if(missions.indexOf(marker.id.objectId) > -1){
-            missions.splice(missions.indexOf(marker.id.objectId),1);
+        if (missions.indexOf(marker.id.objectId) > -1) {
+            missions.splice(missions.indexOf(marker.id.objectId), 1);
             this.setState({
                 openedMissions: missions
             });
@@ -100,8 +110,11 @@ var Geolocation = React.createClass({
             </InfoWindow>
         )
     },
-    getPixelPositionOffset(width, height){
-        return {x: -(width/2), y: -(height/2)-70};
+    renderMissionInfo(ref, marker){
+        console.log(this.props.user);
+        return (
+            <CreateMissionForm user={this.props.user}/>
+        )
     },
     componentDidMount(){
         geolocation.getCurrentPosition((position) => {
@@ -136,14 +149,45 @@ var Geolocation = React.createClass({
             })
         })
     },
-    render: function () {
-        const {center, content, radius, userPosition} = this.state;
+    testFunction(marker){
+        console.log(marker)
+    },
+    close() {
+        this.setState({
+            showModal: false
+        });
+    },
+
+    open(marker) {
+        this.setState({
+            showModal: true,
+            clickedMission: marker
+        })
+    },
+    acceptMission: function(e) {
+        var self = this;
+        e.preventDefault();
+            var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
+                acceptedBy: self.props.user,
+                status: 'active'
+            });
+
+            setStatus.dispatch().then(function(res){
+                    self.close();
+                },
+                function(error){
+                    alert('there was an error, check your self')
+                });
+        },
+        render: function () {
+        const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
 
         if (userPosition) {
             contents = contents.concat([
 
-                (<Marker key={userPosition} position={userPosition} icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
+                (<Marker key={userPosition} position={userPosition}
+                         icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
                     {<InfoWindow key="info" position={userPosition} content={content}/>}
                 </Marker>),
                 (<Circle key="circle" center={userPosition} radius={radius} options={{
@@ -176,8 +220,8 @@ var Geolocation = React.createClass({
                             gridSize={20}>
 
                                 {this.data.Missions.map((marker, index) => {
-    var position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
-    //Check if a position was supplied
+    const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
+    const ref = `marker_${index}`;
     if(position){
         let icon = '';
     switch (marker.type) {
@@ -192,23 +236,17 @@ var Geolocation = React.createClass({
          break;
     }
     return (
-        <Marker key={`${index}_markerMission`} ref={"markerMission"} defaultAnimation={2}
+        <Marker key={ref} ref={ref}
                 icon={icon}
                 position={position}
                 title={marker.title}
-                onClick={this.handleMarkerClick.bind(this, marker)}>
-
-
-                {<InfoBox
-                defaultPosition={position}
-                options={{closeBoxURL: "", enableEventPropagation: false, disableAutoPan: true}}
-
+                onClick={this.open.bind(this, marker)}
+                onShapeChanged={this.testFunction.bind(this, marker)}
                 >
-                <div className="customOverlay">Hello</div>
-                </InfoBox>}
-
-
-                {<InfoWindow key="info_marker" position={position} content={marker.value} />}
+                {<InfoWindow key={`infoWindow_${index}`} position={position} ref={`infoWindow_${index}`}>
+                <div className="infoWindow">{marker.value + "$"}</div>
+                </InfoWindow>}
+                {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderMissionInfo(ref, marker) : null}
         </Marker>
     );
     }
@@ -225,6 +263,21 @@ var Geolocation = React.createClass({
                         </GoogleMap>
                     }
                 />
+                <Modal show={this.state.showModal} onHide={this.close}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Mission Brief</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {<ClickedMission marker={this.state.clickedMission}/>}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Col xs={2} xsOffset={8}>
+                            <form onSubmit={this.acceptMission}>
+                                <ButtonInput type="submit" value="Accept"/>
+                            </form>
+                        </Col>
+                    </Modal.Footer>
+                </Modal>
             </div>
         )
     }
@@ -232,10 +285,4 @@ var Geolocation = React.createClass({
 
 
 module.exports = Geolocation;
-
-
-
-
-
-
 

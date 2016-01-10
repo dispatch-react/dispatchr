@@ -101,7 +101,7 @@ var CreateMissionForm = React.createClass({
 
             // ...and execute it
             creator.dispatch().then(function(res){
-                alert('new mission created!')
+                console.log("res")
             },
             function(error){
                 alert('there was an error, check your self')
