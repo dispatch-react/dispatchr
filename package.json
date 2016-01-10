@@ -5,7 +5,8 @@
   "main": "public/js/main.js",
   "scripts": {
     "start": "watchify src/App.jsx -v -t [babelify --presets [ react es2015 stage-0 ] ] --debug -o public/js/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "sass": "sass --watch public/sass/style.scss:public/css/style.css"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "react-dom": "^0.14.3",
     "react-google-maps": "^4.7.1",
     "react-router-component": "^0.28.0",
+    "reactify": "^1.1.1",
     "watchify": "^3.6.1"
   }
 }

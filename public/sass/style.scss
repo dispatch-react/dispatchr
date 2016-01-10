@@ -1,0 +1,100 @@
+$nav-clr: #160A20;
+
+#appView {
+    height: 100vh;
+}
+
+body {
+    font-size: 12pt;
+}
+
+a {
+    color: $nav-clr;
+}
+
+img {
+    max-width: 100%;
+}
+
+#nav-icon {
+        min-width: 70px;
+        max-width: 100px;
+    }
+
+#userInfo {
+    float: right;
+}
+
+#missionInfo {
+    float: right;
+}
+
+#updatePhoto {
+    text-align: center;
+    margin: 5px;
+}
+
+.nav {
+    font-size: 12pt;
+    padding-top: 10px;
+    
+    span {
+    display: block;
+    }
+}
+
+.customOverlay {
+    position: relative;
+    background: #54D954;
+    border: 2px solid #c2e1f5;
+    &:after, &:before {
+        top: 100%;
+        left: 50%;
+        border: solid transparent;
+        content: " ";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+    }
+    &:after {
+        border-color: rgba(84, 217, 84, 0);
+        border-top-color: #54D954;
+        border-width: 20px;
+        margin-left: -20px;
+    }
+    &:before {
+        border-color: rgba(194, 225, 245, 0);
+        border-top-color: #c2e1f5;
+        border-width: 23px;
+        margin-left: -23px;
+    }
+
+    .customOverlayText {
+        font-size: 12px;
+        font-family: "Helvetica Neue Light", sans-serif;
+        padding: 2px;
+        margin: 0;
+        }
+    }
+
+@media (max-width: 906px){
+    .nav {
+        font-size: 8pt;
+        >li>a {
+            padding: 0;
+        }
+    }
+}
+
+@media (min-width: 0px){
+    .nav-justified>li {
+        display: table-cell;
+        width: 1%;
+    }
+}
+
+.pac-container {
+	z-index: 999999;
+}
+
