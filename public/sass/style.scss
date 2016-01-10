@@ -1,11 +1,15 @@
 $nav-clr: #160A20;
 
-#appView {
-    height: 100vh;
+#viewContent {
+    min-height: 70vh;
 }
 
 body {
-    font-size: 12pt;
+    font-size: 14pt;
+}
+
+h1 .panelTitle > a{
+    padding-right: 80vw;
 }
 
 a {
@@ -41,6 +45,10 @@ img {
     span {
     display: block;
     }
+}
+
+.autocomplete {
+    margin: 1em 5px 1em 0;
 }
 
 .gm-style-iw {

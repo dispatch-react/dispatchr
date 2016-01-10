@@ -21,13 +21,13 @@ var ShowMissions = React.createClass({
     
     render: function() {
         
-        var ownMissionsTitle = (<h1>Your Missions</h1>);
-        var activeTitle = (<h1>Active Missions</h1>);
-        var completedMissionsTitle = (<h1>Complete Missions</h1>);
+        var ownMissionsTitle = (<h1 className="panelTitle">Your Missions</h1>);
+        var activeTitle = (<h1 className="panelTitle">Active Missions</h1>);
+        var completedMissionsTitle = (<h1 className="panelTitle">Complete Missions</h1>);
         
         return (
             <div id="viewContent">
-        <Panel collapsible header={activeTitle} bsStyle="danger">
+        <Panel collapsible defaultExpanded header={activeTitle} bsStyle="danger">
             <Row>
                 <Col xs={12}>
                         {this.data.userActiveMissions.map(function(c) {
