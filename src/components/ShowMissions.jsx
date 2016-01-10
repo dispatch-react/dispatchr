@@ -14,18 +14,38 @@ var ShowMissions = React.createClass({
     observe: function() {
         return {
             userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt'),
-            userAcceptedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).ascending('createdAt'),
+            userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").ascending("createdAt"),
+            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).notEqualTo("status", "active").ascending('createdAt'),
         };
     },
     
     render: function() {
         
-        var title = (<h1>Your Missions</h1>);
-        var title2 = (<h1>Accepted Missions</h1>);
+        var ownMissionsTitle = (<h1>Your Missions</h1>);
+        var activeTitle = (<h1>Active Missions</h1>);
+        var completedMissionsTitle = (<h1>Complete Missions</h1>);
         
         return (
-            <div>
-        <Panel header={title} bsStyle="success">
+            <div id="viewContent">
+        <Panel collapsible header={activeTitle} bsStyle="danger">
+            <Row>
+                <Col xs={12}>
+                        {this.data.userActiveMissions.map(function(c) {
+                          return(
+    <Panel collapsible key={c.objectId} header={c.title}>
+        <ListGroup fill>
+            <ListGroupItem><Label bsStyle="info">Brief:</Label> <span id="missionInfo">{c.description}</span></ListGroupItem>
+            <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
+            <ListGroupItem><Label bsStyle="warning">Final Score:</Label> <span id="missionInfo">{c.score}</span></ListGroupItem>
+        </ListGroup>
+    </Panel>    
+                            );
+                        })}
+                </Col>
+            </Row>
+        </Panel>
+            
+        <Panel collapsible header={ownMissionsTitle} bsStyle="info">
             <Row>
                 <Col xs={12}>
                         {this.data.userOwnMissions.map(function(c) {
@@ -43,11 +63,10 @@ var ShowMissions = React.createClass({
             </Row>
         </Panel>
         
-        <Panel header={title2} bsStyle="danger">
+        <Panel collapsible header={completedMissionsTitle} bsStyle="success">
             <Row>
                 <Col xs={12}>
-                        
-                        {this.data.userAcceptedMissions.map(function(c) {
+                        {this.data.userCompletedMissions.map(function(c) {
                           return(
     <Panel collapsible key={c.objectId} header={c.title}>
         <ListGroup fill>
@@ -58,7 +77,6 @@ var ShowMissions = React.createClass({
     </Panel>
                             );
                         })}
-                       
                 </Col>
             </Row>
         </Panel>
@@ -66,4 +84,5 @@ var ShowMissions = React.createClass({
         );
     }
 });
+
 module.exports = ShowMissions;
