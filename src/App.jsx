@@ -18,6 +18,7 @@ var Col = require('react-bootstrap').Col;
 var Well = require('react-bootstrap').Well;
 var Navbar = require('react-bootstrap').Navbar;
 var Autocomplete = require('./components/Autocomplete.jsx');
+var Geolocation = require('./components/Geolocation.jsx');
 
 var App = React.createClass({
     
@@ -49,11 +50,11 @@ var App = React.createClass({
               <Col xs={10} xsOffset={1} md={6} mdOffset={3}>
                  <Well id="appView">
                     {
-                        this.state.location === 1 ? <Profile user={this.data.user} logOut={this.logOut}/> :
+                        this.state.location === 1 ? <Profile user={this.data.user} /> :
                         this.state.location === 2 ? <Inbox user={this.data.user}/> :
                         this.state.location === 3 ? <ShowMissions user={this.data.user}/> :
-                        this.state.location === 4 ? <Settings user={this.data.user}/> :
-                        <Home user={this.data.user}/>
+                        this.state.location === 4 ? <Settings user={this.data.user} logOut={this.logOut}/> :
+                        <Geolocation user={this.data.user}/>
                     }
                         <Menu onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                                 

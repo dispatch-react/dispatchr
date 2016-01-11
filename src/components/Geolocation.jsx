@@ -59,8 +59,6 @@ var Geolocation = React.createClass({
         return {
             userPosition: null,
             center: null,
-            content: null,
-            radius: 4000,
             //These are the markers created by user. Mission markers.
             bounds: null,
             //These are display tags above the markers
@@ -71,10 +69,9 @@ var Geolocation = React.createClass({
     },
     handleBoundsChanged: _.debounce(function(){
         this.setState({
-            bounds: this.refs.map.getBounds(),
             center: this.refs.map.getCenter()
         })
-    },150),
+    },50),
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
         this.setState({
@@ -112,7 +109,6 @@ var Geolocation = React.createClass({
         )
     },
     renderMissionInfo(ref, marker){
-        console.log(this.props.user);
         return (
             <CreateMissionForm user={this.props.user}/>
         )
@@ -120,8 +116,10 @@ var Geolocation = React.createClass({
     componentDidMount(){
 
         this.setInterval(
-            () => { this.refreshQueries() },
-            5000
+            () => {
+                this.refreshQueries();
+            },
+            15000
         );
 
         geolocation.getCurrentPosition((position) => {
@@ -130,22 +128,8 @@ var Geolocation = React.createClass({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 },
-                content: "Your are here!",
                 missions: this.data.Missions
             });
-
-            //This function will animate the circle.
-            const tick = () => {
-                this.setState({
-                    //Return the largest number between 0 and this.state.radius - 20
-                    radius: Math.max(this.state.radius - 300, 0)
-                });
-
-                if (this.state.radius > 150) {
-                    raf(tick);
-                }
-            };
-            raf(tick);
         }, (reason) => {
             this.setState({
                 center: {
@@ -192,15 +176,7 @@ var Geolocation = React.createClass({
 
                 (<Marker key={userPosition} position={userPosition}
                          icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
-
-                </Marker>),
-                (<Circle key="circle" center={userPosition} radius={radius} options={{
-                    fillColor: "#4259ee",
-                    fillOpacity: 0.20,
-                    strokeColor: "blue",
-                    strokeOpacity: 1,
-                    strokeWeight: 1
-                }}/>)
+                </Marker>)
             ])
         }
 
