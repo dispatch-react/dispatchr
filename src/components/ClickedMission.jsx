@@ -12,8 +12,6 @@ var ShowMissions = React.createClass({
 
     render: function() {
 
-        var title = (<h1>Your Missions</h1>);
-        var title2 = (<h1>Accepted Missions</h1>);
         var c = this.props.marker;
         return (
             <div>

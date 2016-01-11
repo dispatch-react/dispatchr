@@ -28,8 +28,7 @@ var CreateMissionForm = React.createClass({
                 carReq: false,
                 remote: false,
                 category: '',
-                type: '',
-                status: open
+                type: ''
             };
         },
 
@@ -96,7 +95,7 @@ var CreateMissionForm = React.createClass({
                 remote: self.state.remote,
                 missionAttachment: att,
                 createdBy: self.props.user,
-                status: open
+                status: "open"
             });
 
             // ...and execute it

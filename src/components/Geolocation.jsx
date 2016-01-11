@@ -52,7 +52,7 @@ var Geolocation = React.createClass({
     mixins: [ParseReact.Mixin, TimerMixin],
     observe: function () {
         return {
-            Missions: new Parse.Query('Missions').ascending('createdAt').notEqualTo('status', 'active')
+            Missions: new Parse.Query('Missions').ascending('createdAt').equalTo('status', 'open').equalTo('status', 'pending')
         };
     },
     getInitialState(){
@@ -167,7 +167,7 @@ var Geolocation = React.createClass({
         e.preventDefault();
             var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
                 acceptedBy: self.props.user,
-                status: 'active'
+                status: 'pending'
             });
 
             setStatus.dispatch().then(function(res){
