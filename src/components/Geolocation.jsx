@@ -52,7 +52,7 @@ var Geolocation = React.createClass({
     mixins: [ParseReact.Mixin, TimerMixin],
     observe: function () {
         return {
-            Missions: new Parse.Query('Missions').ascending('createdAt').equalTo('status', 'open').equalTo('status', 'pending')
+            Missions: new Parse.Query('Missions').ascending('createdAt').equalTo('status', 'open')
         };
     },
     getInitialState(){
@@ -74,7 +74,7 @@ var Geolocation = React.createClass({
             bounds: this.refs.map.getBounds(),
             center: this.refs.map.getCenter()
         })
-    },100),
+    },150),
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
         this.setState({
@@ -118,6 +118,12 @@ var Geolocation = React.createClass({
         )
     },
     componentDidMount(){
+
+        this.setInterval(
+            () => { this.refreshQueries() },
+            5000
+        );
+
         geolocation.getCurrentPosition((position) => {
             this.setState({
                 userPosition: {
@@ -186,7 +192,7 @@ var Geolocation = React.createClass({
 
                 (<Marker key={userPosition} position={userPosition}
                          icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
-                    {<InfoWindow key="info" position={userPosition} content={content}/>}
+
                 </Marker>),
                 (<Circle key="circle" center={userPosition} radius={radius} options={{
                     fillColor: "#4259ee",
@@ -225,23 +231,20 @@ var Geolocation = React.createClass({
     if(position){
         let icon = '';
     switch (marker.category) {
-        case "driving":
+        case "driver, delivery":
          icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
          break;
-         case "events":
+         case "gigs":
          icon = "https://www.dropbox.com/s/fgg15qwebunmw5i/event-party.png?dl=1";
          break;
-         case "domestinc":
+         case "housekeeping, childcare":
          icon = "https://www.dropbox.com/s/k6mv0xwx9e129li/house.png?dl=1";
          break;
-         case "tech":
-         icon = "https://www.dropbox.com/s/5frqqae6u70iy61/business-computer-work.png?dl=1";
+         case "construction, trades":
+         icon = "https://www.dropbox.com/s/cmkfb4cbsqkd65p/domestic-carpentry.png?dl=1";
          break;
-         case "business":
-         icon = "https://www.dropbox.com/s/7m0hwmq98wx15zg/business-research.png?dl=1";
-         break;
-         case "creative":
-         icon = "https://www.dropbox.com/s/i2wjeigzjetjh99/creative-writing.png?dl=1";
+         case "general labour":
+         icon = "https://www.dropbox.com/s/1s36sjtppljktkl/manual-labour.png?dl=1";
          break;
          default:
          icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
@@ -260,6 +263,7 @@ var Geolocation = React.createClass({
                 </InfoWindow>}
                 {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderMissionInfo(ref, marker) : null}
         </Marker>
+
     );
     }
 })}

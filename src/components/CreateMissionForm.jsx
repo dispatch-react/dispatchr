@@ -27,7 +27,7 @@ var CreateMissionForm = React.createClass({
                 description: '',
                 carReq: false,
                 remote: false,
-                category: '',
+                category: 'construction, trades',
                 type: ''
             };
         },
@@ -154,7 +154,7 @@ var CreateMissionForm = React.createClass({
     <Input type="text" onChange={this.handleValueChange} addonBefore="Set Bounty" addonAfter="$" />
     <Autocomplete setLocation={this.handleStartLocationChange} className="autocomplete"/>
     
-    <Input type="select" label="Category" placeholder="Category" labelClassName="col-xs-2" wrapperClassName="col-xs-5" onChange={this.handleCategoryChange}>
+    <Input type="select" label="Category" labelClassName="col-xs-2" wrapperClassName="col-xs-5" onChange={this.handleCategoryChange}>
       <option value="construction, trades">Construction, Trades</option>
       <option value="bar, food, hospitality">Bar, Food, Hospitality</option>
       <option value="housekeeping, childcare">Housekeeping, Childcare</option>
