@@ -17,6 +17,7 @@ var Modal = require('react-bootstrap').Modal;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var Col = require('react-bootstrap').Col;
 var ClickedMission = require("./ClickedMission.jsx");
+var _ = require("lodash");
 
 var inputStyle = {
     "border": "1px solid transparent",
@@ -68,12 +69,12 @@ var Geolocation = React.createClass({
             clickedMission: {}
         }
     },
-    handleBoundsChanged(){
+    handleBoundsChanged: _.debounce(function(){
         this.setState({
             bounds: this.refs.map.getBounds(),
             center: this.refs.map.getCenter()
         })
-    },
+    },100),
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
         this.setState({
@@ -149,9 +150,6 @@ var Geolocation = React.createClass({
             })
         })
     },
-    testFunction(marker){
-        console.log(marker)
-    },
     close() {
         this.setState({
             showModal: false
@@ -215,21 +213,35 @@ var Geolocation = React.createClass({
                             }
                         >{contents}
                           <MarkerClusterer
+                            minimumClusterSize={3}
+                            title={"Click to view missions!"}
                             averageCenter={true}
                             enableRetinaIcons={true}
-                            gridSize={20}>
+                            gridSize={10}>
 
                                 {this.data.Missions.map((marker, index) => {
     const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
     const ref = `marker_${index}`;
     if(position){
         let icon = '';
-    switch (marker.type) {
-        case "hit":
-         icon = "https://www.dropbox.com/s/likbnwqx8y5kywv/shooting.png?dl=1";
-         break;
-         case "transport":
+    switch (marker.category) {
+        case "driving":
          icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
+         break;
+         case "events":
+         icon = "https://www.dropbox.com/s/fgg15qwebunmw5i/event-party.png?dl=1";
+         break;
+         case "domestinc":
+         icon = "https://www.dropbox.com/s/k6mv0xwx9e129li/house.png?dl=1";
+         break;
+         case "tech":
+         icon = "https://www.dropbox.com/s/5frqqae6u70iy61/business-computer-work.png?dl=1";
+         break;
+         case "business":
+         icon = "https://www.dropbox.com/s/7m0hwmq98wx15zg/business-research.png?dl=1";
+         break;
+         case "creative":
+         icon = "https://www.dropbox.com/s/i2wjeigzjetjh99/creative-writing.png?dl=1";
          break;
          default:
          icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
@@ -241,7 +253,7 @@ var Geolocation = React.createClass({
                 position={position}
                 title={marker.title}
                 onClick={this.open.bind(this, marker)}
-                onShapeChanged={this.testFunction.bind(this, marker)}
+                defaultAnimation={2}
                 >
                 {<InfoWindow key={`infoWindow_${index}`} position={position} ref={`infoWindow_${index}`}>
                 <div className="infoWindow">{marker.value + "$"}</div>
