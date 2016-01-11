@@ -4,7 +4,7 @@ var Parse = require('parse');
 var ParseReact = require('parse-react');
 Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
-var Home = require('./components/Home.jsx');
+var Geolocation = require('./components/Geolocation.jsx');
 var Login = require('./components/Login.jsx');
 var Inbox = require('./components/Inbox.jsx');
 var Settings = require('./components/Settings.jsx');
@@ -49,11 +49,11 @@ var App = React.createClass({
               <Col xs={10} xsOffset={1} md={6} mdOffset={3}>
                  <Well id="appView">
                     {
-                        this.state.location === 1 ? <Profile user={this.data.user} logOut={this.logOut}/> :
+                        this.state.location === 1 ? <Profile user={this.data.user}/> :
                         this.state.location === 2 ? <Inbox user={this.data.user}/> :
                         this.state.location === 3 ? <ShowMissions user={this.data.user}/> :
-                        this.state.location === 4 ? <Settings user={this.data.user}/> :
-                        <Home user={this.data.user}/>
+                        this.state.location === 4 ? <Settings user={this.data.user} logOut={this.logOut}/> :
+                        <Geolocation user={this.data.user}/>
                     }
                         <Menu onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                                 
@@ -65,7 +65,7 @@ var App = React.createClass({
             );
         }
         else {
-            return <Login />;
+            return <Login onChange={this.navChanged} />;
         }
     }
 });
