@@ -51,8 +51,10 @@ const geolocation = (
 var Geolocation = React.createClass({
     mixins: [ParseReact.Mixin, TimerMixin],
     observe: function () {
+        var openMissions = new Parse.Query('Missions').equalTo('status', 'open');
+        var pendingMissions = new Parse.Query('Missions').equalTo('status', 'pending');
         return {
-            Missions: new Parse.Query('Missions').ascending('createdAt').equalTo('status', 'open').equalTo('status', 'pending')
+            Missions: new Parse.Query.or(openMissions, pendingMissions)
         };
     },
     getInitialState(){
@@ -172,7 +174,7 @@ var Geolocation = React.createClass({
             
             var acceptedAlert = ParseReact.Mutation.Create('Messages', {
                 writtenTo: self.state.clickedMission.createdBy,
-                content: self.props.user.u_name + 'has accepted your misson!',
+                content: self.props.user.u_name + ' has accepted your misson!',
                 type: 'missionAccepted',
                 createdBy: self.props.user,
                 read: false

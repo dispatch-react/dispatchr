@@ -4,6 +4,7 @@ var ParseReact = require('parse-react');
 
 var Input = require('react-bootstrap').Input;
 var Button = require('react-bootstrap').Button;
+var ButtonInput = require('react-bootstrap').ButtonInput;
 var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 var Panel = require('react-bootstrap').Panel;
@@ -59,19 +60,26 @@ var Inbox = React.createClass({
             }
         
     },
+    confirmMission: function(e) {
+        if (e.target.value === "Accept"){
+            // set status to active
+        }
+        else {
+            //set status to open
+        }
+    },
     observe: function() {
         return {
             inbox: (new Parse.Query("Messages")).equalTo("writtenTo", this.props.user).ascending('createdAt'),
         };
     },
     render: function() {
-       var title = (<h1>Inbox</h1>);
-       var attachment = (<h2>attachmentGoesHere</h2>);
-        
+        var self = this;
+        var title = (<h1>Inbox</h1>);
+        var Buttons;
+
         return (
-            
-            
-            
+
     <div id="viewContent">
     
         {/* Begin the inbox section*/}
@@ -80,12 +88,47 @@ var Inbox = React.createClass({
             <Row>
                 <Col xs={12}>
                         {this.data.inbox.map(function(c) {
+                        
+                        if (c.type === "missionAccepted") {
+                            Buttons = (
+                                    <Row>
+                                        <form onSubmit={self.confirmMission}>
+                                            
+                                                <Col xs={2} xsOffset={7}>
+                                                    <ButtonInput bsStyle="danger" type="submit" value="Reject"/>
+                                                </Col>
+                                                
+                                                <Col xs={2}>
+                                                    <ButtonInput bsStyle="success" type="submit" value="Accept"/>
+                                                </Col>
+                                       </form>
+                                      </Row>)
+                        }
+                        else {
+                            Buttons = (
+                                    <Row>
+                                        <form onSubmit={self.messageChange}>
+                            
+                                            <Col xs={2} xsOffset={7}>
+                                                <ButtonInput bsStyle="danger" type="submit" value="Delete"/>
+                                            </Col>
+                                            
+                                            <Col xs={2}>
+                                                <ButtonInput bsStyle="info" type="submit" value="Reply"/>
+                                            </Col>
+                                        </form>
+                                      </Row> )
+                        }
+                        
+                        return (
                 <Panel key={c.objectId}>
                     <ListGroup fill>
                         <ListGroupItem><Label bsStyle="info">{c.createdBy.u_name}</Label> <span id="msgInfo">{c.content}</span></ListGroupItem>
                     </ListGroup>
+                            {Buttons}
                 </Panel>
-                        })}
+                        )}
+                    )}
                 </Col>
             </Row>
         </Panel>
