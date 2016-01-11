@@ -167,7 +167,7 @@ var Geolocation = React.createClass({
         e.preventDefault();
             var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
                 acceptedBy: self.props.user,
-                status: 'active'
+                status: 'pending'
             });
 
             setStatus.dispatch().then(function(res){
