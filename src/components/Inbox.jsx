@@ -1,6 +1,7 @@
 var React = require('react');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
+var Search = require('react-search');
 
 var Input = require('react-bootstrap').Input;
 var Button = require('react-bootstrap').Button;
@@ -91,41 +92,36 @@ var Inbox = React.createClass({
                         
                         if (c.type === "missionAccepted") {
                             Buttons = (
-                                    <Row>
+                                    
                                         <form onSubmit={self.confirmMission}>
-                                            
-                                                <Col xs={2} xsOffset={7}>
-                                                    <ButtonInput bsStyle="danger" type="submit" value="Reject"/>
-                                                </Col>
-                                                
-                                                <Col xs={2}>
-                                                    <ButtonInput bsStyle="success" type="submit" value="Accept"/>
-                                                </Col>
+                                            <Col xs={2}><ButtonInput bsStyle="danger" type="submit" value="Reject"/></Col>
+                                            <Col xs={2}><ButtonInput bsStyle="success" type="submit" value="Accept"/></Col>
                                        </form>
-                                      </Row>)
+                                      )
                         }
                         else {
-                            Buttons = (
-                                    <Row>
-                                        <form onSubmit={self.messageChange}>
-                            
-                                            <Col xs={2} xsOffset={7}>
-                                                <ButtonInput bsStyle="danger" type="submit" value="Delete"/>
-                                            </Col>
-                                            
-                                            <Col xs={2}>
-                                                <ButtonInput bsStyle="info" type="submit" value="Reply"/>
-                                            </Col>
-                                        </form>
-                                      </Row> )
+                            Buttons = (<form onSubmit={self.messageChange}>
+                                            <Col xs={2}><ButtonInput bsStyle="danger" type="submit" value="Delete"/></Col>
+                                            <Col xs={2}><ButtonInput bsStyle="info" type="submit" value="Reply"/></Col>
+                                        </form>)
                         }
                         
                         return (
                 <Panel key={c.objectId}>
                     <ListGroup fill>
-                        <ListGroupItem><Label bsStyle="info">{c.createdBy.u_name}</Label> <span id="msgInfo">{c.content}</span></ListGroupItem>
+                        <ListGroupItem>
+                        <Row>
+                            <Col xs={7}>
+                                <Label bsStyle="info">{c.createdBy.u_name}</Label> 
+                                <span id="msgInfo">{c.content}</span>
+                            </Col>
+                                {Buttons}
+                        </Row>
+                        </ListGroupItem>
+                            
+                    
                     </ListGroup>
-                            {Buttons}
+                            
                 </Panel>
                         )}
                     )}
@@ -140,19 +136,22 @@ var Inbox = React.createClass({
             <form onSubmit={this.sendMessage}>
                 <Row>
                     <Col xs={12}>
+                        <Search />
                         <Input type="textarea" label="Compose" placeholder="send a message..."
                           onChange={this.handleChange} />
                     </Col>
                 </Row>
+            <form onSubmit={this.sendMessage}>
                 <Row>
-                    <Col xs={4}>
+                    
+                    <Col xs={8}>
                         <Input type="file" refs="fileUpload" label="File" />
                     </Col>
-                    <Col xs={4} xsOffset={4}>
+                    <Col xs={4}>
                          <Button bsStyle="primary" type="submit">Send</Button>
                     </Col>
                 </Row>
-            </form>     
+            </form>
             </Col>
         </Row>
     </div>
