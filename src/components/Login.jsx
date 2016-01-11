@@ -38,10 +38,12 @@ var Login = React.createClass({
     /*LogIn Function*/
 
     logIn: function(e) {
+        var self = this;
         e.preventDefault();
         console.log('called signUp')
         Parse.User.logIn(this.state.email, this.state.password).then(function(user) {
             //alert('welcome back!'); //ALERT will mess with the loading animation
+            self.props.onChange('home')
         }, function(user, error) {
             alert('bad login, check your inputs');
         });
@@ -50,6 +52,7 @@ var Login = React.createClass({
     /* SignUp Function */
 
     signUp: function(e) {
+        var self = this;
         e.preventDefault();
         console.log('called signUp function' + this.refs);
         var user = new Parse.User();
@@ -59,6 +62,7 @@ var Login = React.createClass({
 
         user.signUp(null, {
             success: function(user) {
+                self.props.onChange('home')
                 // Hooray! Let them use the app now.
                 alert('you have signed up succesfully');
             },

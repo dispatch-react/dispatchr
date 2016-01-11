@@ -33,9 +33,8 @@ var Inbox = React.createClass({
                 content: nthis.state.text,
                 attachment: att,
                 createdBy: nthis.props.user,
-                writtenTo: ''
+                writtenTo: {}
             });
-
             // ...and execute it
             creator.dispatch().then(function(res){
                 alert('message sent')

@@ -169,9 +169,19 @@ var Geolocation = React.createClass({
                 acceptedBy: self.props.user,
                 status: 'pending'
             });
+            
+            var acceptedAlert = ParseReact.Mutation.Create('Messages', {
+                writtenTo: self.state.clickedMission.createdBy,
+                content: self.props.user.u_name + 'has accepted your misson!',
+                type: 'missionAccepted',
+                createdBy: self.props.user,
+                read: false
+            });
 
             setStatus.dispatch().then(function(res){
                     self.close();
+                    acceptedAlert.dispatch()
+                    alert('Mission is pending, watch your inbox!')
                 },
                 function(error){
                     alert('there was an error, check your self')

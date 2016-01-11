@@ -126,12 +126,6 @@ var CreateMissionForm = React.createClass({
         open() {
             this.setState({
                 showModal: true
-
-            // }, ()=>{
-            //      var reactId= this.refs.autocomplete.getInputDOMNode();
-            // new google.maps.places.Autocomplete(reactId);
-
-            // });
         });
         },
 
