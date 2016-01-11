@@ -126,12 +126,6 @@ var CreateMissionForm = React.createClass({
         open() {
             this.setState({
                 showModal: true
-
-            // }, ()=>{
-            //      var reactId= this.refs.autocomplete.getInputDOMNode();
-            // new google.maps.places.Autocomplete(reactId);
-
-            // });
         });
         },
 
@@ -155,6 +149,7 @@ var CreateMissionForm = React.createClass({
     <Autocomplete setLocation={this.handleStartLocationChange} className="autocomplete"/>
     
     <Input type="select" label="Category" labelClassName="col-xs-2" wrapperClassName="col-xs-5" onChange={this.handleCategoryChange}>
+      <option readOnly>-Select a Category-</option>
       <option value="construction, trades">Construction, Trades</option>
       <option value="bar, food, hospitality">Bar, Food, Hospitality</option>
       <option value="housekeeping, childcare">Housekeeping, Childcare</option>
@@ -164,9 +159,9 @@ var CreateMissionForm = React.createClass({
       <option value="other">Other</option>
     </Input>
     
-    <Input type="checkbox" label="Car required" wrapperClassName="col-xs-6" onClick={this.handleCarReqChange} checked={this.state.carReq} />
+    <Input type="checkbox" label="Car required" wrapperClassName="col-xs-6" onChange={this.handleCarReqChange} checked={this.state.carReq} />
 
-    <Input type="checkbox" label="Remote Work" wrapperClassName="col-xs-6" onClick={this.handleRemoteChange} checked={this.state.remote} />
+    <Input type="checkbox" label="Remote Work" wrapperClassName="col-xs-6" onChange={this.handleRemoteChange} checked={this.state.remote} />
     
     <Input type="file" id="MissionAttachment" ref="fileUpload" placeholder="attachment" help="[Optional]" />
     

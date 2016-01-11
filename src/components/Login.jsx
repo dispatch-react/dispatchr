@@ -9,6 +9,7 @@ var Login = React.createClass({
             email: '',
             password: '',
             confPw: '',
+            username: '',
             login: true
         };
     },
@@ -16,6 +17,11 @@ var Login = React.createClass({
     handleEmailChange: function(e) {
         this.setState({
             email: e.target.value
+        });
+    },
+    handleUsernameChange: function(e) {
+        this.setState({
+            username: e.target.value
         });
     },
     handlePasswordChange: function(e) {
@@ -38,10 +44,12 @@ var Login = React.createClass({
     /*LogIn Function*/
 
     logIn: function(e) {
+        var self = this;
         e.preventDefault();
         console.log('called signUp')
         Parse.User.logIn(this.state.email, this.state.password).then(function(user) {
             //alert('welcome back!'); //ALERT will mess with the loading animation
+            self.props.onChange('home')
         }, function(user, error) {
             alert('bad login, check your inputs');
         });
@@ -50,15 +58,18 @@ var Login = React.createClass({
     /* SignUp Function */
 
     signUp: function(e) {
+        var self = this;
         e.preventDefault();
         console.log('called signUp function' + this.refs);
         var user = new Parse.User();
         user.set("username", this.state.email);
         user.set("password", this.state.password);
         user.set("email", this.state.email);
+        user.set("u_name", this.state.username);
 
         user.signUp(null, {
             success: function(user) {
+                self.props.onChange('home')
                 // Hooray! Let them use the app now.
                 alert('you have signed up succesfully');
             },
@@ -127,7 +138,7 @@ var Login = React.createClass({
                 <div className="row">
                 <div className="well clearfix col-md-4 col-md-offset-4">
 
-      <h2>So glad you're joining us!</h2>
+      <h2>Ready to make some gwap motherfucker!?!</h2>
         
             {/* This is the signUp area! */}
         
@@ -138,6 +149,11 @@ var Login = React.createClass({
     <div className="input-group">
       <span className="input-group-addon"><i className="fa fa-at"></i></span>
       <input type="text" className="form-control" placeholder=" Email" id="formEmail" onChange={this.handleEmailChange}></input>
+    </div>
+    
+    <div className="input-group">
+      <span className="input-group-addon"><i className="fa fa-user"></i></span>
+      <input type="text" className="form-control" placeholder=" Username" id="formUsername" onChange={this.handleUsernameChange}></input>
     </div>
 
     <div className="input-group">

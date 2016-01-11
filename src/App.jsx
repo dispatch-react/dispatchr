@@ -4,7 +4,7 @@ var Parse = require('parse');
 var ParseReact = require('parse-react');
 Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
 
-var Home = require('./components/Home.jsx');
+var Geolocation = require('./components/Geolocation.jsx');
 var Login = require('./components/Login.jsx');
 var Inbox = require('./components/Inbox.jsx');
 var Settings = require('./components/Settings.jsx');
@@ -66,7 +66,7 @@ var App = React.createClass({
             );
         }
         else {
-            return <Login />;
+            return <Login onChange={this.navChanged} />;
         }
     }
 });
