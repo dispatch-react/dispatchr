@@ -199,9 +199,7 @@ var Inbox = React.createClass({
                 </Col>
             </Row>
         </div>
-
         )
-
     }
 });
 

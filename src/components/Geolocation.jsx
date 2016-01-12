@@ -21,6 +21,7 @@ var ClickedMission = require("./ClickedMission.jsx");
 var Modal = require('react-bootstrap').Modal;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var Col = require('react-bootstrap').Col;
+var Alert = require('react-bootstrap').Alert;
 
 var inputStyle = {
     "border": "1px solid transparent",
@@ -155,14 +156,6 @@ var Geolocation = React.createClass({
                 authorEmail: self.props.user.email,
                 read: false
             });
-
-        var acceptedAlert = ParseReact.Mutation.Create('Messages', {
-            writtenTo: self.state.clickedMission.createdBy,
-            content: self.props.user.userName + ' has accepted your misson!',
-            type: 'missionAccepted',
-            createdBy: self.props.user,
-            read: false
-        });
 
         setStatus.dispatch().then(function (res) {
                 self.close();
