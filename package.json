@@ -36,6 +36,7 @@
     "raf": "^3.1.0",
     "react": "^0.14.3",
     "react-addons-update": "^0.14.5",
+    "react-autosuggest": "^3.1.0",
     "react-bootstrap": "^0.28.1",
     "react-dom": "^0.14.3",
     "react-google-maps": "^4.7.1",
