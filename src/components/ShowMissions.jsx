@@ -8,19 +8,56 @@ var Panel = require('react-bootstrap').Panel;
 var Label = require('react-bootstrap').Label;
 var ListGroup = require('react-bootstrap').ListGroup;
 var ListGroupItem = require('react-bootstrap').ListGroupItem;
+var Pagination = require('react-bootstrap').Pagination;
+var Pager = require('react-bootstrap').Pager;
+var PageItem = require('react-bootstrap').PageItem;
 
 var ShowMissions = React.createClass({
     mixins: [ParseReact.Mixin],
-    observe: function() {
+    //Check parse-react documentation
+    //Pass the state to observe
+    //https://github.com/ParsePlatform/ParseReact/blob/master/docs/api/Mixin.md
+    observe: function(currentProps, currentState) {
+        const skip = currentState.limit * (currentState.activePage - 1);
+        console.log(skip);
         return {
-            userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt'),
-            userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").ascending("createdAt"),
-            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).notEqualTo("status", "active").ascending('createdAt'),
+            userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt').skip(skip).limit(this.state.limit),
+            userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").skip(skip).limit(this.state.limit),
+            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt').skip(skip).limit(this.state.limit)
         };
     },
-    
+    getInitialState(){
+        return {
+            limit: 2,
+            activePage: 1
+        }
+    },
+    handleSelect(event, selectedEvent) {
+        console.log('selected', selectedEvent.eventKey);
+        if (selectedEvent.eventKey !== this.state.activePage) {
+            this.setState({
+                activePage: selectedEvent.eventKey
+            });
+        }
+
+    },
+    renderPagination(){
+        return (
+            <Pagination
+                prev
+                next
+                first
+                last
+                bsSize="medium"
+                ellipsis
+                items={10}
+                maxButtons={5}
+                activePage={this.state.activePage}
+                onSelect={this.handleSelect} />
+        )
+    },
     render: function() {
-        
+        var self = this;
         var ownMissionsTitle = (<h1 className="panelTitle">Your Missions</h1>);
         var activeTitle = (<h1 className="panelTitle">Active Missions</h1>);
         var completedMissionsTitle = (<h1 className="panelTitle">Complete Missions</h1>);
@@ -59,6 +96,7 @@ var ShowMissions = React.createClass({
     </Panel>
                             );
                         })}
+                    {this.renderPagination()}
                 </Col>
             </Row>
         </Panel>

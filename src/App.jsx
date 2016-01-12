@@ -18,7 +18,6 @@ var Col = require('react-bootstrap').Col;
 var Well = require('react-bootstrap').Well;
 var Navbar = require('react-bootstrap').Navbar;
 var Autocomplete = require('./components/Autocomplete.jsx');
-var Geolocation = require('./components/Geolocation.jsx');
 
 var App = React.createClass({
     

@@ -141,7 +141,6 @@ var Inbox = React.createClass({
                           onChange={this.handleChange} />
                     </Col>
                 </Row>
-            <form onSubmit={this.sendMessage}>
                 <Row>
                     
                     <Col xs={8}>

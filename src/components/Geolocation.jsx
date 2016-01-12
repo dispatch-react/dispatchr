@@ -60,7 +60,10 @@ var Geolocation = React.createClass({
     getInitialState(){
         return {
             userPosition: null,
-            center: null,
+            center: {
+                lat: 45.5017,
+                lng: -73.5673
+            },
             //These are the markers created by user. Mission markers.
             bounds: null,
             //These are display tags above the markers
@@ -130,7 +133,6 @@ var Geolocation = React.createClass({
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
                 },
-                missions: this.data.Missions
             });
         }, (reason) => {
             this.setState({
@@ -149,6 +151,7 @@ var Geolocation = React.createClass({
     },
 
     open(marker) {
+        console.log(marker)
         this.setState({
             showModal: true,
             clickedMission: marker
@@ -161,10 +164,10 @@ var Geolocation = React.createClass({
                 acceptedBy: self.props.user,
                 status: 'pending'
             });
-            
+
             var acceptedAlert = ParseReact.Mutation.Create('Messages', {
                 writtenTo: self.state.clickedMission.createdBy,
-                content: self.props.user.u_name + ' has accepted your misson!',
+                content: self.props.user.userName + ' has accepted your misson!',
                 type: 'missionAccepted',
                 createdBy: self.props.user,
                 read: false
@@ -212,7 +215,6 @@ var Geolocation = React.createClass({
                             averageCenter={true}
                             enableRetinaIcons={true}
                             gridSize={10}>
-
                                 {this.data.Missions.map((marker, index) => {
     const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
     const ref = `marker_${index}`;
@@ -272,12 +274,16 @@ var Geolocation = React.createClass({
                         <Modal.Title>Mission Brief</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
+
+
                         {<ClickedMission marker={this.state.clickedMission}/>}
+
+
                     </Modal.Body>
                     <Modal.Footer>
                         <Col xs={2} xsOffset={8}>
                             <form onSubmit={this.acceptMission}>
-                                <ButtonInput type="submit" value="Accept"/>
+                                <ButtonInput type="submit" value="Apply"/>
                             </form>
                         </Col>
                     </Modal.Footer>
