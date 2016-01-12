@@ -3,7 +3,6 @@ var React = require("react");
 var reactGoogleMaps = require("react-google-maps");
 var GoogleMap = reactGoogleMaps.GoogleMap;
 var GoogleMapLoader = reactGoogleMaps.GoogleMapLoader;
-var Circle = reactGoogleMaps.Circle;
 var InfoWindow = reactGoogleMaps.InfoWindow;
 var canUseDOM = require("can-use-dom");
 
@@ -11,7 +10,6 @@ var MarkerClusterer = require("react-google-maps/lib/addons/MarkerClusterer");
 var Marker = reactGoogleMaps.Marker;
 var SearchBox = reactGoogleMaps.SearchBox;
 var OverlayView = reactGoogleMaps.OverlayView;
-var InfoBox = require("react-google-maps/lib/addons/InfoBox");
 var TimerMixin = require("react-timer-mixin");
 var _ = require("lodash");
 
@@ -227,10 +225,12 @@ var Geolocation = React.createClass({
         <OverlayView
             key={ref}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            position={position}
-        >
-                <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
+            position={position}>
+            <div className="customMarkerInfo">
+                <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
+               <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
                 </div>
+            </div>
         </OverlayView>
 
     );
