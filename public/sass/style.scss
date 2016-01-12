@@ -1,11 +1,14 @@
 $nav-clr: #160A20;
 
 #viewContent {
-    min-height: 72vh;
+    min-height: 70vh;
+    padding-top: 0.5em;
+    padding-bottom: 0.1em;
 }
 
 body {
     font-size: 14pt;
+    font-family: Helvetica, sans-serif;
 }
 
 h1 .panelTitle > a{
@@ -109,13 +112,11 @@ img {
     padding:2px 3px;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 53f573f7cc57ced2f9451a6f97df9c3defc7a57a
 /* Styles for the contacts search-box */
-
-
-body {
-  font-family: Helvetica, sans-serif;
-}
 
 .react-autosuggest__container {
   position: relative;
@@ -166,4 +167,3 @@ body {
 .react-autosuggest__suggestion--focused {
   background-color: #ddd;
 }
-
