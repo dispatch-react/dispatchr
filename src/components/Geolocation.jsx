@@ -158,7 +158,6 @@ var Geolocation = React.createClass({
     render: function () {
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
-
         if (userPosition) {
             contents = contents.concat([
 
