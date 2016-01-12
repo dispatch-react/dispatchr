@@ -6,6 +6,7 @@ var Row = require('react-bootstrap').Row;
 var Col = require('react-bootstrap').Col;
 var Panel = require('react-bootstrap').Panel;
 var Label = require('react-bootstrap').Label;
+var Badge = require('react-bootstrap').Badge;
 var ListGroup = require('react-bootstrap').ListGroup;
 var ListGroupItem = require('react-bootstrap').ListGroupItem;
 var Pagination = require('react-bootstrap').Pagination;
@@ -61,9 +62,11 @@ var ShowMissions = React.createClass({
     },
     render: function() {
         var self = this;
-        var ownMissionsTitle = (<h1 className="panelTitle">Your Missions</h1>);
         var activeTitle = (<h1 className="panelTitle">Active Missions</h1>);
+        var ownMissionsTitle = (<h1 className="panelTitle">Your Missions</h1>);
         var completedMissionsTitle = (<h1 className="panelTitle">Complete Missions</h1>);
+        var applicantsBadge = null;
+        var applicants = null;
         
         return (
             <div id="viewContent">
@@ -71,13 +74,23 @@ var ShowMissions = React.createClass({
             <Row>
                 <Col xs={12}>
                         {this.data.userActiveMissions.map(function(c) {
+                        if (c.applicants.length > 0) {
+                            applicantsBadge = (<Badge pullRight>c.applicants.length</Badge>)
+                            applicants = (c.applicants.map(function(a){
+                                return <ListGroupItem><Label bsStyle="warning">Applicant:</Label> <span id="missionInfo"><Label bsStyle="info">{a.userName}</Label></span></ListGroupItem>
+                            }))
+                        }
+                        else {
+                            
+                        }
                           return(
-    <Panel collapsible key={c.objectId} header={c.title}>
+    <Panel collapsible key={c.objectId} header={c.title + applicantsBadge}>
         <ListGroup fill>
             <ListGroupItem><Label bsStyle="info">Brief:</Label> <span id="missionInfo">{c.description}</span></ListGroupItem>
             <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
-            <ListGroupItem><Label bsStyle="warning">Final Score:</Label> <span id="missionInfo">{c.score}</span></ListGroupItem>
+            {applicants}
         </ListGroup>
+        
     </Panel>    
                             );
                         })}

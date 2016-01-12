@@ -60,12 +60,11 @@ var Login = React.createClass({
     signUp: function(e) {
         var self = this;
         e.preventDefault();
-        console.log('called signUp function' + this.refs);
         var user = new Parse.User();
         user.set("username", this.state.email);
         user.set("password", this.state.password);
         user.set("email", this.state.email);
-        user.set("u_name", this.state.username);
+        user.set("userName", this.state.username);
 
         user.signUp(null, {
             success: function(user) {

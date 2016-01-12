@@ -2,8 +2,6 @@ var React = require('react');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
 
-var setRecipient = require('./setRecipient.jsx');
-
 var Input = require('react-bootstrap').Input;
 var Button = require('react-bootstrap').Button;
 var ButtonInput = require('react-bootstrap').ButtonInput;
@@ -24,6 +22,10 @@ var Inbox = React.createClass({
             recipientUserName: 'No user selected...'
         }
     },
+    setButtonValueR: function() {this.setState({buttonValue: "Reject"})},
+    setButtonValueA: function() {
+        console.log('calling set button value A')
+        this.setState({buttonValue: "Accept"})},
     setRecipientMissionReply: function(userObj, userName, missionLink) {
         this.setState({
             recipient: userObj,
@@ -95,12 +97,36 @@ var Inbox = React.createClass({
         }
 
     },
-    confirmMission: function(e) {
-        if (e.target.value === "Accept") {
-            // set status to active
+    confirmMission: function(missionLink, message, e) {
+        var nthis = this;
+        e.preventDefault();
+        ParseReact.Mutation.Destroy(message).dispatch()
+        if (this.state.buttonValue === "Accept") {
+            ParseReact.Mutation.Set(missionLink, {status: 'active'}).dispatch()
+             ParseReact.Mutation.Create('Messages', {
+               content: 'Mission is active! Go for it',
+               createdBy: nthis.props.user,
+               writtenTo: message.createdBy,
+               authorUserName: nthis.props.user.userName,
+               authorEmail: nthis.props.user.email,
+               type: 'applicationAccepted',
+               missionLink: missionLink,
+               read: false
+            }).dispatch()
+            alert('Mission is set to active!')
         }
         else {
-            //set status to open
+            ParseReact.Mutation.Create('Messages', {
+               content: 'Application rejected',
+               createdBy: nthis.props.user,
+               writtenTo: message.createdBy,
+               authorUserName: nthis.props.user.userName,
+               authorEmail: nthis.props.user.email,
+               type: 'applicationRejected',
+               missionLink: missionLink,
+               read: false
+            }).dispatch()
+            alert('Application Rejected')
         }
     },
     observe: function() {
@@ -124,13 +150,11 @@ var Inbox = React.createClass({
                 <Row>
                     <Col xs={12}>
                             {this.data.inbox.map(function(c) {
-                            console.log(c.createdBy)
                             if (c.type === "missionAccepted") {
                                 Buttons = (
-                                        
-                                            <form onSubmit={self.confirmMission}>
-                                                <Col xs={2}><ButtonInput bsStyle="danger" type="submit" value="Reject"/></Col>
-                                                <Col xs={2}><ButtonInput bsStyle="success" type="submit" value="Accept"/></Col>
+                                            <form onSubmit={self.confirmMission.bind(self, c.missionLink, c)}>
+                                                <Col xs={2}><ButtonInput bsStyle="danger" type="submit" onClick={self.setButtonValueR} value="Reject"/></Col>
+                                                <Col xs={2}><ButtonInput bsStyle="success" type="submit" onClick={self.setButtonValueA} value="Accept"/></Col>
                                            </form>
                                           )
                             }

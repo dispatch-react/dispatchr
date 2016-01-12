@@ -138,11 +138,10 @@ var Geolocation = React.createClass({
     acceptMission: function (e) {
         var self = this;
         e.preventDefault();
-            var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
-                acceptedBy: self.props.user
-            });
+        
+        var addApplicant = ParseReact.Mutation.AddUnique(self.state.clickedMission, 'applicants', self.props.user)
             
-            var acceptedAlert = ParseReact.Mutation.Create('Messages', {
+        var acceptedAlert = ParseReact.Mutation.Create('Messages', {
                 writtenTo: self.state.clickedMission.createdBy,
                 missionLink: self.state.clickedMission,
                 missionTitle: self.state.clickedMission.title,
@@ -155,7 +154,7 @@ var Geolocation = React.createClass({
                 read: false
             });
 
-        setStatus.dispatch().then(function (res) {
+        addApplicant.dispatch().then(function (res) {
                 self.close();
                 acceptedAlert.dispatch()
                 alert('Mission is pending, watch your inbox!')
