@@ -20,7 +20,6 @@ var ShowMissions = React.createClass({
     //https://github.com/ParsePlatform/ParseReact/blob/master/docs/api/Mixin.md
     observe: function(currentProps, currentState) {
         const skip = currentState.limit * (currentState.activePage - 1);
-        console.log(skip);
         return {
             userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt').skip(skip).limit(this.state.limit),
             userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").skip(skip).limit(this.state.limit),
@@ -37,7 +36,6 @@ var ShowMissions = React.createClass({
         }
     },
     handleSelect(event, selectedEvent) {
-        console.log('selected', selectedEvent.eventKey);
         if (selectedEvent.eventKey !== this.state.activePage) {
             this.setState({
                 activePage: selectedEvent.eventKey
@@ -65,23 +63,22 @@ var ShowMissions = React.createClass({
         var activeTitle = (<h1 className="panelTitle">Active Missions</h1>);
         var ownMissionsTitle = (<h1 className="panelTitle">Your Missions</h1>);
         var completedMissionsTitle = (<h1 className="panelTitle">Complete Missions</h1>);
-        var applicantsBadge = null;
+        var applicantsBadge = '';
         var applicants = null;
         
         return (
             <div id="viewContent">
-        <Panel collapsible defaultExpanded header={activeTitle} bsStyle="danger">
+        <Panel collapsible defaultExpanded header={ownMissionsTitle} bsStyle="info">
             <Row>
                 <Col xs={12}>
-                        {this.data.userActiveMissions.map(function(c) {
-                        if (c.applicants.length > 0) {
-                            applicantsBadge = (<Badge pullRight>c.applicants.length</Badge>)
+                        {this.data.userOwnMissionsTotal.map(function(c) {
+                        console.log(c.applicants);
+                        if (c.applicants) {
+                        var sum = c.applicants.length + 1;
+                            applicantsBadge = (<Badge>sum</Badge>)
                             applicants = (c.applicants.map(function(a){
                                 return <ListGroupItem><Label bsStyle="warning">Applicant:</Label> <span id="missionInfo"><Label bsStyle="info">{a.userName}</Label></span></ListGroupItem>
                             }))
-                        }
-                        else {
-                            
                         }
                           return(
     <Panel collapsible key={c.objectId} header={c.title + applicantsBadge}>
@@ -90,7 +87,6 @@ var ShowMissions = React.createClass({
             <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
             {applicants}
         </ListGroup>
-        
     </Panel>    
                             );
                         })}
@@ -99,10 +95,10 @@ var ShowMissions = React.createClass({
             </Row>
         </Panel>
             
-        <Panel collapsible header={ownMissionsTitle} bsStyle="info">
+        <Panel collapsible header={activeTitle} bsStyle="danger">
             <Row>
                 <Col xs={12}>
-                        {this.data.userOwnMissions.map(function(c) {
+                        {this.data.userActiveMissions.map(function(c) {
                           return(
     <Panel collapsible key={c.objectId} header={c.title}>
         <ListGroup fill>

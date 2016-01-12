@@ -138,8 +138,9 @@ var Geolocation = React.createClass({
     acceptMission: function (e) {
         var self = this;
         e.preventDefault();
+        console.log(this.props.user)
         
-        var addApplicant = ParseReact.Mutation.AddUnique(self.state.clickedMission, 'applicants', self.props.user)
+        var addApplicant = ParseReact.Mutation.AddUnique(self.state.clickedMission, 'applicants', this.props.user)
             
         var acceptedAlert = ParseReact.Mutation.Create('Messages', {
                 writtenTo: self.state.clickedMission.createdBy,
