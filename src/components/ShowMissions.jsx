@@ -23,12 +23,15 @@ var ShowMissions = React.createClass({
         return {
             userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt').skip(skip).limit(this.state.limit),
             userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").skip(skip).limit(this.state.limit),
-            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt').skip(skip).limit(this.state.limit)
+            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt').skip(skip).limit(this.state.limit),
+            userOwnMissionsTotal: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt'),
+            userActiveMissionsTotal: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active"),
+            userCompletedMissionsTotal: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt')
         };
     },
     getInitialState(){
         return {
-            limit: 2,
+            limit: 5,
             activePage: 1
         }
     },
@@ -41,7 +44,7 @@ var ShowMissions = React.createClass({
         }
 
     },
-    renderPagination(){
+    renderPagination(missionType){
         return (
             <Pagination
                 prev
@@ -50,7 +53,7 @@ var ShowMissions = React.createClass({
                 last
                 bsSize="medium"
                 ellipsis
-                items={10}
+                items={Math.ceil((missionType.length)/5)}
                 maxButtons={5}
                 activePage={this.state.activePage}
                 onSelect={this.handleSelect} />
@@ -78,6 +81,7 @@ var ShowMissions = React.createClass({
     </Panel>    
                             );
                         })}
+                    {this.renderPagination(this.data.userActiveMissionsTotal)}
                 </Col>
             </Row>
         </Panel>
@@ -96,7 +100,7 @@ var ShowMissions = React.createClass({
     </Panel>
                             );
                         })}
-                    {this.renderPagination()}
+                    {this.renderPagination(this.data.userOwnMissionsTotal)}
                 </Col>
             </Row>
         </Panel>
@@ -115,6 +119,7 @@ var ShowMissions = React.createClass({
     </Panel>
                             );
                         })}
+                    {this.renderPagination(this.data.userCompletedMissionsTotal)}
                 </Col>
             </Row>
         </Panel>

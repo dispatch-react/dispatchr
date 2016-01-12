@@ -37,8 +37,6 @@ var inputStyle = {
 var Parse = require('parse');
 var ParseReact = require('parse-react');
 Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
-
-
 const geolocation = (
     canUseDOM && navigator.geolocation || {
         getCurrentPosition: (success, failure) => {
@@ -46,8 +44,16 @@ const geolocation = (
         }
     }
 );
-
-
+var CustomMarker = React.createClass({
+    render() {
+        return (
+            <OverlayView mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET} position={this.props.position}>
+                <div style={{backgroundImage: this.props.icon, width: 40, height: 40}}>
+                </div>
+            </OverlayView>
+        );
+    }
+});
 var Geolocation = React.createClass({
     mixins: [ParseReact.Mixin, TimerMixin],
     observe: function () {
@@ -72,11 +78,11 @@ var Geolocation = React.createClass({
             clickedMission: {}
         }
     },
-    handleBoundsChanged: _.debounce(function(){
+    handleBoundsChanged: _.debounce(function () {
         this.setState({
             center: this.refs.map.getCenter()
         })
-    },50),
+    }, 50),
     handlePlacesChanged(){
         const places = this.refs.searchBox.getPlaces();
         this.setState({
@@ -92,41 +98,13 @@ var Geolocation = React.createClass({
         }
 
     },
-    handleCloseClick(marker){
-        var missions = this.state.openedMissions;
-        if (missions.indexOf(marker.id.objectId) > -1) {
-            missions.splice(missions.indexOf(marker.id.objectId), 1);
-            this.setState({
-                openedMissions: missions
-            });
-        }
-    },
-    renderInfoWindow(ref, marker){
-        return (
-            <InfoWindow key={ref}
-                        onCloseclick={this.handleCloseClick.bind(this, marker)}
-            >
-                <div>
-                    <strong>{marker.description}</strong>
-                </div>
-
-            </InfoWindow>
-        )
-    },
-    renderMissionInfo(ref, marker){
-        return (
-            <CreateMissionForm user={this.props.user}/>
-        )
-    },
     componentDidMount(){
-
         this.setInterval(
             () => {
                 this.refreshQueries();
             },
             15000
         );
-
         geolocation.getCurrentPosition((position) => {
             this.setState({
                 userPosition: {
@@ -149,40 +127,38 @@ var Geolocation = React.createClass({
             showModal: false
         });
     },
-
     open(marker) {
-        console.log(marker)
         this.setState({
             showModal: true,
             clickedMission: marker
         })
     },
-    acceptMission: function(e) {
+    acceptMission: function (e) {
         var self = this;
         e.preventDefault();
-            var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
-                acceptedBy: self.props.user,
-                status: 'pending'
-            });
+        var setStatus = ParseReact.Mutation.Set(self.state.clickedMission, {
+            acceptedBy: self.props.user,
+            status: 'pending'
+        });
 
-            var acceptedAlert = ParseReact.Mutation.Create('Messages', {
-                writtenTo: self.state.clickedMission.createdBy,
-                content: self.props.user.userName + ' has accepted your misson!',
-                type: 'missionAccepted',
-                createdBy: self.props.user,
-                read: false
-            });
+        var acceptedAlert = ParseReact.Mutation.Create('Messages', {
+            writtenTo: self.state.clickedMission.createdBy,
+            content: self.props.user.userName + ' has accepted your misson!',
+            type: 'missionAccepted',
+            createdBy: self.props.user,
+            read: false
+        });
 
-            setStatus.dispatch().then(function(res){
-                    self.close();
-                    acceptedAlert.dispatch()
-                    alert('Mission is pending, watch your inbox!')
-                },
-                function(error){
-                    alert('there was an error, check your self')
-                });
-        },
-        render: function () {
+        setStatus.dispatch().then(function (res) {
+                self.close();
+                acceptedAlert.dispatch()
+                alert('Mission is pending, watch your inbox!')
+            },
+            function (error) {
+                alert('there was an error, check your self')
+            });
+    },
+    render: function () {
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
 
@@ -194,7 +170,6 @@ var Geolocation = React.createClass({
                 </Marker>)
             ])
         }
-
         return (
             <div id="viewContent">
                 <GoogleMapLoader
@@ -210,11 +185,11 @@ var Geolocation = React.createClass({
                             }
                         >{contents}
                           <MarkerClusterer
-                            minimumClusterSize={3}
+                            minimumClusterSize={2}
                             title={"Click to view missions!"}
                             averageCenter={true}
                             enableRetinaIcons={true}
-                            gridSize={10}>
+                            >
                                 {this.data.Missions.map((marker, index) => {
     const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
     const ref = `marker_${index}`;
@@ -241,18 +216,14 @@ var Geolocation = React.createClass({
          break;
     }
     return (
-        <Marker key={ref} ref={ref}
-                icon={icon}
-                position={position}
-                title={marker.title}
-                onClick={this.open.bind(this, marker)}
-                defaultAnimation={2}
-                >
-                {<InfoWindow key={`infoWindow_${index}`} position={position} ref={`infoWindow_${index}`}>
-                <div className="infoWindow">{marker.value + "$"}</div>
-                </InfoWindow>}
-                {this.state.openedMissions.indexOf(marker.id.objectId) > -1 ? this.renderMissionInfo(ref, marker) : null}
-        </Marker>
+        <OverlayView
+            key={ref}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            position={position}
+        >
+                <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
+                </div>
+        </OverlayView>
 
     );
     }
