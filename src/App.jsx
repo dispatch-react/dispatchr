@@ -42,6 +42,7 @@ var App = React.createClass({
       Parse.User.logOut();  
     },
     render: function() {
+        {/**/}
         if (this.data.user) {
             
             return (
@@ -55,6 +56,7 @@ var App = React.createClass({
                         this.state.location === 3 ? <ShowMissions user={this.data.user}/> :
                         this.state.location === 4 ? <Settings user={this.data.user} logOut={this.logOut}/> :
                         <Geolocation user={this.data.user}/>
+                        
                     }
                         <Menu onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
                                 

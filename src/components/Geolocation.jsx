@@ -1,4 +1,5 @@
 var React = require("react");
+
 var reactGoogleMaps = require("react-google-maps");
 var GoogleMap = reactGoogleMaps.GoogleMap;
 var GoogleMapLoader = reactGoogleMaps.GoogleMapLoader;
@@ -6,18 +7,21 @@ var Circle = reactGoogleMaps.Circle;
 var InfoWindow = reactGoogleMaps.InfoWindow;
 var canUseDOM = require("can-use-dom");
 var raf = require("raf");
+
 var MarkerClusterer = require("react-google-maps/lib/addons/MarkerClusterer");
 var Marker = reactGoogleMaps.Marker;
 var SearchBox = reactGoogleMaps.SearchBox;
 var OverlayView = reactGoogleMaps.OverlayView;
 var InfoBox = require("react-google-maps/lib/addons/InfoBox");
 var TimerMixin = require("react-timer-mixin");
+var _ = require("lodash");
+
 var CreateMissionForm = require("./CreateMissionForm.jsx");
+var ClickedMission = require("./ClickedMission.jsx");
+
 var Modal = require('react-bootstrap').Modal;
 var ButtonInput = require('react-bootstrap').ButtonInput;
 var Col = require('react-bootstrap').Col;
-var ClickedMission = require("./ClickedMission.jsx");
-var _ = require("lodash");
 
 var inputStyle = {
     "border": "1px solid transparent",
@@ -164,9 +168,14 @@ var Geolocation = React.createClass({
             
             var acceptedAlert = ParseReact.Mutation.Create('Messages', {
                 writtenTo: self.state.clickedMission.createdBy,
-                content: self.props.user.u_name + ' has accepted your misson!',
+                missionLink: self.state.clickedMission,
+                missionTitle: self.state.clickedMission.title,
+                missionDescription: self.state.clickedMission.description,
+                content: ' ' + 'accepted your mission!' + ' (' + self.state.clickedMission.title + ')',
                 type: 'missionAccepted',
                 createdBy: self.props.user,
+                authorUserName: self.props.user.userName,
+                authorEmail: self.props.user.email,
                 read: false
             });
 
