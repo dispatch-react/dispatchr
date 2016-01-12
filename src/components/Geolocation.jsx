@@ -172,8 +172,22 @@ var Geolocation = React.createClass({
             });
     },
     render: function () {
+
+
+
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
+        let positions = this.data.Missions.map((marker)=>{
+           return  marker;
+        });
+        positions.forEach((m1, i) => {
+            positions.forEach((m2, j) => {
+                if (i !== j && m1.startLocationGeo.latitude === m2.startLocationGeo.latitude && m1.startLocationGeo.longitude === m2.startLocationGeo.longitude) {
+                    m2.startLocationGeo.latitude += 0.0001;
+                    m2.startLocationGeo.longitude += 0.0001;
+                }
+            })
+        });
         if (userPosition) {
             contents = contents.concat([
 
@@ -202,9 +216,11 @@ var Geolocation = React.createClass({
                             averageCenter={true}
                             enableRetinaIcons={true}
                             >
-                                {this.data.Missions.map((marker, index) => {
+                                {positions.map((marker, index) => {
     const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
+
     const ref = `marker_${index}`;
+
     if(position){
         let icon = '';
     switch (marker.category) {

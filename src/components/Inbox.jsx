@@ -1,9 +1,6 @@
 var React = require('react');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
-
-var setRecipient = require('./setRecipient.jsx');
-
 var Input = require('react-bootstrap').Input;
 var Button = require('react-bootstrap').Button;
 var ButtonInput = require('react-bootstrap').ButtonInput;
