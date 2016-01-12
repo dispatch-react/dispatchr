@@ -7,6 +7,7 @@ var Col = require('react-bootstrap').Col;
 var Navbar = require('react-bootstrap').Navbar;
 var Nav = require('react-bootstrap').Nav;
 var NavItem = require('react-bootstrap').NavItem;
+var Badge = require('react-bootstrap').Badge;
 
 var Menu = React.createClass({
 
@@ -14,7 +15,7 @@ var Menu = React.createClass({
         return (
                 <Nav bsStyle="pills" justified onSelect={this.props.onChange}> 
                   <NavItem eventKey={1}><span className="fa fa-user fa-3x"></span>Profile</NavItem>
-                  <NavItem eventKey={2}><span className="fa fa-comments fa-3x"></span>Inbox</NavItem>
+                  <NavItem eventKey={2}><Badge bsStyle="danger" pullRight>11</Badge><span className="fa fa-comments fa-3x"></span>Inbox</NavItem>
                   <NavItem eventKey={'home'}>
                   {
                       this.props.location === 'home' ? <CreateMissionForm user={this.props.user}/> :

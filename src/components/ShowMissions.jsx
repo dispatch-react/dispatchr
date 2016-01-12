@@ -15,7 +15,7 @@ var ShowMissions = React.createClass({
         return {
             userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt'),
             userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").ascending("createdAt"),
-            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).notEqualTo("status", "active").ascending('createdAt'),
+            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt'),
         };
     },
     
