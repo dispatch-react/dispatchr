@@ -68,10 +68,7 @@ var Geolocation = React.createClass({
     getInitialState(){
         return {
             userPosition: null,
-            center: {
-                lat: 45.5017,
-                lng: -73.5673
-            },
+            center: null,
             //These are the markers created by user. Mission markers.
             bounds: null,
             //These are display tags above the markers
@@ -164,9 +161,6 @@ var Geolocation = React.createClass({
             });
     },
     render: function () {
-
-
-
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
         let positions = this.data.Missions.map((marker)=>{
@@ -240,7 +234,7 @@ var Geolocation = React.createClass({
             key={ref}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             position={position}>
-            <div className="customMarkerInfo">
+            <div className="customMarkerInfo hvr-bob">
                 <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
                <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
                 </div>
@@ -274,7 +268,7 @@ var Geolocation = React.createClass({
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Col xs={2} xsOffset={8}>
+                        <Col xs={2} xsOffset={10}>
                             <form onSubmit={this.acceptMission}>
                                 <ButtonInput type="submit" value="Apply"/>
                             </form>

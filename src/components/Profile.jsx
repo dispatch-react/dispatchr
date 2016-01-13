@@ -94,8 +94,6 @@ var Profile = React.createClass({
                     
                 </Col>  
             </Row>
-            
-            
         </Panel>
     </div>
         )
