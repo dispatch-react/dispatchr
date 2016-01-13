@@ -110,11 +110,9 @@ button > span {
 .customMarker {
     transform: translate(-50%, -100%);
     transition: all 0.3s ease;
-    &:hover {
-        opacity: 0.8;
-    }
 }
 .customMarkerInfo {
+  transition: all 0.3s ease-in-out;
     width: 300px;
 }
 .customMarkerValue{
@@ -131,4 +129,5 @@ button > span {
     text-align: center;
     top: -100%;
     padding:2px 3px;
+
 }

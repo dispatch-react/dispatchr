@@ -74,7 +74,7 @@ var ShowMissions = React.createClass({
                 m.destroy();
             })
         })
-        
+
         if (this.state.buttonValue === "Accept") {
             ParseReact.Mutation.Set(missionLink, {status: 'active', activeAgent: this.props.user}).dispatch()
              ParseReact.Mutation.Create('Messages', {
@@ -110,7 +110,7 @@ var ShowMissions = React.createClass({
         var completedMissionsTitle = (<h1 className="panelTitle">Complete Missions</h1>);
         var applicantsBadge = '';
         var applicants = null;
-        
+
         return (
             <div id="viewContent">
         <Panel collapsible defaultExpanded header={ownMissionsTitle} bsStyle="info">
@@ -121,7 +121,7 @@ var ShowMissions = React.createClass({
  
                             applicants = (c.applicants.map(function(a){
                                 return <ListGroupItem>
-                                            <Label bsStyle="warning">Applicant:</Label> 
+                                            <Label bsStyle="warning">Applicant:</Label>
                                             <span id="missionInfo"><Label bsStyle="info">{a.userName}</Label></span>
                                         <Row><Col xs={6} xsOffset={6}>
                                         <form onSubmit={self.confirmMission.bind(self, c)}>
@@ -141,14 +141,14 @@ var ShowMissions = React.createClass({
             <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
             {applicants}
         </ListGroup>
-    </Panel>    
+    </Panel>
                             );
                         })}
                     {this.renderPagination(this.data.userOwnMissionsTotal)}
                 </Col>
             </Row>
         </Panel>
-            
+
         <Panel collapsible header={activeTitle} bsStyle="danger">
             <Row>
                 <Col xs={12}>
@@ -167,7 +167,7 @@ var ShowMissions = React.createClass({
                 </Col>
             </Row>
         </Panel>
-        
+
         <Panel collapsible header={completedMissionsTitle} bsStyle="success">
             <Row>
                 <Col xs={12}>
