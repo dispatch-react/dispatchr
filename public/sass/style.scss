@@ -89,11 +89,9 @@ img {
 .customMarker {
     transform: translate(-50%, -100%);
     transition: all 0.3s ease;
-    &:hover {
-        opacity: 0.8;
-    }
 }
 .customMarkerInfo {
+  transition: all 0.3s ease-in-out;
     width: 300px;
 }
 .customMarkerValue{
@@ -112,10 +110,6 @@ img {
     padding:2px 3px;
 }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 53f573f7cc57ced2f9451a6f97df9c3defc7a57a
 /* Styles for the contacts search-box */
 
 .react-autosuggest__container {
@@ -166,4 +160,10 @@ img {
 
 .react-autosuggest__suggestion--focused {
   background-color: #ddd;
+}
+
+.default-profile-picture {
+  width: 600px;
+  height: 300px;
+  background: url("../../src/img/Spy.png");
 }

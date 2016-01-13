@@ -73,7 +73,7 @@ var ShowMissions = React.createClass({
                 m.destroy();
             })
         })
-        
+
         if (this.state.buttonValue === "Accept") {
             ParseReact.Mutation.Set(missionLink, {status: 'active', activeAgent: this.props.user}).dispatch()
              ParseReact.Mutation.Create('Messages', {
@@ -109,19 +109,19 @@ var ShowMissions = React.createClass({
         var completedMissionsTitle = (<h1 className="panelTitle">Complete Missions</h1>);
         var applicantsBadge = '';
         var applicants = null;
-        
+
         return (
             <div id="viewContent">
         <Panel collapsible defaultExpanded header={ownMissionsTitle} bsStyle="info">
             <Row>
                 <Col xs={12}>
-                        {this.data.userOwnMissionsTotal.map(function(c) {
+                        {this.data.userOwnMissions.map(function(c) {
                         if (c.applicants) {
                         var sum = c.applicants.length + 1;
                             applicantsBadge = (<Badge>sum</Badge>)
                             applicants = (c.applicants.map(function(a){
                                 return <ListGroupItem>
-                                            <Label bsStyle="warning">Applicant:</Label> 
+                                            <Label bsStyle="warning">Applicant:</Label>
                                             <span id="missionInfo"><Label bsStyle="info">{a.userName}</Label></span>
                                         <form onSubmit={self.confirmMission.bind(self, c)}>
                                             <ButtonInput bsStyle="success" onClick={self.setButtonValueA} type="submit" value="Accept" />
@@ -137,14 +137,14 @@ var ShowMissions = React.createClass({
             <ListGroupItem><Label bsStyle="danger">Value:</Label> <span id="missionInfo">{c.value}</span></ListGroupItem>
             {applicants}
         </ListGroup>
-    </Panel>    
+    </Panel>
                             );
                         })}
                     {this.renderPagination(this.data.userActiveMissionsTotal)}
                 </Col>
             </Row>
         </Panel>
-            
+
         <Panel collapsible header={activeTitle} bsStyle="danger">
             <Row>
                 <Col xs={12}>
@@ -163,7 +163,7 @@ var ShowMissions = React.createClass({
                 </Col>
             </Row>
         </Panel>
-        
+
         <Panel collapsible header={completedMissionsTitle} bsStyle="success">
             <Row>
                 <Col xs={12}>
