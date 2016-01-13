@@ -1,4 +1,7 @@
 var React = require('react');
+var Parse = require('parse');
+var ParseReact = require('parse-react');
+
 var CreateMissionForm = require('./CreateMissionForm.jsx');
 var HomeScreenButton = require('./HomeScreenButton.jsx');
 
@@ -10,13 +13,23 @@ var NavItem = require('react-bootstrap').NavItem;
 var Badge = require('react-bootstrap').Badge;
 
 var Menu = React.createClass({
+    mixins: [ParseReact.Mixin],
+    observe: function(){
+        return {
+            newMsgs: (new Parse.Query("Messages")).equalTo('writtenTo', this.props.user).equalTo('read', false)
+        }
+    },
+    
 
     render: function() {
+        
+        var badge = (<Badge pullRight>{this.data.newMsgs.length}</Badge>);
+
         
         return (
                 <Nav bsStyle="pills" justified onSelect={this.props.onChange}> 
                   <NavItem eventKey={1}><span className="fa fa-user fa-3x"></span>Profile</NavItem>
-                  <NavItem eventKey={2}><Badge bsStyle="danger" pullRight>11</Badge><span className="fa fa-comments fa-3x"></span>Inbox</NavItem>
+                  <NavItem eventKey={2}>{badge}<span className="fa fa-comments fa-3x"></span>Inbox</NavItem>
                   <NavItem eventKey={'home'}>
                   {
                       this.props.location === 'home' ? <CreateMissionForm user={this.props.user}/> :

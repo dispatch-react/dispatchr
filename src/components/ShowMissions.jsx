@@ -23,11 +23,11 @@ var ShowMissions = React.createClass({
         const skip = currentState.limit * (currentState.activePage - 1);
         return {
             userOwnMissions: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt').skip(skip).limit(this.state.limit),
-            userActiveMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active").skip(skip).limit(this.state.limit),
-            userCompletedMissions: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt').skip(skip).limit(this.state.limit),
+            userActiveMissions: (new Parse.Query("Missions")).equalTo("activeAgent", this.props.user).ascending('createdAt').skip(skip).limit(this.state.limit),
+            userCompletedMissions: (new Parse.Query("Missions")).equalTo("completedBy", this.props.user).ascending('createdAt').skip(skip).limit(this.state.limit),
             userOwnMissionsTotal: (new Parse.Query("Missions")).equalTo("createdBy", this.props.user).ascending('createdAt'),
-            userActiveMissionsTotal: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "active"),
-            userCompletedMissionsTotal: (new Parse.Query("Missions")).equalTo("acceptedBy", this.props.user).equalTo("status", "complete").ascending('createdAt')
+            userActiveMissionsTotal: (new Parse.Query("Missions")).equalTo("activeAgent", this.props.user),
+            userCompletedMissionsTotal: (new Parse.Query("Missions")).equalTo("completedBy", this.props.user).ascending('createdAt')
         };
     },
     getInitialState(){
@@ -64,7 +64,6 @@ var ShowMissions = React.createClass({
     confirmMission: function(missionLink, e) {
         var nthis = this;
         e.preventDefault();
-        console.log(missionLink);
 
         // delete Messages Related to this mission
         var relatedMessages = new Parse.Query("Messages");
@@ -76,7 +75,7 @@ var ShowMissions = React.createClass({
         })
         
         if (this.state.buttonValue === "Accept") {
-            ParseReact.Mutation.Set(missionLink, {status: 'active', acceptedAgent: nthis.props.user}).dispatch()
+            ParseReact.Mutation.Set(missionLink, {status: 'active', activeAgent: this.props.user}).dispatch()
              ParseReact.Mutation.Create('Messages', {
                content: 'Mission is active! Go for it',
                createdBy: nthis.props.user,

@@ -45,18 +45,6 @@ var Inbox = React.createClass({
         var att;
         var fileUpload = this.refs.fileUpload.getInputDOMNode().files;
 
-        // get Recipient function
-
-        // function findRecipient(element, index, array) {
-        //     console.log(nthis.state.writtenTo);
-        //     console.log(element.userName);
-        //     nthis.state.writtenTo === element.userName || nthis.state.writtenTo === element.email
-        // }
-
-        // var recipient = this.data.contacts.find(findRecipient);
-
-        // Define function to post a mission
-
         function sendMessage() {
 
             var creator = ParseReact.Mutation.Create('Messages', {
@@ -131,7 +119,6 @@ var Inbox = React.createClass({
     observe: function() {
         return {
             inbox: (new Parse.Query("Messages")).equalTo("writtenTo", this.props.user).descending('createdAt')
-
         };
     },
     render: function() {
