@@ -68,10 +68,7 @@ var Geolocation = React.createClass({
     getInitialState(){
         return {
             userPosition: null,
-            center: {
-                lat: 45.5017,
-                lng: -73.5673
-            },
+            center: null,
             //These are the markers created by user. Mission markers.
             bounds: null,
             //These are display tags above the markers
@@ -172,72 +169,83 @@ var Geolocation = React.createClass({
                 alert('there was an error, check your self')
             });
     },
-        render: function () {
-            const {center, content, radius, markers, userPosition} = this.state;
-            let contents = [];
-    
-            if (userPosition) {
-                contents = contents.concat([
-    
-                    (<Marker key={userPosition} position={userPosition}
-                             icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
-                    </Marker>)
-                ])
-            }
-            return (
-                <div id="viewContent">
-                    <GoogleMapLoader
-                        containerElement={<div {...this.props} style={{height: "70vh"}} />}
-                        googleMapElement={
-                            <GoogleMap
-                                containerProps={{...this.props}}
-                                ref="map"
-                                onBoundsChanged={this.handleBoundsChanged}
-                                defaultZoom={12}
-                                center={
-                                    center ? center: userPosition
-                                }
-                            >{contents}
-                              <MarkerClusterer
-                                minimumClusterSize={2}
-                                title={"Click to view missions!"}
-                                averageCenter={true}
-                                enableRetinaIcons={true}
-                                >
-                                    {this.data.Missions.map((marker, index) => {
-        const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
-        const ref = `marker_${index}`;
-        if(position){
-            let icon = '';
-        switch (marker.category) {
-            case "driver, delivery":
-             icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
-             break;
-             case "gigs":
-             icon = "https://www.dropbox.com/s/fgg15qwebunmw5i/event-party.png?dl=1";
-             break;
-             case "housekeeping, childcare":
-             icon = "https://www.dropbox.com/s/k6mv0xwx9e129li/house.png?dl=1";
-             break;
-             case "construction, trades":
-             icon = "https://www.dropbox.com/s/cmkfb4cbsqkd65p/domestic-carpentry.png?dl=1";
-             break;
-             case "general labour":
-             icon = "https://www.dropbox.com/s/1s36sjtppljktkl/manual-labour.png?dl=1";
-             break;
-             default:
-             icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
-             break;
+    render: function () {
+        const {center, content, radius, markers, userPosition} = this.state;
+        let contents = [];
+        let positions = this.data.Missions.map((marker)=>{
+           return  marker;
+        });
+        positions.forEach((m1, i) => {
+            positions.forEach((m2, j) => {
+                if (i !== j && m1.startLocationGeo.latitude === m2.startLocationGeo.latitude && m1.startLocationGeo.longitude === m2.startLocationGeo.longitude) {
+                    m2.startLocationGeo.latitude += 0.0001;
+                    m2.startLocationGeo.longitude += 0.0001;
+                }
+            })
+        });
+        if (userPosition) {
+            contents = contents.concat([
+
+                (<Marker key={userPosition} position={userPosition}
+                         icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
+                </Marker>)
+            ])
         }
         return (
-            <OverlayView
-                key={ref}
-                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                position={position}>
-                <div className="customMarkerInfo">
-                    <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
-                   <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
-                    </div>
+            <div id="viewContent">
+                <GoogleMapLoader
+                    containerElement={<div {...this.props} style={{height: "70vh"}} />}
+                    googleMapElement={
+                        <GoogleMap
+                            containerProps={{...this.props}}
+                            ref="map"
+                            onBoundsChanged={this.handleBoundsChanged}
+                            defaultZoom={12}
+                            center={
+                                center ? center: userPosition
+                            }
+                        >{contents}
+                          <MarkerClusterer
+                            minimumClusterSize={2}
+                            title={"Click to view missions!"}
+                            averageCenter={true}
+                            enableRetinaIcons={true}
+                            >
+                                {positions.map((marker, index) => {
+    const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
+
+    const ref = `marker_${index}`;
+
+    if(position){
+        let icon = '';
+    switch (marker.category) {
+        case "driver, delivery":
+         icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
+         break;
+         case "gigs":
+         icon = "https://www.dropbox.com/s/fgg15qwebunmw5i/event-party.png?dl=1";
+         break;
+         case "housekeeping, childcare":
+         icon = "https://www.dropbox.com/s/k6mv0xwx9e129li/house.png?dl=1";
+         break;
+         case "construction, trades":
+         icon = "https://www.dropbox.com/s/cmkfb4cbsqkd65p/domestic-carpentry.png?dl=1";
+         break;
+         case "general labour":
+         icon = "https://www.dropbox.com/s/1s36sjtppljktkl/manual-labour.png?dl=1";
+         break;
+         default:
+         icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
+         break;
+    }
+    return (
+        <OverlayView
+            key={ref}
+            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+            position={position}>
+            <div className="customMarkerInfo hvr-bob">
+                <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
+               <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
                 </div>
             </OverlayView>
     
@@ -268,7 +276,7 @@ var Geolocation = React.createClass({
 
                     </Modal.Body>
                     <Modal.Footer>
-                        <Col xs={2} xsOffset={8}>
+                        <Col xs={2} xsOffset={10}>
                             <form onSubmit={this.acceptMission}>
                                 <ButtonInput type="submit" value="Apply"/>
                             </form>
