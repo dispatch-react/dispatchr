@@ -142,21 +142,21 @@ var Geolocation = React.createClass({
             missionBrief: this.state.clickedMission.description,
             createdBy: this.props.user
         }
-        
+
         var addApplicant = ParseReact.Mutation.AddUnique(self.state.clickedMission, 'applicants', applicantObj)
-            
+
         var acceptedAlert = ParseReact.Mutation.Create('Messages', {
-                writtenTo: self.state.clickedMission.createdBy,
-                missionLink: self.state.clickedMission,
-                missionTitle: self.state.clickedMission.title,
-                missionDescription: self.state.clickedMission.description,
-                content: ' ' + 'applied to your mission!' + ' (' + self.state.clickedMission.title + ')',
-                type: 'missionAccepted',
-                createdBy: self.props.user,
-                authorUserName: self.props.user.userName,
-                authorEmail: self.props.user.email,
-                read: false
-            });
+            writtenTo: self.state.clickedMission.createdBy,
+            missionLink: self.state.clickedMission,
+            missionTitle: self.state.clickedMission.title,
+            missionDescription: self.state.clickedMission.description,
+            content: ' ' + 'applied to your mission!' + ' (' + self.state.clickedMission.title + ')',
+            type: 'missionAccepted',
+            createdBy: self.props.user,
+            authorUserName: self.props.user.userName,
+            authorEmail: self.props.user.email,
+            read: false
+        });
 
         addApplicant.dispatch().then(function (res) {
                 self.close();
@@ -170,8 +170,8 @@ var Geolocation = React.createClass({
     render: function () {
         const {center, content, radius, markers, userPosition} = this.state;
         let contents = [];
-        let positions = this.data.Missions.map((marker)=>{
-           return  marker;
+        let positions = this.data.Missions.map((marker)=> {
+            return marker;
         });
         positions.forEach((m1, i) => {
             positions.forEach((m2, j) => {
@@ -241,6 +241,7 @@ var Geolocation = React.createClass({
             key={ref}
             mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             position={position}>
+
             <div className="customMarkerInfo hvr-bob">
                 <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
                <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>

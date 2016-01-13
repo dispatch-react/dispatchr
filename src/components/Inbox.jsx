@@ -48,16 +48,16 @@ var Inbox = React.createClass({
         //Find the user and set the state.
         var user = new Parse.Query(Parse.User);
         user.get(userObj.objectId).then(function (user) {
+            console.log(user.get("profile_pic"))
             self.setState({
                 userEmail: user.get("email"),
                 userScore: user.get("RatingScore"),
-                userProfilePicture: user.get("profile_pic").url(),
+                userProfilePicture: user.get("profile_pic") ? user.get("profile_pic").url() : null,
                 userHometown: user.get("Hometown"),
                 agent: user.get("userName")
             })
 
         });
-
 
         this.setState({
             recipient: userObj,
@@ -248,7 +248,7 @@ var Inbox = React.createClass({
                                 </ListGroup>
                             </Col>
                             <Col xs={4} md={4} mdOffset={0}>
-                                <Image id="profile-pic" src={this.state.userProfilePicture}/>
+                                {this.state.userProfilePicture ? <Image id="profile-pic" src={this.state.userProfilePicture}/> : <div className="defaultProfile"></div>}
                             </Col>
                         </Row>
                         <Row>
