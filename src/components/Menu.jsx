@@ -11,16 +11,23 @@ var Navbar = require('react-bootstrap').Navbar;
 var Nav = require('react-bootstrap').Nav;
 var NavItem = require('react-bootstrap').NavItem;
 var Badge = require('react-bootstrap').Badge;
+var TimerMixin = require("react-timer-mixin");
 
 var Menu = React.createClass({
-    mixins: [ParseReact.Mixin],
+    mixins: [ParseReact.Mixin, TimerMixin],
     observe: function(){
         return {
             newMsgs: (new Parse.Query("Messages")).equalTo('writtenTo', this.props.user).equalTo('read', false)
         }
     },
-    
-
+    componentDidMount(){
+        this.setInterval(
+            () => {
+                this.refreshQueries();
+            },
+            15000
+        )
+    },
     render: function() {
         
         var badge = (<Badge pullRight>{this.data.newMsgs.length}</Badge>);
