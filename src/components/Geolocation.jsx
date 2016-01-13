@@ -210,6 +210,7 @@ var Geolocation = React.createClass({
                             enableRetinaIcons={true}
                             >
                                 {positions.map((marker, index) => {
+    const value = Number(marker.value).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
     const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
 
     const ref = `marker_${index}`;
@@ -243,7 +244,7 @@ var Geolocation = React.createClass({
             position={position}>
 
             <div className="customMarkerInfo hvr-bob">
-                <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
+                <div className="customMarkerValue animated fadeIn">{value}$</div>
                <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
                 </div>
             </div>
