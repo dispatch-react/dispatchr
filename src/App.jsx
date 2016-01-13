@@ -42,7 +42,6 @@ var App = React.createClass({
       Parse.User.logOut();  
     },
     render: function() {
-        {/**/}
         if (this.data.user) {
             
             return (

@@ -77,7 +77,9 @@ var Geolocation = React.createClass({
             //These are display tags above the markers
             openedMissions: [],
             showModal: false,
-            clickedMission: {}
+            clickedMission: {},
+            clickedMissionTitle: '',
+            clickedMissionDescription: ''
         }
     },
     handleBoundsChanged: _.debounce(function () {
@@ -138,16 +140,22 @@ var Geolocation = React.createClass({
     acceptMission: function (e) {
         var self = this;
         e.preventDefault();
-        console.log(this.props.user)
+        var applicantObj = {
+            userName: this.props.user.userName,
+            missionLink: this.state.clickedMission,
+            missionTitle: this.state.clickedMission.title,
+            missionBrief: this.state.clickedMission.description,
+            createdBy: this.props.user
+        }
         
-        var addApplicant = ParseReact.Mutation.AddUnique(self.state.clickedMission, 'applicants', this.props.user)
+        var addApplicant = ParseReact.Mutation.AddUnique(self.state.clickedMission, 'applicants', applicantObj)
             
         var acceptedAlert = ParseReact.Mutation.Create('Messages', {
                 writtenTo: self.state.clickedMission.createdBy,
                 missionLink: self.state.clickedMission,
                 missionTitle: self.state.clickedMission.title,
                 missionDescription: self.state.clickedMission.description,
-                content: ' ' + 'accepted your mission!' + ' (' + self.state.clickedMission.title + ')',
+                content: ' ' + 'applied to your mission!' + ' (' + self.state.clickedMission.title + ')',
                 type: 'missionAccepted',
                 createdBy: self.props.user,
                 authorUserName: self.props.user.userName,
@@ -164,80 +172,80 @@ var Geolocation = React.createClass({
                 alert('there was an error, check your self')
             });
     },
-    render: function () {
-        const {center, content, radius, markers, userPosition} = this.state;
-        let contents = [];
-
-        if (userPosition) {
-            contents = contents.concat([
-
-                (<Marker key={userPosition} position={userPosition}
-                         icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
-                </Marker>)
-            ])
+        render: function () {
+            const {center, content, radius, markers, userPosition} = this.state;
+            let contents = [];
+    
+            if (userPosition) {
+                contents = contents.concat([
+    
+                    (<Marker key={userPosition} position={userPosition}
+                             icon={"https://www.dropbox.com/s/7zl8wl9a73o89hx/robbery.png?dl=1"} defaultAnimation={2}>
+                    </Marker>)
+                ])
+            }
+            return (
+                <div id="viewContent">
+                    <GoogleMapLoader
+                        containerElement={<div {...this.props} style={{height: "70vh"}} />}
+                        googleMapElement={
+                            <GoogleMap
+                                containerProps={{...this.props}}
+                                ref="map"
+                                onBoundsChanged={this.handleBoundsChanged}
+                                defaultZoom={12}
+                                center={
+                                    center ? center: userPosition
+                                }
+                            >{contents}
+                              <MarkerClusterer
+                                minimumClusterSize={2}
+                                title={"Click to view missions!"}
+                                averageCenter={true}
+                                enableRetinaIcons={true}
+                                >
+                                    {this.data.Missions.map((marker, index) => {
+        const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
+        const ref = `marker_${index}`;
+        if(position){
+            let icon = '';
+        switch (marker.category) {
+            case "driver, delivery":
+             icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
+             break;
+             case "gigs":
+             icon = "https://www.dropbox.com/s/fgg15qwebunmw5i/event-party.png?dl=1";
+             break;
+             case "housekeeping, childcare":
+             icon = "https://www.dropbox.com/s/k6mv0xwx9e129li/house.png?dl=1";
+             break;
+             case "construction, trades":
+             icon = "https://www.dropbox.com/s/cmkfb4cbsqkd65p/domestic-carpentry.png?dl=1";
+             break;
+             case "general labour":
+             icon = "https://www.dropbox.com/s/1s36sjtppljktkl/manual-labour.png?dl=1";
+             break;
+             default:
+             icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
+             break;
         }
         return (
-            <div id="viewContent">
-                <GoogleMapLoader
-                    containerElement={<div {...this.props} style={{height: "70vh"}} />}
-                    googleMapElement={
-                        <GoogleMap
-                            containerProps={{...this.props}}
-                            ref="map"
-                            onBoundsChanged={this.handleBoundsChanged}
-                            defaultZoom={12}
-                            center={
-                                center ? center: userPosition
-                            }
-                        >{contents}
-                          <MarkerClusterer
-                            minimumClusterSize={2}
-                            title={"Click to view missions!"}
-                            averageCenter={true}
-                            enableRetinaIcons={true}
-                            >
-                                {this.data.Missions.map((marker, index) => {
-    const position = marker.startLocationGeo ? {lat:marker.startLocationGeo.latitude, lng: marker.startLocationGeo.longitude} : null;
-    const ref = `marker_${index}`;
-    if(position){
-        let icon = '';
-    switch (marker.category) {
-        case "driver, delivery":
-         icon = "https://www.dropbox.com/s/r22dfeh8lutpwv1/fourbyfour.png?dl=1";
-         break;
-         case "gigs":
-         icon = "https://www.dropbox.com/s/fgg15qwebunmw5i/event-party.png?dl=1";
-         break;
-         case "housekeeping, childcare":
-         icon = "https://www.dropbox.com/s/k6mv0xwx9e129li/house.png?dl=1";
-         break;
-         case "construction, trades":
-         icon = "https://www.dropbox.com/s/cmkfb4cbsqkd65p/domestic-carpentry.png?dl=1";
-         break;
-         case "general labour":
-         icon = "https://www.dropbox.com/s/1s36sjtppljktkl/manual-labour.png?dl=1";
-         break;
-         default:
-         icon = "https://www.dropbox.com/s/dfjpx65j5v3wlih/pirates.png?dl=1";
-         break;
-    }
-    return (
-        <OverlayView
-            key={ref}
-            mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-            position={position}>
-            <div className="customMarkerInfo">
-                <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
-               <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
+            <OverlayView
+                key={ref}
+                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                position={position}>
+                <div className="customMarkerInfo">
+                    <div className="customMarkerValue animated fadeIn">{marker.value + " $"}</div>
+                   <div className="customMarker animated fadeIn" onClick={this.open.bind(this, marker)} style={{backgroundImage: `url(${icon})`, width: 32, height: 37, backgroundSize: 'cover', cursor: 'pointer'}}>
+                    </div>
                 </div>
-            </div>
-        </OverlayView>
-
-    );
-    }
-})}
-                            </MarkerClusterer>
-                            <SearchBox
+            </OverlayView>
+    
+        );
+        }
+})} 
+                    </MarkerClusterer>
+                        <SearchBox
                                 bounds={this.state.bounds}
                                 controlPosition={google.maps.ControlPosition.TOP_LEFT}
                                 onPlacesChanged={this.handlePlacesChanged}

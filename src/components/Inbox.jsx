@@ -24,7 +24,6 @@ var Inbox = React.createClass({
     },
     setButtonValueR: function() {this.setState({buttonValue: "Reject"})},
     setButtonValueA: function() {
-        console.log('calling set button value A')
         this.setState({buttonValue: "Accept"})},
     setRecipientMissionReply: function(userObj, userName, missionLink) {
         this.setState({

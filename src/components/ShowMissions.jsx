@@ -8,6 +8,7 @@ var Panel = require('react-bootstrap').Panel;
 var Label = require('react-bootstrap').Label;
 var Badge = require('react-bootstrap').Badge;
 var ListGroup = require('react-bootstrap').ListGroup;
+var ButtonInput = require('react-bootstrap').ButtonInput;
 var ListGroupItem = require('react-bootstrap').ListGroupItem;
 var Pagination = require('react-bootstrap').Pagination;
 var Pager = require('react-bootstrap').Pager;
@@ -41,7 +42,6 @@ var ShowMissions = React.createClass({
                 activePage: selectedEvent.eventKey
             });
         }
-
     },
     renderPagination(missionType){
         return (
@@ -58,6 +58,51 @@ var ShowMissions = React.createClass({
                 onSelect={this.handleSelect} />
         )
     },
+    setButtonValueR: function() {this.setState({buttonValue: "Reject"})},
+    setButtonValueA: function() {
+        this.setState({buttonValue: "Accept"})},
+    confirmMission: function(missionLink, e) {
+        var nthis = this;
+        e.preventDefault();
+        console.log(missionLink);
+
+        // delete Messages Related to this mission
+        var relatedMessages = new Parse.Query("Messages");
+        relatedMessages.equalTo("missionLink", missionLink)
+        relatedMessages.find().then(function(relMsg){
+            relMsg.forEach(function(m){
+                m.destroy();
+            })
+        })
+        
+        if (this.state.buttonValue === "Accept") {
+            ParseReact.Mutation.Set(missionLink, {status: 'active', acceptedAgent: nthis.props.user}).dispatch()
+             ParseReact.Mutation.Create('Messages', {
+               content: 'Mission is active! Go for it',
+               createdBy: nthis.props.user,
+               writtenTo: missionLink.createdBy,
+               authorUserName: nthis.props.user.userName,
+               authorEmail: nthis.props.user.email,
+               type: 'applicationAccepted',
+               missionLink: missionLink,
+               read: false
+            }).dispatch()
+            alert('Mission is set to active!')
+        }
+        else {
+            ParseReact.Mutation.Create('Messages', {
+               content: 'Application rejected',
+               createdBy: nthis.props.user,
+               writtenTo: message.createdBy,
+               authorUserName: nthis.props.user.userName,
+               authorEmail: nthis.props.user.email,
+               type: 'applicationRejected',
+               missionLink: missionLink,
+               read: false
+            }).dispatch()
+            alert('Application Rejected')
+        }
+    },
     render: function() {
         var self = this;
         var activeTitle = (<h1 className="panelTitle">Active Missions</h1>);
@@ -72,12 +117,18 @@ var ShowMissions = React.createClass({
             <Row>
                 <Col xs={12}>
                         {this.data.userOwnMissionsTotal.map(function(c) {
-                        console.log(c.applicants);
                         if (c.applicants) {
                         var sum = c.applicants.length + 1;
                             applicantsBadge = (<Badge>sum</Badge>)
                             applicants = (c.applicants.map(function(a){
-                                return <ListGroupItem><Label bsStyle="warning">Applicant:</Label> <span id="missionInfo"><Label bsStyle="info">{a.userName}</Label></span></ListGroupItem>
+                                return <ListGroupItem>
+                                            <Label bsStyle="warning">Applicant:</Label> 
+                                            <span id="missionInfo"><Label bsStyle="info">{a.userName}</Label></span>
+                                        <form onSubmit={self.confirmMission.bind(self, c)}>
+                                            <ButtonInput bsStyle="success" onClick={self.setButtonValueA} type="submit" value="Accept" />
+                                            <ButtonInput bsStyle="danger" onClick={self.setButtonValueR} type="submit" value="Reject" />
+                                        </form>
+                                        </ListGroupItem>
                             }))
                         }
                           return(

@@ -12,6 +12,7 @@ var Badge = require('react-bootstrap').Badge;
 var Menu = React.createClass({
 
     render: function() {
+        
         return (
                 <Nav bsStyle="pills" justified onSelect={this.props.onChange}> 
                   <NavItem eventKey={1}><span className="fa fa-user fa-3x"></span>Profile</NavItem>
