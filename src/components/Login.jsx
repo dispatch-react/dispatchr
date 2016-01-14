@@ -108,7 +108,7 @@ var Login = React.createClass({
     
    <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)} type="submit">Sign In
     </Button>
-    <span className="fa fa-sign-in" style={spanStyles}></span>
+    <span className="fa fa-sign-in"></span>
     
    
     
