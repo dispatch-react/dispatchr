@@ -9,6 +9,7 @@ var Login = React.createClass({
             email: '',
             password: '',
             confPw: '',
+            username: '',
             login: true
         };
     },
@@ -16,6 +17,11 @@ var Login = React.createClass({
     handleEmailChange: function(e) {
         this.setState({
             email: e.target.value
+        });
+    },
+    handleUsernameChange: function(e) {
+        this.setState({
+            username: e.target.value
         });
     },
     handlePasswordChange: function(e) {
@@ -38,10 +44,12 @@ var Login = React.createClass({
     /*LogIn Function*/
 
     logIn: function(e) {
+        var self = this;
         e.preventDefault();
         console.log('called signUp')
         Parse.User.logIn(this.state.email, this.state.password).then(function(user) {
             //alert('welcome back!'); //ALERT will mess with the loading animation
+            self.props.onChange('home')
         }, function(user, error) {
             alert('bad login, check your inputs');
         });
@@ -50,15 +58,17 @@ var Login = React.createClass({
     /* SignUp Function */
 
     signUp: function(e) {
+        var self = this;
         e.preventDefault();
-        console.log('called signUp function' + this.refs);
         var user = new Parse.User();
         user.set("username", this.state.email);
         user.set("password", this.state.password);
         user.set("email", this.state.email);
+        user.set("userName", this.state.username);
 
         user.signUp(null, {
             success: function(user) {
+                self.props.onChange('home')
                 // Hooray! Let them use the app now.
                 alert('you have signed up succesfully');
             },
@@ -72,20 +82,11 @@ var Login = React.createClass({
     /*Rendering the Login Page OR Register, based on this.state.login*/
 
     render: function() {
-        const wellStyles = {
-            maxWidth: 400,
-            margin: '0 auto 10px'
-        };
-        const spanStyles = {
-            margin: '0 0 0 10px'
-        };
         if (this.state.login) {
             return (
-                <div className="row">
-        <div className="well clearfix col-md-4 col-md-offset-4">
-            <h2>Welcome to the Login Screen</h2>
-        
-            {/* This is the login area! */}
+                <div>
+
+            <h2>Back to the hustle</h2>
         
          <form className="form-horizontal" onSubmit={this.logIn}>
          
@@ -103,33 +104,28 @@ var Login = React.createClass({
     
         <br/> {/*BUTTONS TO LOGIN OR GO TO REGISTRATION*/}
 
-  <div className="well" style={wellStyles}>
+  <div>
     
     <Button bsStyle="success" bsSize="large" block disabled={!(this.state.email.length && this.state.password.length)} type="submit">Sign In
-    <span className="fa fa-sign-in" style={spanStyles}></span>
+    <span className="fa fa-sign-in"></span>
     </Button>
     
     <Button bsStyle="primary" bsSize="large" type="reset" block id="register-btn" onClick={this.handleTypeChange}>
     Create
-    <span className="fa fa-user-plus" style={spanStyles}></span>
+    <span className="fa fa-user-plus"></span>
     </Button>
   </div>
 
       </form>
-
-      </div>
+      
       </div>)
         }
         else {
             /*RENDERING THE REGISTER PAGE*/
 
-            return (
-                <div className="row">
-                <div className="well clearfix col-md-4 col-md-offset-4">
+            return (<div>
 
-      <h2>So glad you're joining us!</h2>
-        
-            {/* This is the signUp area! */}
+      <h2>Ready to make some gwap motherfucker!?!</h2>
         
       <form onSubmit={this.signUp} className="form-horizontal">
          
@@ -138,6 +134,11 @@ var Login = React.createClass({
     <div className="input-group">
       <span className="input-group-addon"><i className="fa fa-at"></i></span>
       <input type="text" className="form-control" placeholder=" Email" id="formEmail" onChange={this.handleEmailChange}></input>
+    </div>
+    
+    <div className="input-group">
+      <span className="input-group-addon"><i className="fa fa-user"></i></span>
+      <input type="text" className="form-control" placeholder=" Username" id="formUsername" onChange={this.handleUsernameChange}></input>
     </div>
 
     <div className="input-group">
@@ -151,23 +152,20 @@ var Login = React.createClass({
     </div>
     
         <br/> {/*BUTTONS TO REGISTER*/}
-    <div className="well" style={wellStyles}>
+    <div>
         <Button bsStyle="info" bsSize="large" id="register-btn" block type="submit"
             disabled={!(this.state.email.length && this.state.password.length && (this.state.confPw === this.state.password))}
             >Sign Up
-          <span className="fa fa-user-plus" style={spanStyles}></span>
+          <span className="fa fa-user-plus"></span>
         </Button>
         
         {/* Button to go back */}
         <Button bsStyle="warning" bsSize="large" id="back-to-login" type="reset" block onClick={this.handleTypeChange}>Go back
-          <span className="fa fa-sign-in" style={spanStyles}></span>
+          <span className="fa fa-sign-in"></span>
         </Button>
     </div>
 
-      </form>
-
-      </div>
-      </div>);
+      </form> </div>);
         }
     }
 });

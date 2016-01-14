@@ -67,11 +67,11 @@ var Profile = React.createClass({
             />
         }
         var profilePic;
-        if (this.props.user.profile_pic._url) {
+        if (this.props.user.profile_pic) {
             profilePic = <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
         }
         else {
-            profilePic = <Image id="profile-pic" src="../img/bullhorn.png" rounded/>
+            profilePic = <Image id="profile-pic" src="../src/img/bullhorn.png" rounded/>
         }
         return (
             <div id="viewContent">
@@ -79,10 +79,9 @@ var Profile = React.createClass({
             <Row>
                 <Col xs={12} md={8}>
                     <ListGroup>
-                        <ListGroupItem><Label>username:</Label> <span id="userInfo">{this.props.user.u_name}</span></ListGroupItem>
+                        <ListGroupItem><Label>username:</Label> <span id="userInfo">{this.props.user.userName}</span></ListGroupItem>
                         <ListGroupItem><Label bsStyle="info">email:</Label> <span id="userInfo">{this.props.user.email}</span></ListGroupItem>
                         <ListGroupItem><Label bsStyle="warning">rating:</Label> <span id="userInfo">{this.props.user.ratingScore}</span></ListGroupItem>
-                        <ListGroupItem><Label bsStyle="primary">Hometown:</Label> <span id="userInfo">{this.props.user.Hometown}</span></ListGroupItem>
                     </ListGroup>
                 </Col>
     
@@ -94,8 +93,6 @@ var Profile = React.createClass({
                     
                 </Col>  
             </Row>
-            
-            
         </Panel>
     </div>
         )
