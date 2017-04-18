@@ -2,7 +2,8 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var Parse = require('parse');
 var ParseReact = require('parse-react');
-Parse.initialize("ttJuZRLZ5soirHP0jetkbsdqSGR3LUzO0QXRTwFN", "BDmHQzYoQ87Dpq0MdBRj9er20vfYytoh3YF5QXWd");
+Parse.initialize("dispatchrr");
+Parse.serverURL("http://dispatchrr.herokuapp.com/parse");
 
 var Home = require('./components/Home.jsx');
 var Login = require('./components/Login.jsx');
@@ -19,7 +20,7 @@ var Well = require('react-bootstrap').Well;
 var Navbar = require('react-bootstrap').Navbar;
 
 var App = React.createClass({
-    
+
     mixins: [ParseReact.Mixin],
     observe: function() {
         return {
@@ -37,11 +38,11 @@ var App = React.createClass({
         });
     },
     logOut: function() {
-      Parse.User.logOut();  
+      Parse.User.logOut();
     },
     render: function() {
         if (this.data.user) {
-            
+
             return (
         <Grid>
             <Row className="show-grid">
@@ -56,11 +57,11 @@ var App = React.createClass({
                     }
 
                         <Menu onChange={this.navChanged} location={this.state.location} user={this.data.user}/>
-                                
+
                  </Well>
               </Col>
             </Row>
-            
+
         </Grid>
             );
         }
@@ -73,5 +74,3 @@ var App = React.createClass({
 
 
 ReactDOM.render(<App />, document.getElementById('app'));
-    
-    
