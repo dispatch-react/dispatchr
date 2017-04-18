@@ -27,7 +27,6 @@ var Profile = React.createClass({
         });
     },
     handleImgUpload: function(e) {
-        console.log('calling ImgUploader')
         var nthis = this;
 
         e.preventDefault();
@@ -56,7 +55,7 @@ var Profile = React.createClass({
     },
 
     render: function() {
-        var title = (<h1>Profile</h1>);
+        var title = (<h1>Profile</h1>)
         var imgUpdater;
         if (this.state.showButton) {
             imgUpdater = <Button bsStyle="default" id="updatePhoto" onClick={this.toggleImgUpload} type="button">Update Photo</Button>
@@ -67,35 +66,33 @@ var Profile = React.createClass({
                 onChange={this.handleImgUpload}
             />
         }
+        var profilePic;
+        if (this.props.user.profile_pic) {
+            profilePic = <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
+        }
+        else {
+            profilePic = <Image id="profile-pic" src="../src/img/bullhorn.png" rounded/>
+        }
         return (
-            <div>
+            <div id="viewContent">
         <Panel header={title} bsStyle="info">
             <Row>
                 <Col xs={12} md={8}>
                     <ListGroup>
-                        <ListGroupItem><Label>username:</Label> <span id="userInfo">{this.props.user.u_name}</span></ListGroupItem>
+                        <ListGroupItem><Label>username:</Label> <span id="userInfo">{this.props.user.userName}</span></ListGroupItem>
                         <ListGroupItem><Label bsStyle="info">email:</Label> <span id="userInfo">{this.props.user.email}</span></ListGroupItem>
                         <ListGroupItem><Label bsStyle="warning">rating:</Label> <span id="userInfo">{this.props.user.ratingScore}</span></ListGroupItem>
-                        <ListGroupItem><Label bsStyle="primary">Hometown:</Label> <span id="userInfo">{this.props.user.Hometown}</span></ListGroupItem>
                     </ListGroup>
                 </Col>
     
-                <Col xs={12} md={4}>
-                    <Image id="profile-pic" src={this.props.user.profile_pic._url} rounded/>
+                <Col xs={4} xsOffset={4} md={4} mdOffset={0}>
+                             {profilePic}
                     <div>
                              {imgUpdater}
                     </div>
                     
-                    <Row>
-                       <Col xs={10} xsOffset={1}>
-                           <Button bsStyle="warning" block onClick={this.props.logOut}>Log Out</Button>
-                       </Col>
-                    </Row>
-                    
                 </Col>  
             </Row>
-            
-            
         </Panel>
     </div>
         )

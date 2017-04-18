@@ -12,6 +12,9 @@ var ButtonInput = require('react-bootstrap').ButtonInput;
 var FormControls = require('react-bootstrap').FormControls;
 var Col = require('react-bootstrap').Col;
 
+var Autocomplete = require('./Autocomplete.jsx');
+
+
 var CreateMissionForm = React.createClass({
 
     getInitialState() {
@@ -19,16 +22,16 @@ var CreateMissionForm = React.createClass({
                 showModal: false,
                 title: '',
                 value: '',
-                startDate: '',
-                endDate: '',
-                startLocation: '',
-                endLocation: '',
+                lat: '',
+                lng: '',
                 description: '',
                 carReq: false,
-                type: '',
-                createdBy: this.props.user.id
+                remote: false,
+                category: 'construction, trades',
+                type: ''
             };
         },
+
         handleTitleChange: function(e) {
         this.setState({
             title: e.target.value
@@ -49,103 +52,131 @@ var CreateMissionForm = React.createClass({
                 carReq: !this.state.carReq
         });
     },
-        selectChangeHandler: function(e) {
+        handleRemoteChange: function(e) {
+            this.setState({
+                remote: !this.state.remote
+        });
+    },
+        handleCategoryChange: function(e) {
         this.setState({
-            type: e.target.value
+            category: e.target.value
         })
     },
+        handleStartLocationChange: function(e) {
+            this.setState({
+                lat: e.latitude,
+                lng: e.longitude
+            })
+        },
         handleFormSubmit: function(e) {
-            var nthis = this
             e.preventDefault();
+            var self = this;
+            var att;
+            var loc = new Parse.GeoPoint({latitude: this.state.lat, longitude: this.state.lng});
             var fileUpload = this.refs.fileUpload.getInputDOMNode().files;
+            
+            // Define function to post a mission
             
             function postMission() {
             
               var creator = ParseReact.Mutation.Create('Missions', {
-                title: nthis.state.title,
-                value: nthis.state.value,
-                type: nthis.state.type,
-                description: nthis.state.description,
-                carReq: nthis.state.carReq,
+                title: self.state.title,
+                value: self.state.value,
+                startLocationGeo: loc,
+                description: self.state.description,
+                category: self.state.category,
+                carReq: self.state.carReq,
+                remote: self.state.remote,
                 missionAttachment: att,
-                createdBy: nthis.props.user.objectId
+                createdBy: self.props.user,
+                status: "open"
             });
 
             // ...and execute it
             creator.dispatch().then(function(res){
-                alert('new mission created!')
+                console.log("res")
             },
             function(error){
                 alert('there was an error, check your self')
             });
         }
+            //Check for uploaded file and call postMission either way
 
             if (fileUpload.length === 0) {
-                var att = null;
+                att = null;
+                this.close();
                 postMission();
+                
             }
             else {
+                console.log('found attachment')
                 var file = fileUpload[0];
                 att = new Parse.File("attach", file);
                 att.save().then(function(){
+                    self.close();
                     postMission();
-                    nthis.close();
+                    
                 });
             }
         },
-        
         close() {
             this.setState({
                 showModal: false
             });
         },
-
         open() {
             this.setState({
                 showModal: true
-            });
+        });
         },
 
-        render() {
+        render: function() {
 
             return (
                 <div>
         <img onClick={this.open} src="../src/img/logo-med.png" id="nav-icon"/>
 
         <Modal show={this.state.showModal} onHide={this.close}>
+          <form onSubmit={this.handleFormSubmit}>
           <Modal.Header closeButton>
-            <Modal.Title>Mission Brief</Modal.Title>
+            <Modal.Title>Dispatchr</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             
-              <form onSubmit={this.handleFormSubmit}>
-    <Input type="text" label="Mission title" onChange={this.handleTitleChange} />
-    <Input type="text" label="Bounty" onChange={this.handleValueChange} addonBefore="$" addonAfter=".00" />
-    <Input type="text" label="" onChange={this.handleStartLocationChange} addonBefore="Start Location" />
-    <Input type="textarea" label="Mission description" placeholder="be descriptive!" onChange={this.handleDescriptionChange}/>
+              
+    <Input type="text" placeholder="Mission Title" onChange={this.handleTitleChange} />
+    <Input type="textarea" label="Mission description" placeholder="140 characters max" onChange={this.handleDescriptionChange}/>
+    <Input type="text" onChange={this.handleValueChange} addonBefore="Set Bounty" addonAfter="$" />
+    <Autocomplete setLocation={this.handleStartLocationChange} className="autocomplete"/>
     
-    <Input type="select" label="Type" placeholder="select" labelClassName="col-xs-2" wrapperClassName="col-xs-4" onChange={this.handleTypeChange}>
-      <option value="delivery">Delivery</option>
-      <option value="online">Online</option>
-      <option value="domestic">Domestic</option>
-      <option value="creative">Creative</option>
+    <Input type="select" label="Category" labelClassName="col-xs-2" wrapperClassName="col-xs-5" onChange={this.handleCategoryChange}>
+      <option readOnly>-Select a Category-</option>
+      <option value="construction, trades">Construction, Trades</option>
+      <option value="bar, food, hospitality">Bar, Food, Hospitality</option>
+      <option value="housekeeping, childcare">Housekeeping, Childcare</option>
+      <option value="driver, delivery">Driver, Delivery</option>
+      <option value="gigs">Gigs</option>
+      <option value="general labour">General Labour</option>
+      <option value="other">Other</option>
     </Input>
     
-    <Input type="checkbox" label="Car required" wrapperClassName="col-xs-6" onClick={this.handleCarReqChange} checked={this.state.carReq} />
-    
-    <Input type="file" id="MissionAttachment" ref="fileUpload" label="File" help="[Optional]" />
-    
-  </form>
+    <Input type="checkbox" label="Car required" wrapperClassName="col-xs-6" onChange={this.handleCarReqChange} checked={this.state.carReq} />
 
+    <Input type="checkbox" label="Remote Work" wrapperClassName="col-xs-6" onChange={this.handleRemoteChange} checked={this.state.remote} />
+    
+    <Input type="file" id="MissionAttachment" ref="fileUpload" placeholder="attachment" help="[Optional]" />
+    
             </Modal.Body>
           <Modal.Footer>
-            <Col xs={2} xsOffset={8}>
-                <ButtonInput type="reset" value="Reset" />
+            <Col xs={2}>
+                <ButtonInput type="reset" value="Reset"/>
             </Col>
-            <Col xs={2}>    
-                <ButtonInput type="submit" value="Create" />
+            <Col xs={2} xsOffset={7}>    
+                <ButtonInput bsStyle="success" type="submit" value="Dispatch!" />
             </Col>
           </Modal.Footer>
+          
+          </form>
         </Modal>
       </div>
             );

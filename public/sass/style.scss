@@ -1,7 +1,19 @@
 $nav-clr: #160A20;
 
+#viewContent {
+    height: 68vh;
+    padding-top: 0.5em;
+    padding-bottom: 0.1em;
+    overflow: auto;
+}
+
 body {
-    font-size: 12pt;
+    font-size: 14pt;
+    font-family: Helvetica, sans-serif;
+}
+
+h1 .panelTitle > a{
+    padding-right: 80vw;
 }
 
 a {
@@ -21,23 +33,68 @@ img {
     float: right;
 }
 
+#missionInfo {
+    float: right;
+}
+
 #updatePhoto {
     text-align: center;
     margin: 5px;
 }
 
 .nav {
-    font-size: 12pt;
-    padding-top: 10px;
+    font-size: 16pt;
+    margin-top: 6vh;
+    height: 22vh;
     
     span {
     display: block;
     }
 }
 
+.well {
+    margin-top: 0.1vh;
+    padding: 0;
+    padding-top: 0.9vh;
+    margin-bottom: 0;
+    > div {
+        padding: 0 1em 1em 1em;
+    }
+}
+
+.loginPage {
+    margin-top: 20vh;
+}
+
+.ratingInput {
+    min-width: 55px;
+}
+
+
+button > span {
+    padding-left: 0.5em;
+}
+
+#msgInfo {
+    margin-left: 5px;
+}
+
+#msgAuthor:hover {
+    cursor: pointer;
+}
+
+#recipient {
+    margin-bottom: 8px;
+}
+
+.autocomplete {
+    margin: 1em 5px 1em 0;
+}
+
+
 @media (max-width: 906px){
     .nav {
-        font-size: 8pt;
+        font-size: 12pt;
         >li>a {
             padding: 0;
         }
@@ -49,4 +106,32 @@ img {
         display: table-cell;
         width: 1%;
     }
+}
+
+.pac-container {
+	z-index: 999999;
+}
+.customMarker {
+    transform: translate(-50%, -100%);
+    transition: all 0.3s ease;
+}
+.customMarkerInfo {
+  transition: all 0.3s ease-in-out;
+    width: 300px;
+}
+.customMarkerValue{
+    transform: translate(-50%, -100%);
+    background: #fff;
+    border: 3px solid tomato;
+    color: #717171;
+    font-size: 10px;
+    font-weight: 700;
+    font-family: 'Merriweather', Georgia, serif;
+    position: absolute;
+    letter-spacing: 1px;
+    margin: 0 auto;
+    text-align: center;
+    top: -100%;
+    padding:2px 3px;
+
 }
